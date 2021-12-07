@@ -1,23 +1,18 @@
 const express = require('express');
-const { Sequelize } = require('sequelize');
-
-
-
-// Connect to mySql
-var sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: 'localhost',
-    dialect: 'mysql'
-  });
+const mysql = require('mysql');
+const morgan = require('morgan');
+const favicon = require('serve-favicon');
+const postRoutes = require('./routes/post'); 
+const userRoutes = require('./routes/user'); 
+const commentRoutes = require('./routes/comment');
   
-sequelize.authenticate()
-.then(() => console.log('Connexion à mySQL est ok !'))
-.catch(() => console.log('Connexion à mySQL échouée !'));
-  
-
-
 const app = express();
+app.use(express.json());
 
-
+//dev control in terminal
+app
+  .use(favicon(__dirname + '/favicon.ico'))
+  .use(morgan('dev'))
 // Middleware Header to bypass errors by unblocking some CORS security systems, so that everyone can make requests from their browser
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');// indicate that resources can be shared from any origin
@@ -27,6 +22,8 @@ app.use((req, res, next) => {
     next();
 });
 
-
- 
+// Will serve the routes dedicated to the post
+app.use('/api/post', postRoutes);
+app.use('/api/',userRoutes);
+app.use('/api/',commentRoutes);
 module.exports = app;
