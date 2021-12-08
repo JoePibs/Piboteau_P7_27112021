@@ -15,7 +15,7 @@ exports.createComment =(req,res,next) =>{
 exports.getAllComment =(req,res,next)=>{
     let postId = req.params.post_id;
     let sql = "SELECT * FROM comment c where c.isActive=1 AND c.post_id =? ORDER BY date_creation DESC"; 
-    let query =db.query(sql,postId,function(err, result){
+    let query =db.query(sql,[postId],function(err, result){
         if(err){
           throw err
         }
@@ -26,8 +26,8 @@ exports.getAllComment =(req,res,next)=>{
 // afficher les commentaires d'un utilisateur spécifique (l'utilisateur connecté)
 exports.getAllUserComment =(req,res,next)=>{
     let userId = req.params.user_id;
-    let sql = "SELECT c.content,u.firstname, u.lastname FROM comment c, users u WHERE c.user_id = u.id AND c.isActive=1  AND c.id = ? ORDER BY date_creation DESC";
-    let query =db.query(sql, userId,function(err, result){
+    let sql = "SELECT c.content,u.firstname, u.lastname FROM comment c, users u WHERE c.user_id = u.id AND c.isActive=1  AND c.id = ? ";
+    let query =db.query(sql, [userId],function(err, result){
         if(err){
           throw err
         }
@@ -40,7 +40,7 @@ exports.getAllUserComment =(req,res,next)=>{
 exports.getOneComment =(req,res,next)=>{
     let commentId = req.params.id;
     let sql ="SELECT * FROM comment c WHERE c.isActive=1 AND c.id =?";
-    let query =db.query(sql,commentId,function(err, result){
+    let query =db.query(sql,[commentId],function(err, result){
         if(err){
           throw err
         }
@@ -49,15 +49,15 @@ exports.getOneComment =(req,res,next)=>{
 };
 
 
-//Modifier un commentaire 
+//Modifier un commentaire //rendre Inactif un commenaire
 exports.updateOneComment =(req,res,next)=>{
     let userId = req.params.id;
     let sql ="UDPATE * FROM comment c, users u WHERE c.isActive=1 AND c.user.id = u.id AND u.id =?";
-    let query =db.query(sql,userId,function (err, result){
+    let query =db.query(sql,[userId],function (err, result){
+        console.log(result)
         if(err){
           throw err
         }
         res.status(200).json (result)
       })
 };
-//Rendre inactif un commentaire

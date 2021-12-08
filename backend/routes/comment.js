@@ -6,5 +6,5 @@ router.post ('/createcomment', commentCtrl.createComment);
 router.get ('/allcommentpost/:post_id', commentCtrl.getAllComment);
 router.get ('/allusercomment/:user_id', commentCtrl.getAllUserComment);
 router.get ('/onecomment/:id', commentCtrl.getOneComment);
-router.put ('/updatecomment/:id',commentCtrl.updateOneComment)
+router.put ('/updatecomment/:comment_id',commentCtrl.updateOneComment)
 module.exports = router;

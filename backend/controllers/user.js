@@ -18,7 +18,7 @@ exports.signup = async (req, res) => {
     
     const sql = "INSERT INTO users SET ?";  // Je lui demande de créer l'user à partir de valeur inconnues
   
-    db.query(sql, user, (err, result) => { // je passe mon user en second argument pour que ma requete recoivent les bonnes valeurs
+    db.query(sql, [user], function(err, result,fields){ // je passe mon user en second argument pour que ma requete recoivent les bonnes valeurs
       if (!result) { //vu que la contraintre d'unicité de l'email ancrée dans ma table , il n'y aura un result que si l'email n'est pas déja dans la base /sinon l'utilisateur est considéré comme enregistrée
         res.status(200).json({ message: "Email déjà enregistré" });
       } else {
@@ -30,9 +30,32 @@ exports.signup = async (req, res) => {
   }
 };
 
+//login
+exports.login = (req, res,next) => {
+  let email = req.body.email;
+  const sql = "SELECT * FROM users u WHERE u.email = ?";
+  db.query(sql, [email], (err, result) => { 
+    // je passe mon email en second argument pour que ma requete recoivent les bonnes valeurs
+    if (!result){
+      return res.status(401).json({ error: 'Utilisateur non trouvé !' }); // if not existing user
+    } 
+    const user = result[0];
+    bcrypt.compare(req.body.password,user.password)
+      .then(valid => {
+        if (!valid){
+          return res.status(401).json ({message : 'mot de passe inconnu'})
+        }
+        console.log(res)
+        res.status(200).json ({ //sinon j'envoie le token et l'utserid
+          userId: user.id,
+          token :jwt.sign(
+            {userId: user.id},
+            'RANDOM_TOKEN_SECRET',
+            {expiresIn:'24h'})
+          });
+        })
+      .catch(error => res.status(500).json({ error }));
+    })
+  } 
 
-// je verifie que l'adresse email de l'utilisateur existe dans la base
-  //1 j'identifie l'adresse email envoyé 
-  //2 Je lance mar requete sql 
-// Si elle existe, je lui demande de m'envoyer le body de l'utilisateur et je compare via bcryptcompare le password
-//Si ok j'aministre un token 
+
