@@ -2,6 +2,7 @@ const dbc = require('../utils/dbconnect');
 const bcrypt = require ('bcrypt');
 const jwt = require('jsonwebtoken')
 const db = dbc.getDB();
+const check = require('../utils/helper')
 
 
 exports.signup = async (req, res) => {
@@ -59,3 +60,43 @@ exports.login = (req, res,next) => {
   } 
 
 
+//descativer le compte 
+exports.desactivateAccount = (req, res, next) => {
+  const userId = req.params.id;
+  const isAdmin = req.params.isAdmin;
+  const sql = "UPDATE users u SET isActive=0 WHERE u.user_id = ? or u.isAdmin=1";
+  db.query(sql, userId, (err, results) => {
+    if (err) {
+      return res.status(404).json({ err });
+    }
+    res.status(200).json({message :"compte desactivé"});
+  });
+};
+
+//modifier le compte 
+exports.updateAccount = (req, res, next) => {
+  
+  const lastname = req.body.lastname;
+  const firstname = req.body.firstname;
+  const email = req.body.email;
+  const avatarImg = localStorage.getItem("avatar");
+  const sql = "UPDATE users u SET u.firstname = ?, u.lastname = ?, u.email = ?, u.avatar = ? WHERE u.id = ?";
+  db.query(sql, [firstname, lastname, email,avatarImg, req.userId], (err, results) => {
+    if (err) {
+      return res.status(500).json({ err });
+    }
+    localStorage.removeItem("imageUrl");
+    res.status(200).json({message :"compte modifié"});
+  });
+};
+
+exports.seeAprofil = (req, res, next) => {
+    profilId = req.params.id;
+    let sql ="SELECT u.firstname, u.lastname, u.email, u.bio, u.avatar FROM users u WHERE u.id = ? AND u.isActive=1";
+    let query = db.query (sql,[profilId], function (err, results,fields){
+      if(err){
+        throw err
+      }
+      res.status(200).json (results)
+    })
+};

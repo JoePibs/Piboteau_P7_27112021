@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const morgan = require('morgan');
 const favicon = require('serve-favicon');
+const path = require('path');
 const postRoutes = require('./routes/post'); 
 const userRoutes = require('./routes/user'); 
 const commentRoutes = require('./routes/comment');
@@ -22,8 +23,11 @@ app.use((req, res, next) => {
     next();
 });
 
+// Static management of the image resource
+// Midleware that allows to load files that are in the images directory
+app.use('/images', express.static(path.join(__dirname, 'images'))); 
 // Will serve the routes dedicated to the post
 app.use('/api/post', postRoutes);
-app.use('/api/',userRoutes);
-app.use('/api/',commentRoutes);
+app.use('/api/auth', userRoutes);
+app.use('/api/comment', commentRoutes);
 module.exports = app;

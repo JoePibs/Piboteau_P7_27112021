@@ -15,7 +15,7 @@ const normalizePort = val => {
     return false;
   };
 
-const port = normalizePort(process.env.PORT || '3000'); // Add the connection port if it is not declared by the environment - If no port is provided we will listen on port 3000
+const port = normalizePort(process.env.PORT ||'3000'); // Add the connection port if it is not declared by the environment - If no port is provided we will listen on port 3000
 app.set('port', port);
 
   
