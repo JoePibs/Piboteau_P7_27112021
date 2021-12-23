@@ -27,7 +27,7 @@ exports.getOnePost =(req,res,next) => {
 //afficher tous les posts d'un seul utilisateur si le post est actif
 exports.getAllUserPost =(req,res,next) =>{
   var idUser = req.params.id ;
-  let sql = "SELECT p.content,u.firstname, u.lastname FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? ORDER BY 'last_update' ASC";
+  let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? ORDER BY 'last_update' ASC";
   let query = db.query (sql,[idUser], function (err, results,fields){
     if(err){
       throw err
@@ -137,14 +137,25 @@ exports.countLike =(req,res,next)=>{
 };
 
 
-//afficher les posts likés par un utilisateur
+//Afficher les posts les plus commentés de moins d'un mois
 
- 
-exports.allPostUserLike =(req,res,next)=>{
-  let connectedUser = req.userId;
-  console.log(connectedUser)
-  let sql = 'SELECT u.firstname, u.lastname, p.content FROM user u, post p, like l WHERE u.id = p.id_user AND l.user_id = ? AND l.post_id = p.id';
-  let query =db.query(sql,[connectedUser],function (err, result){
+exports.mostCommentPost =(req,res,next)=>{
+  let sql = "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, COUNT(c.id) AS total_comment FROM post p, comment c , users u WHERE c.post_id = p.id And p.user_id = u.id AND p.date_creation > (NOW() - INTERVAL 1 MONTH) GROUP BY p.id ORDER BY 'total_comments' ASC "
+  let query =db.query(sql,function (err, result){
+  console.log(result)
+    if(err){
+    throw err
+    }
+    res.status(200).json (result)
+  })
+};
+
+//afficher les posts commentés par un utilisateur
+
+exports.allPostUserHaveComment =(req,res,next)=>{
+  let userId = req.params.id
+  let sql = "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND c.date_creation > (NOW() - INTERVAL 1 MONTH) GROUP BY p.id ORDER BY 'c.date_creation' ASC "
+  let query =db.query(sql,[userId],function (err, result){
     if(err){
     throw err
     }

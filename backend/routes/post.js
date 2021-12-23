@@ -5,13 +5,14 @@ const auth = require('../middleware/auth'); //import Middleware to authentificat
 const multer = require('../middleware/multer-config'); // import multer configuration
 
 router.get ('/', postCtrl.getAllPost);
-router.get ('/onepost/:id',auth, postCtrl.getOnePost);
-router.get ('/userpost/:id',auth, postCtrl.getAllUserPost);
+router.get ('/:id/onepost',auth, postCtrl.getOnePost);
+router.get ('/:id/userpost/',auth, postCtrl.getAllUserPost);
 router.post ('/createpost',auth,multer, postCtrl.createPost);
-router.post ('/likepost/:post_id/:user_id',auth, postCtrl.likePost);
-router.delete ('/dislikepost/:id/:post_id/:user_id',auth, postCtrl.dislikePost);
-router.get ('/countpost/:post_id',auth, postCtrl.countLike);
-router.put ('/updatepost/:id',auth,multer,postCtrl.updateOnePost);
-router.put ('/deletepost/:id',auth,postCtrl.deleteOnePost);
-//router.get ('/postliked/',auth,postCtrl.allPostUserLike);
+router.post ('/:post_id/like',auth, postCtrl.likePost);
+router.delete ('/:post_id/dislike',auth, postCtrl.dislikePost);
+router.get ('/:post_id/likes/count',auth, postCtrl.countLike);
+router.put ('/:id/updatepost',auth,multer,postCtrl.updateOnePost);
+router.put ('/:id/deletepost/',auth,postCtrl.deleteOnePost);
+router.get ('mostcommented',auth,postCtrl.mostCommentPost);
+
 module.exports = router;

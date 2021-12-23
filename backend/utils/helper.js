@@ -63,9 +63,6 @@ async function userAllowedToEditComment(userId, commentId) {
 
 
 
-
-
-
 module.exports.userIsAdmin = userIsAdmin;
  
 module.exports.userAllowedToEditPost = userAllowedToEditPost;

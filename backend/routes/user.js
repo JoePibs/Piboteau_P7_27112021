@@ -6,8 +6,10 @@ const multer = require('../middleware/multer-config');
 
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.put('/desactivate',userCtrl.desactivateAccount);
-router.put('/update/:id',auth,multer,userCtrl.updateAccount);
-router.get('/profil/:id',auth, userCtrl.seeAprofil);
-
+router.put('/:id/desactivate',userCtrl.desactivateAccount);
+router.put('/:id/update',auth,multer,userCtrl.updateAccount);
+router.get('/:id/profil',auth, userCtrl.seeAprofil);
+router.post('/:id/controlpassword',userCtrl.controlPassword)
+router.put ('/:id/updatepassword',auth, userCtrl.updatePassword);
+router.get ('/:id/commentedby',auth, userCtrl.allPostUserHaveComment);
 module.exports = router;
