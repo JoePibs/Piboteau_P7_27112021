@@ -16,7 +16,7 @@ exports.createComment =(req,res,next) =>{
 // afficher tous les commentaires d'un post
 exports.getAllComment =(req,res,next)=>{
     let postId = req.params.post_id;
-    let sql = "SELECT c.content,c.date_creation,u.firstname, u.lastname FROM comment c, users u, post p WHERE c.post_id = 2 AND p.id = c.post_id AND c.user_id = u.id AND c.isActive=1 ORDER BY c.date_creation DESC";
+    let sql = "SELECT c.content,c.date_creation,u.firstname, u.lastname, u.pseudo FROM comment c, users u, post p WHERE c.post_id = 2 AND p.id = c.post_id AND c.user_id = u.id AND c.isActive=1 ORDER BY c.date_creation DESC";
     let query =db.query(sql,[postId],function(err, result){
         if(err){
           throw err
@@ -28,7 +28,7 @@ exports.getAllComment =(req,res,next)=>{
 // afficher les commentaires d'un utilisateur spécifique (l'utilisateur connecté)
 exports.getAllUserComment =(req,res,next)=>{
     let userId = req.params.user_id;
-    let sql = "SELECT c.content,c.date_creation ,u.firstnamefirstname, u.lastname, u.avatar AS FROM comment c, users u WHERE c.user_id = u.id AND c.isActive=1  AND c.id = ? ";
+    let sql = "SELECT c.content,c.date_creation ,u.firstnamefirstname, u.lastname, u.avatar AS avatar, u.pseudo AS pseudo FROM comment c, users u WHERE c.user_id = u.id AND c.isActive=1  AND c.id = ? ";
     let query =db.query(sql, [userId],function(err, result){
         if(err){
           throw err

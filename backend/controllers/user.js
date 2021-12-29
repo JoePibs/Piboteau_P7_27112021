@@ -6,30 +6,36 @@ const check = require('../utils/helper')
 
 
 exports.signup = async (req, res) => {
-  try {
-    const { password } = req.body; //je crée une variable password à partir de la clé password
-    const salt = await bcrypt.genSalt(10); //je declare un salage
-    const hashPassword = await bcrypt.hash(password, salt); //je génére le hash avec salage sur le passowrd
-
-    const user = {
-      ...req.body,
-      password: hashPassword,
-    }; 
-    //Je crée un object user qui lit le body et remplace la valeur de ma clé password par la valeur hash
-    
-    const sql = "INSERT INTO users SET ?";  // Je lui demande de créer l'user à partir de valeur inconnues
   
-    db.query(sql, [user], function(err, result,fields){ // je passe mon user en second argument pour que ma requete recoivent les bonnes valeurs
-      if (!result) { //vu que la contraintre d'unicité de l'email ancrée dans ma table , il n'y aura un result que si l'email n'est pas déja dans la base /sinon l'utilisateur est considéré comme enregistrée
-        res.status(200).json({ message: "Email déjà enregistré" });
-      } else {
-        res.status(201).json({ message: "Utilisateur crée !" });
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Erreur d'enregistrement", err });
-  }
+  const { password } = req.body; //je crée une variable password à partir de la clé password
+  const salt = await bcrypt.genSalt(10); //je declare un salage
+  const hashPassword = await bcrypt.hash(password, salt); //je génére le hash avec salage sur le passowrd
+  const user = {...req.body,hashPassword};
+  
+  let sql = "SELECT u.* FROM users u WHERE u.pseudo = ?"
+  db.query(sql, [user.pseudo], function(err, result,fields){
+    if(result.length > 0){
+      res.status(250).json ({message : "Pseudo déja utilisé"})
+      return
+    }
+    else{ 
+      sql = "INSERT INTO users (users.firstname, users.lastname, users.pseudo, users.email, users.password)  VALUES (?,?,?,?,?)"
+      db.query(sql, [user.firstname,user.lastname, user.pseudo, user.email, user.password], function(err, result,fields){
+  
+
+        if(!result){
+          res.status(251).json ({message : "email déja utilisé"})
+        }
+        else{
+          res.status(202).json ({message : "licorne crée"})
+        }
+      })
+    }
+  })
 };
+
+
+  
 
 //login
 exports.login = (req, res,next) => {
@@ -90,7 +96,7 @@ exports.updateAccount = (req, res, next) => {
 
 exports.seeAprofil = (req, res, next) => {
     profilId = req.params.id;
-    let sql ="SELECT u.firstname, u.lastname, u.email, u.bio, u.avatar FROM users u WHERE u.id = ? AND u.isActive=1";
+    let sql ="SELECT u.firstname, u.lastname, u.email, u.bio, u.avatar, u.pseudo FROM users u WHERE u.id = ? AND u.isActive=1";
     let query = db.query (sql,[profilId], function (err, results,fields){
       if(err){
         throw err
@@ -138,7 +144,7 @@ exports.updatePassword = (req, res, next) => {
 
 exports.allPostUserHaveComment =(req,res,next)=>{
   let userId = req.params.id
-  let sql = "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND c.date_creation > (NOW() - INTERVAL 1 MONTH) GROUP BY p.id ORDER BY 'c.date_creation' ASC "
+  let sql = "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo As pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND c.date_creation > (NOW() - INTERVAL 1 MONTH) GROUP BY p.id ORDER BY 'c.date_creation' ASC "
   let query =db.query(sql,[userId],function (err, result){
     if(err){
     throw err
@@ -146,3 +152,6 @@ exports.allPostUserHaveComment =(req,res,next)=>{
     res.status(200).json (result)
   })
 }
+
+//chekcer le pseudo 
+

@@ -1,29 +1,43 @@
 <template>
     <b-form  @submit="onSubmit" v-if="show">
-        <b-form-group id="input-group-1" label="Prénom:" label-for="input-1">
+        <b-form-group id="firstname-group" label="Prénom:" label-for="firstname">
             <b-form-input
-            id="input-1"
+            id="firstname"
             v-model="form.firstname"
             placeholder="Entrez votre prénom"
             required
             ></b-form-input>
         </b-form-group>
-        <b-form-group id="input-group-2" label="Nom:" label-for="input-2">
+        <b-form-group id="lastname-group" label="Nom :" label-for="lastname">
             <b-form-input
-            id="input-2"
-            v-model="form.name"
+            id="lastname"
+            v-model="form.lastname"
             placeholder="Entrez votre nom"
             required
             ></b-form-input>
         </b-form-group>
+        <b-form-group id="pseudo-group" label="Pseudo :" label-for="pseudo">
+            <b-form-input
+            id="pseudo"
+            v-model="form.pseudo"
+            placeholder="Entrez votre pseudo"
+            required
+            ></b-form-input>
+
+            <div class = "errorMessage" id="pseudoError"></div>
+            <div>
+
+            </div>
+        </b-form-group>
         <b-form-group
-            id="input-group-3"
-            label="Email:"
-            label-for="input-3"
+            id="email-group"
+            label="Email :"
+            label-for="email"
         >
           <b-form-input
-            id="input-3"
+            id="email"
             v-model="form.email"
+            @change="checkEmail"
             type="email"
             placeholder="Entrez votre email"
             required
@@ -31,34 +45,42 @@
         </b-form-group>
 
         <b-form-group
-          id="input-group-4"
+          id="confirm-email-group"
           label="Confirmation email:"
-          label-for="input-4"
+          label-for="confirm-email"
         >
             <b-form-input
-            id="input-4"
+            id="confirm-email"
             v-model="form.emailconfirm"
+            @change="checkEmail"
             type="email"
             placeholder="Entrez à nouveau votre email"
             required
             ></b-form-input>
+            <div class = "errorMessage" id="emailError"></div>
+            
         </b-form-group>
-        <b-form-group id="input-group-6" label="Password:" label-for="input-6">
+        <b-form-group id="password-group" label="Password :" label-for="password">
             <b-form-input
-            id="input-6"
+            type="password"
+            id="password"
             v-model="form.password"
+            @change="checkPassword"
             placeholder="Entrez votre mot de passe"
             required
             ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-7" label="Password:" label-for="input-7">
+        <b-form-group id="password-confirm-group" label="Confirmez le password :" label-for="password-confirm">
             <b-form-input
-            id="input-7"
+            id="password-confirm"
+            type="password"
             v-model="form.confirmpassword"
+            @change="checkPassword"
             placeholder="Entrez votre mot de passe"
             required
             ></b-form-input>
+            <div class = "errorMessage" id="passwordError"></div>
         </b-form-group>
         <div class=button_inscription>
             <img src="@/assets/unicorn_prout.png" alt="licorne lancement">
@@ -69,6 +91,7 @@
 </template>
 
 <script>
+import  axios from 'axios'
   export default {
     data() {
       return {
@@ -78,20 +101,105 @@
           password :'',
           confirmpassword:'',
           firstname:'',
-          name: '',
+          lastname: '',
+          pseudo :'',
         },
         show: true,
       }
     },
-    methods: {
+    
+    methods:
+    {
+        
+      checkEmail(event){
+           var body ={
+              email : this.form.email,
+              emailConfirm : this.form.emailconfirm,
+            }
+        function emailConfirmation(){
+           
+            let email = body.email
+            let confirmEmail = body.emailConfirm
+            console.log(email,confirmEmail)
+            if(email === confirmEmail){
+                let msgError = document.querySelector('#emailError');
+                msgError.innerHTML = ""
+            }
+            else {
+                let msgError = document.querySelector('#emailError');
+                msgError.innerHTML = "⚠️Les deux emails sont différents⚠️"
+            }
+        }
+        emailConfirmation()
+
+      },
+
+      checkPassword(event){
+          var body ={
+              password : this.form.password,
+              passwordconfirm : this.form.confirmpassword,
+          }
+        function passwordConfirmation(){
+            let password = body.password
+            let confirmpassword = body.passwordconfirm
+            console.log(password,confirmpassword)
+            if(password === confirmpassword){
+                let msgError = document.querySelector('#passwordError');
+                msgError.innerHTML = ""
+            }
+            else {
+                let msgError = document.querySelector('#passwordError');
+                msgError.innerHTML = "⚠️Les deux mots de passe sont différents⚠️"
+            }
+        }
+        passwordConfirmation()
+
+      },
+
       onSubmit(event) {
-        console.log(data)
-        event.preventDefault()
-        alert(JSON.stringify(this.form))
-      }
+        event.preventDefault();
+        var body = {
+            firstname:this.form.firstname,
+            lastname:this.form.lastname,
+            password:this.form.password,
+            pseudo:this.form.pseudo,
+            email:this.form.email,
+            emailconfirm:this.form.emailconfirm,
+            confirmpassword:this.form.confirmpassword
+            }
+        function confirmInput(){
+            let email = body.email
+            let confirmEmail = body.emailconfirm
+            let password = body.password
+            let confirmPassword = body.confirmpassword
+            if(confirmPassword === password && email === confirmEmail){
+                axios.post('http://localhost:8080/api/auth/signup',body)
+                .then(response => {
+                    console.log(response)
+                    if (response.status === 250){
+                    alert("change ton pseudo !!! ");
+                    } else if(response.status === 251){
+                        alert("Email déja utilisé");
+                    }else{
+                        alert("Vous etes maintenant une licorne ");
+                    }
+                })
+                .catch(error => {
+                response.status(500).json ({message : "It's end of the world ==> serveur HS"})
+                });
+            } else
+                    alert("Merci de modifier les éléments non valides ");  
+
+            }
+        confirmInput()
+        }
+        
+
+        
     }
   }
 </script>
+
 <style>
 .nav-tabs {
     border-bottom: 1px solid #5b9d7f;
@@ -108,7 +216,7 @@ a {
     color: #fff;
     background-color: #212529;
     border: 1px solid #212529;
-    width: 80%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -139,4 +247,11 @@ a {
 
 }
 
+.errorMessage{
+    font-size: 10px;
+    color :#5b9d7f;
+    display: flex;
+    justify-content: center;
+
+}
 </style>

@@ -38,7 +38,10 @@ const errorHandler = error => {
       throw error;
   }
 };
-  
+
+var cors = require('cors')
+app.use(cors())
+
 const server = http.createServer(app);
   
 server.on('error', errorHandler);

@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import axios from "axios"
   export default {
     data() {
       return {
@@ -43,13 +44,28 @@
         show: true
       }
     },
+    
     methods: {
       onSubmit(event) {
         event.preventDefault()
-        alert(JSON.stringify(this.form))
-      }
+        console.log(JSON.stringify(this.form))
+        var body = {
+            password:this.form.password,
+            email:this.form.email
+        }
+        console.log(body)
+        axios.post('http://localhost:8080/api/auth/login',body)
+        .then(function (response) {
+         console.log(response);
+        })
+        .catch(function (error) {
+         console.log(error);
+        });
+        
+        }
     }
-  }
+}
+
 </script>
 <style>
 .nav-tabs {

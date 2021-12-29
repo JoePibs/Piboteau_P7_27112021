@@ -8,7 +8,7 @@ exports.memberCount = (req, res, next) => {
       if(err){
       throw err
       }
-      res.status(200).json ({message :"Le nombre d'inscrits est de  : "+ result[0].TOTAL})
+      res.status(200).json (result[0].TOTAL)
     })
 };
 
@@ -19,7 +19,7 @@ exports.postCount = (req, res, next) => {
       if(err){
       throw err
       }
-      res.status(200).json ({message :"Le nombre de posts lancés est de : "+ result[0].TOTAL})
+      res.status(200).json (result[0].TOTAL)
     })
 };
 
@@ -30,6 +30,6 @@ exports.commentCount = (req, res, next) => {
       if(err){
       throw err
       }
-      res.status(200).json ({message :"Le nombre de commentaires lachés est de : "+ result[0].TOTAL})
+      res.status(200).json (result[0].TOTAL)
     })
 };
