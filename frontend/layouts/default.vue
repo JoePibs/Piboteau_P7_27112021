@@ -1,11 +1,11 @@
 <template>
 
 <div >
-    <div class=header>
+    <div class="header">
         <img class="logo" src="@/assets/header_home.png"/>
     </div>
     <Nuxt />
-    <div class=footer> 
+    <div class="footer"> 
         <p> 2021 copyright : MylittlePony Faction </p>
         <p> Jonathan Piboteau website </p>
     </div>

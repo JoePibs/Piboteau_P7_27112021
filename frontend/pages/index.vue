@@ -52,7 +52,6 @@ export default {
 
 <style>
 .form{
-  display: flex;
   justify-content: center;
   margin-right:auto ;
   margin-left: auto;
