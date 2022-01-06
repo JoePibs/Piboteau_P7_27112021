@@ -56,6 +56,8 @@ exports.login = (req, res, next) => {
           firstname: user.firstname,
           lastname: user.lastname,
           pseudo: user.pseudo,
+          avatar: user.avatar,
+          isAdmin : user.isAdmin,
           token: jwt.sign({ userId: user.id }, 'RANDOM_TOKEN_SECRET', {
             expiresIn: '24h'
           })
@@ -158,7 +160,6 @@ exports.allPostUserHaveComment = (req, res, next) => {
   })
 }
 
-//chekcer le pseudo
 
 // me
 exports.me = (req, res, next) => {
@@ -167,6 +168,7 @@ exports.me = (req, res, next) => {
     return res.status(403).json({ error: 'You must be logged in.' })
   }
   const sql = 'SELECT * FROM users u WHERE u.id = ?'
+ 
   db.query(sql, [userId], (err, result) => {
     if (!result) {
       return res.status(403).json({ error: 'Utilisateur non trouvé !' })
@@ -175,7 +177,8 @@ exports.me = (req, res, next) => {
     return res.status(200).json({
       firstname: user.firstname,
       lastname: user.lastname,
-      pseudo: user.pseudo
+      pseudo: user.pseudo,
+      avatar: user.avatar
     })
   })
 }

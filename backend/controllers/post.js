@@ -27,7 +27,7 @@ exports.getOnePost =(req,res,next) => {
 //afficher tous les posts d'un seul utilisateur si le post est actif
 exports.getAllUserPost =(req,res,next) =>{
   var idUser = req.params.id ;
-  let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? ORDER BY 'last_update' ASC";
+  let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname, FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? ORDER BY 'last_update' ASC";
   let query = db.query (sql,[idUser], function (err, results,fields){
     if(err){
       throw err
@@ -38,13 +38,11 @@ exports.getAllUserPost =(req,res,next) =>{
 
 //Créer un post
 exports.createPost =(req,res,next) =>{
-  let img = localStorage.getItem("imageUrl");
-  let sql = "INSERT INTO post (user_id,content,imageUrl,isActive) VALUES (?, ?, ?, ?, ?)";
-  let query = db.query(sql,[req.params.user_id, req.params.content,img,req.params.isActive],function (err, results,fields){
+  let sql = "INSERT INTO post (user_id,content,imageUrl) VALUES (?, ?, ?)";
+  let query = db.query(sql,[req.params.user_id, req.params.content,req.params.imageUrl],function (err, results,fields){
     if(err){
       throw err
     }
-    localStorage.removeItem("imageUrl");
     res.status(200).json (results)
   })
 };
@@ -70,8 +68,7 @@ exports.deleteOnePost = (req,res,next) => {
 exports.updateOnePost = (req,res,next) => {
   check.userAllowedToEditPost(req.userId, req.params.id)
       .then(function(isAllowed) {
-          let img = localStorage.getItem("imageUrl");
-          db.query('UPDATE post p SET p.content=? p.imageUrl = ? WHERE p.id=?', [req.body.content,img,req.params.id], function(err, result) {
+          db.query('UPDATE post p SET p.content=? p.imageUrl = ? WHERE p.id=?', [req.body.content,req.params.imageUrl,req.params.id], function(err, result) {
               if (err) {
                   return res.status(500).json({error: err.message})
               }
@@ -128,11 +125,11 @@ exports.countLike =(req,res,next)=>{
   let type = "p"
   let sql = "SELECT COUNT(post_id) AS TOTAL FROM likes l where l.post_id = ? and l.type= ? "
   let query =db.query(sql,[postId,type],function (err, result){
-  console.log(result)
+  
     if(err){
     throw err
     }
-    res.status(200).json ({message :"Le nombre de like sur ce post est : "+ result[0].TOTAL})
+    res.status(200).json ({likes :result[0].TOTAL})
   })
 };
 

@@ -4,6 +4,7 @@ export const state = () => ({
     firstname: '',
     lastname: '',
     pseudo: '',
+    avatar:'',
   }
 })
 
@@ -15,6 +16,7 @@ export const mutations = {
         firstname: '',
         lastname: '',
         pseudo: '',
+        avatar:'',
       }
     } else {
       state.loggedIn = true
@@ -34,17 +36,25 @@ export const actions = {
       commit('setUser', null)
     }
   },
-  async login ({ commit, redirect }, { email, password }) {
+  async login ({ commit }, { email, password }) {
     const ret = await this.$axios.$post('auth/login', {
       email,
       password
     })
     if (ret) {
+      localStorage.setItem('userId', ret.userId)
       localStorage.setItem('token', ret.token)
+      localStorage.setItem('lastname', ret.lastname)
+      localStorage.setItem('firstname', ret.firstname)
+      localStorage.setItem('pseudo', ret.pseudo)
+      localStorage.setItem('avatar',ret.avatar)
+      localStorage.setItem('avatar',ret.isAdmin)
       commit('setUser', {
         firstname: ret.firstname,
         lastname: ret.lastname,
-        pseudo: ret.pseudo
+        pseudo: ret.pseudo,
+        avatar: ret.avatar,
+        isAdmin : ret.isAdmin,
       })
       
     } else {

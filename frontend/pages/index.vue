@@ -35,8 +35,14 @@
         <stats />
       </b-row>
     </b-container>
-    <b-container class="container" v-else>
-      Coucou {{ $store.state.auth.user.pseudo }} !
+    <b-container class="container_else" v-else>
+      <img src="@/assets/gif_licorne.gif" alt="licorne dit hello" />
+      <div>
+      <h2>Hello <span>{{ $store.state.auth.user.pseudo }} !</span> </H2>
+      <p>Déja de retour ?? </p>
+      <router-link to="/timeline">
+      <button > Go to the rainbow 🌈  ? </button></router-link>
+      </div>
     </b-container>
   </div>
 </template>
@@ -46,9 +52,18 @@ import bodyHome from '../components/bodyHome.vue'
 import stats from '../components/stats.vue'
 export default {
   components: { bodyHome, stats },
-  name: 'test'
+  name: 'test',
+
+    methods: {
+      timeline(){
+         this.$router.push('/timeline') 
+      }
+    },
 }
+
+         
 </script>
+
 
 <style>
 .form {
@@ -114,5 +129,40 @@ h2 {
   margin: 20px;
   align-items: center;
   justify-content: center;
+}
+.container_else{
+  padding: 20px;
+  width: 100%;
+  display: flex ;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.container_else img{
+  height: 40%;
+  width: 40%;
+  border-radius :50%;
+}
+
+.container_else h2{
+  font-size : 22px;
+}
+
+.container_else p{
+  font-size : 17px;
+}
+.container_else span{
+  background-image: linear-gradient(90deg, rgba(240,14,4,1) 0%, rgba(247,129,3,1) 17%, rgba(244,224,2,1) 34%, rgba(89,253,29,1) 47%, rgba(43,225,220,1) 60%, rgba(166,137,228,1) 74%, rgba(252,69,204,1) 90%);
+  background-clip: text;
+  color: transparent;
+}
+.container_else button{
+  font-size: 14px;
+  color : white;
+  border: #5b9d7f 1px solid;
+  border-radius :10%;
+ box-shadow: #5b9d7f 0px 1px 4px 0px;
+  background-color:transparent;
+  padding : 10px
+
 }
 </style>

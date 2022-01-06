@@ -39,16 +39,23 @@ export default {
   methods: {
     onSubmit (event) {
       event.preventDefault()
-
-      this.$router.push('/timeline') 
-      this.$store.dispatch('auth/login', {
-        email: this.form.email,
-        password: this.form.password
-      })
+      this.$axios
+        .post('auth/login', this.form)        
+        .then(async response => {
+          this.$router.push('/timeline') 
+          await this.$store.dispatch('auth/login', {
+            email: this.form.email,
+            password: this.form.password
+          })
+        })
+        .catch(error => {
+          alert(error.response.data.message)
+        })
     }
   }
 }
 </script>
+
 <style>
 .nav-tabs {
   border-bottom: 1px solid #5b9d7f;
