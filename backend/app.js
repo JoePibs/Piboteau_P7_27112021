@@ -7,6 +7,7 @@ const postRoutes = require('./routes/post')
 const userRoutes = require('./routes/user')
 const commentRoutes = require('./routes/comment')
 const statsRoutes = require('./routes/stats')
+const uploadRoutes = require('./routes/upload')
 
 const app = express()
 app.use(express.json())
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
   next()
 })
 
+
 // Static management of the image resource
 // Midleware that allows to load files that are in the images directory
 app.use('/images', express.static(path.join(__dirname, 'images')))
@@ -36,4 +38,8 @@ app.use('/api/post', postRoutes)
 app.use('/api/auth', userRoutes)
 app.use('/api/comment', commentRoutes)
 app.use('/api/stats', statsRoutes)
+app.use('/api/upload',uploadRoutes)
+
+
 module.exports = app
+

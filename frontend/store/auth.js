@@ -1,10 +1,13 @@
 export const state = () => ({
   loggedIn: false,
   user: {
+    userId:'',
+    isAdmin:'',
     firstname: '',
     lastname: '',
     pseudo: '',
     avatar:'',
+    
   }
 })
 
@@ -13,6 +16,8 @@ export const mutations = {
     if (val === null) {
       state.loggedIn = false
       state.user = {
+        userId:'',
+        isAdmin:'',
         firstname: '',
         lastname: '',
         pseudo: '',
@@ -48,13 +53,14 @@ export const actions = {
       localStorage.setItem('firstname', ret.firstname)
       localStorage.setItem('pseudo', ret.pseudo)
       localStorage.setItem('avatar',ret.avatar)
-      localStorage.setItem('avatar',ret.isAdmin)
+      localStorage.setItem('isAdmin',ret.isAdmin)
       commit('setUser', {
+        userId: ret.userId,
+        isAdmin : ret.isAdmin,
         firstname: ret.firstname,
         lastname: ret.lastname,
         pseudo: ret.pseudo,
         avatar: ret.avatar,
-        isAdmin : ret.isAdmin,
       })
       
     } else {

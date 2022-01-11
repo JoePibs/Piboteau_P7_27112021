@@ -13,7 +13,7 @@
                 <b-img :src="post.imageUrl" fluid alt="image de post" class="imagePost"> </b-img>
 
             <div class="reactionUser">
-                <p> Commentaires <p>
+                <p> Commentaires </p>
                 <b-img src="@/assets/like_unicorn.png" fluid alt="funky licorne" class="like" > </b-img>
                 <p class="numberOfLikes">{{likes}}</p>
                 <p class=delete_post>Supprimer</p>
@@ -30,7 +30,6 @@ export default {
         return{
             likes:"",
             loadingLikes: true,
-            deletepost: false
         }
     },
 

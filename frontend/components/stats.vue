@@ -1,6 +1,5 @@
 <template>
 <div class=stats_container>
-    <h2>La famille Groupomania grandit</h2>
     <div class="stats_bloc" id="member">
         <h3>Membres</h3>
         <p>{{member}}</p>

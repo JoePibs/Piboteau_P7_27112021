@@ -4,7 +4,7 @@ const check = require('../utils/helper')
 
 // Afficher tous les posts si le post est actif
 exports.getAllPost =(req,res, next) => {
-  let sql = "SELECT p.*,u.avatar,u.firstname,u.lastname,u.pseudo FROM post p,users u WHERE p.isActive=1 AND p.user_id = u.id ORDER BY 'last_update' ASC";
+  let sql = "SELECT p.*,u.avatar,u.firstname,u.lastname,u.pseudo FROM post p,users u WHERE p.isActive=1 AND p.user_id = u.id ORDER BY p.last_update DESC";
   let query = db.query (sql, (err,result)=>{
     if(err){
       throw err
@@ -27,7 +27,7 @@ exports.getOnePost =(req,res,next) => {
 //afficher tous les posts d'un seul utilisateur si le post est actif
 exports.getAllUserPost =(req,res,next) =>{
   var idUser = req.params.id ;
-  let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname, FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? ORDER BY 'last_update' ASC";
+  let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname,u.avatar,u.pseudo FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? ORDER BY 'last_update' ASC";
   let query = db.query (sql,[idUser], function (err, results,fields){
     if(err){
       throw err
@@ -38,8 +38,10 @@ exports.getAllUserPost =(req,res,next) =>{
 
 //Créer un post
 exports.createPost =(req,res,next) =>{
+  console.log(req)
   let sql = "INSERT INTO post (user_id,content,imageUrl) VALUES (?, ?, ?)";
-  let query = db.query(sql,[req.params.user_id, req.params.content,req.params.imageUrl],function (err, results,fields){
+  let query = db.query(sql,[req.body.userId, req.body.content,req.body.imageUrl],function (err, results,fields){
+    console.log(query)
     if(err){
       throw err
     }
@@ -137,9 +139,9 @@ exports.countLike =(req,res,next)=>{
 //Afficher les posts les plus commentés de moins d'un mois
 
 exports.mostCommentPost =(req,res,next)=>{
-  let sql = "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo AS pseudo, COUNT(c.id) AS total_comment FROM post p, comment c , users u WHERE c.post_id = p.id And p.user_id = u.id AND p.date_creation > (NOW() - INTERVAL 1 MONTH) GROUP BY p.id ORDER BY 'total_comments' ASC "
+ 
+  let sql = "SELECT p.id AS id ,p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo AS pseudo, COUNT(c.id) AS total_comment FROM post p, comment c , users u WHERE c.post_id = p.id And p.user_id = u.id AND p.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'total_comments' ASC "
   let query =db.query(sql,function (err, result){
-  console.log(result)
     if(err){
     throw err
     }

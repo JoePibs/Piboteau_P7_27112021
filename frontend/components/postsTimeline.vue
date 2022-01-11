@@ -2,9 +2,11 @@
 
   <div>
     <createPost/>
-    <Posts  class="posts" v-for="post in posts" :key="post.id" :post="post"/>
-  </div>
-    
+    <div class="realtimeline">
+      <Posts  class="posts" v-for="post in posts" :key="post.id" :post="post"/>
+      </div>
+    </div>
+      
 </template>
 
 <script>
@@ -12,7 +14,7 @@ import createPost from'./createPost.vue'
 import Posts from './posts.vue'
 
 export default{
-  components:{ createPost,Posts },
+  components:{ createPost,Posts},
   data () {
     return {
       posts: [
@@ -26,7 +28,6 @@ export default{
       .then((posts) => {
         this.posts = posts
         this.loading = false
-        vm.$forceUpdate();
       })
   },
 }
@@ -35,5 +36,9 @@ export default{
 
 
 <style>
+.realtimeline{
 
+  overflow: auto;
+
+}
 </style>

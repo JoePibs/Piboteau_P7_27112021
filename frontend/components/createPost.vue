@@ -3,7 +3,8 @@
         <div class="create_post">
             <b-avatar variant="info" :src="$store.state.auth.user.avatar" class="avatarUser" alt="userImage"></b-avatar>
             <p class="userName"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
-        <b-form @submit="onSubmit" >
+        
+        <b-form @submit="onSubmit" enctype="multipart/form-data" >
                 <b-form-textarea
                     id="postInput"
                     class="postInput"
@@ -11,20 +12,29 @@
                     type="textarea"
                     placeholder="Hennir la bonne parole 👉"
                     rows="2"
-                    max-rows="6"
-                >
+                    max-rows="6">
                 </b-form-textarea>
-                
-            <div class="create_input_style">
-                <div class="button_file">
-                    <b-button onclick="document.querySelector('#post_image').click();" ><img src="@/assets/file_image.png" alt="logo image vectoriel" />add image</b-button>
-                </div>
 
-                <div class="button_create">
-                    <img src="@/assets/unicorn_prout.png" alt="licorne fusée" />
-                    <b-button type="submit" variant="create">Lancement</b-button>
+                <b-form-file 
+                    v-model="form.image" 
+                    class="inputFile" 
+                    name="post_image" 
+                    id="post_image">
+                    
+                </b-form-file >
+                
+                <div class="selectedFile">Selected file: {{ form.imageUrl ? form.imageUrl.name : '' }}</div>
+                
+                <div class="create_input_style">
+                    <div class="button_file">
+                        <b-button onclick="document.querySelector('#post_image').click();" ><img src="@/assets/file_image.png" alt="logo image vectoriel" />add image</b-button>
+                    </div>
+
+                    <div class="button_create">
+                        <img src="@/assets/unicorn_prout.png" alt="licorne fusée" />
+                        <b-button type="submit" variant="create">Lancement</b-button>
+                    </div>
                 </div>
-            </div>
         </b-form>
             
         </div>
@@ -37,6 +47,7 @@
     data() {
       return {
         form: {
+            userId:'',
             content: '',
             imageUrl: '',
         },
@@ -45,34 +56,32 @@
  
   methods: {
 
-      onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-        return;
-      this.createImage(files[0]);
-      
-    },
-    createImage(file) {
-      var imageUrl = new Image();
-      var reader = new FileReader();
-      var vm = this;
+      /*onFileChange() {
 
-      reader.onload = (e) => {
-        vm.imageUrl= e.target.result;
-      };
-      reader.readAsDataURL(file);
-      console.log(file)
-    },
+      this.$axios
+        .post('/post/images')        
+        .then(response => (response.data))
+    },*/
  
     
     onSubmit (event) {
-      event.preventDefault()
-      this.$axios
-        .post('/post/createpost', this.form)        
-        .then(response => (response.data))
+        event.preventDefault()
+        var formData = new FormData();
+        var imagefile = document.querySelector('#post_image');
+        formData.append("image", imagefile.files[0]);
+        this.$axios.post('/upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+        .then(res => {
+            this.form.imageUrl= res.data.url
+            let userId = localStorage.getItem('userId')
+             this.form.userId = userId
+
+              this.$axios
+                .post('/post/createpost', this.form)        
+                .then(response => {})
+         })
     }
   }
-}
+  }
 </script>
 
 <style>
@@ -166,5 +175,8 @@
 .btn:hover {
     color: #212529;
     text-decoration: none;
+}
+.selectedFile{
+    display:none;
 }
 </style>

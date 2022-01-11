@@ -12,6 +12,6 @@ router.put('/:id/update', auth, multer, userCtrl.updateAccount)
 router.get('/:id/profil', auth, userCtrl.seeAprofil)
 router.post('/:id/controlpassword', userCtrl.controlPassword)
 router.put('/:id/updatepassword', auth, userCtrl.updatePassword)
-router.get('/:id/commentedby', userCtrl.allPostUserHaveComment)
+router.get('/:id/commentedby',auth, userCtrl.allPostUserHaveComment)
 
 module.exports = router

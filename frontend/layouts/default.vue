@@ -1,17 +1,18 @@
 <template>
   <div>
     <div  v-if ="storelogg === false" class="header">
-      <b-img class="logo"  src="@/assets/header_home.png" fluid alt="logo"></b-img>
+      <b-img class="logo"  src="@/assets/header_home.png" alt="logo"></b-img>
     </div>
     
     <div  v-else class="header_logged">
       <b-img class="logo_logged"  src="@/assets/Logo_Timeline.png" fluid alt="logo"></b-img>
       <h1> Entre collègues, tout est possible ! </h1>
-      <b-avatar class="header_avatar" variant="info" :src="$store.state.auth.user.avatar"></b-avatar>
-    </div>
+          <b-avatar class="header_avatar" variant="info" :src="$store.state.auth.user.avatar">
+          </b-avatar>
+    </div> 
 
-    <div v-if="loading === false">
-      <Nuxt />
+    <div class="central" v-if="loading === false">
+      <Nuxt/>
     </div>
     <div class="footer">
       <p>2021 copyright : MylittlePony Faction</p>
@@ -25,6 +26,15 @@ export default {
 
   data () {
     return {
+      form: {
+        email: '',
+        emailconfirm: '',
+        password: '',
+        confirmpassword: '',
+        firstname: '',
+        lastname: '',
+        pseudo: ''
+      },
       loading: true,
       storelogg: false
 
@@ -38,8 +48,12 @@ export default {
       this.storelogg = true
 
     }
-  }
+
+  },
 }
+
+  
+
 
 </script>
 
@@ -77,18 +91,26 @@ body {
 .logo_logged {
   text-align: left;
   height: 100%;
-  max-height: 150px;
-  width: 30%;
-  max-width:500px;
+  max-height: 100px;
+  width: 100px;
+  max-width:100px;
   
 }
-.avatarProfil{
-  height: 25%;
-  max-width: 25%;
-  border-radius:50% ;text-align:center;
-  margin: auto auto -30px 50px;
-  display:flex;
+.header_avatar{
+  height: 50px;
+  width: 50px;
+  max-height: 50px;
+  max-width: 50px;
+  margin: auto auto auto auto;
+  border: #5b9d7f solid 3px;
+  cursor: pointer;
+
 }
+
+.avatar_menu{
+  display:none;
+}
+
 .footer {
   width: 100%;
   height: auto;
@@ -110,7 +132,7 @@ body {
   background-color: rgb(0, 0, 0);
   width: 100%;
   padding-right : 10px;
-  max-height: 150px;
+  max-height: 100px;
   border-bottom: solid 1px #5b9d7f;
   align-items: center;
   flex-direction: row;
@@ -119,6 +141,7 @@ body {
 }
 
 .header_logged h1{
+  width:100%;
   font-size : 16px;
   padding-right: 15px;
   background-image: linear-gradient(90deg, rgba(240,14,4,1) 0%, rgba(247,129,3,1) 17%, rgba(244,224,2,1) 34%, rgba(89,253,29,1) 47%, rgba(43,225,220,1) 60%, rgba(166,137,228,1) 74%, rgba(252,69,204,1) 90%);
@@ -127,10 +150,54 @@ body {
   text-align: justify;
 }
 
-.header_avatar{
-  height: 20%;
-  width: 20%;
- 
+
+.central{
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding:20px 0px 20px 10px;
+}
+h2{
+  color: rgb(211, 11, 88);
+  font-size : 18px;
 
 }
+
+#modal-1{
+  background: #49756136;
+}
+.monProfil_header{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.monProfil_header p{
+  font-size: 20px;
+}
+
+.monProfil_header span{
+  color: #5b9d7f;
+  margin-top :-20px;
+}
+.modal_avatar{
+  
+  height: 100px;
+  width: 100px;
+  max-height: 100px;
+  max-width: 100px;
+  margin: auto auto auto auto;
+  text-align: center;
+  border: #5b9d7f solid 3px;
+
+}
+.modal-header, .modal-footer{
+  display:none;
+}
+
+.modal-content {
+  background-color : black ;
+}
+
+
 </style>
