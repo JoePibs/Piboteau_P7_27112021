@@ -7,8 +7,7 @@
     <div  v-else class="header_logged">
       <b-img class="logo_logged"  src="@/assets/Logo_Timeline.png" fluid alt="logo"></b-img>
       <h1> Entre collègues, tout est possible ! </h1>
-          <b-avatar class="header_avatar" variant="info" :src="$store.state.auth.user.avatar">
-          </b-avatar>
+       <profil/>   
     </div> 
 
     <div class="central" v-if="loading === false">
@@ -22,8 +21,11 @@
 </template>
 
 <script>
-export default {
+import profil from "../components/profil.vue"
 
+export default {
+  components: { profil },
+  name: 'default',
   data () {
     return {
       form: {
@@ -36,7 +38,8 @@ export default {
         pseudo: ''
       },
       loading: true,
-      storelogg: false
+      storelogg: false,
+      modalShow: false
 
     }
   },
@@ -46,9 +49,7 @@ export default {
     
     if(this.$store.state.auth.loggedIn === true){
       this.storelogg = true
-
     }
-
   },
 }
 

@@ -75,12 +75,13 @@ p{
 .contentMyPost{
     border:solid 1px #5b9d7f3b;
     border-radius : 3px 3px 3px 3px;
-    padding: 10px 10px 0px 10px;
+    padding: 5px 0px 0px 5px;
     box-shadow:#5b9d7f 0px 1px 5px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
 .textMyPost{
-    padding: 10px 5px 0px 10px;
+    padding: 0px 0px 0px 0px;
+    text-align: left;
 }
 
 </style>

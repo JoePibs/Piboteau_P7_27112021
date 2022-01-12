@@ -103,7 +103,7 @@ p{
 
 .imagePost{
     width: 100%;
-    height: 150px;
+    height: 200px;
     position: relative;
     object-fit: cover;
     margin-bottom : 10px;

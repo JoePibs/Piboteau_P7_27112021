@@ -4,7 +4,7 @@
       <b-form-input
         id="firstname"
         v-model="form.firstname"
-        @change="checkFirstname"
+        @change="checkingFirstname"
         placeholder="Entrez votre prénom"
         required
       ></b-form-input>
@@ -83,8 +83,23 @@
         placeholder="Entrez votre mot de passe"
         required
       ></b-form-input>
-      <div class="errorMessage" id="passwordError"></div>
+      <div class="errorMessage" id="passwordError"></div>      
     </b-form-group>
+                   <b-form-file 
+                    v-model="form.avatar"
+                    @change="avatarChange"
+                    class="inputFile" 
+                    name="post_avatar" 
+                    id="post_avatar">
+                    
+                </b-form-file >
+                
+                <div class="selectedFile">Selected file: {{ form.avatar ? form.avatar.name : '' }}</div>
+                
+                <div class="create_style">
+                        <b-button onclick="document.querySelector('#post_avatar').click();" ><img src="@/assets/like_unicorn.png" alt="logo image vectoriel" /><span>Ajouter votre avatar</span></b-button>      
+                </div>
+
     <div class="button_inscription">
       <img src="@/assets/unicorn_prout.png" alt="licorne lancement" />
       <b-button type="submit" variant="primary" id="signupButton" >Launch</b-button>
@@ -103,16 +118,18 @@ export default {
         confirmpassword: '',
         firstname: '',
         lastname: '',
-        pseudo: ''
+        pseudo: '',
+        avatar:''
       },
       show: true
     }
   },
 
   methods: {
-    checkFirstname(){
+    checkingFirstname(){
       const msgError = document.querySelector('#firstNameError')
       let firstname = this.form.firstname
+      console.log(firstname)
       if(/^[a-zA-Z-\s]+$/.test(firstname)=== false){
         msgError.innerHTML = " Seul Elon Musk Jr a un symbole,chiffre ici 🦄"
         signupButton.disabled = true;
@@ -224,32 +241,40 @@ export default {
         signupButton.disabled = true;
       }
     },
+    avatarChange() {
+        var formData = new FormData();
+        var imagefile = document.querySelector('#post_avatar');
+        formData.append("image", imagefile.files[0]);
+        this.$axios.post('/upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+        .then(res => {
+            this.form.avatar= res.data.url
+        })
+    },
 
     onSubmit (event) {
       event.preventDefault()
-
-      if (this.form.email === '' || this.form.email !== this.form.emailconfirm)
-        return
-      if (
-        this.form.password === '' ||
-        this.form.password !== this.form.confirmpassword
-      )
-        return
-
-      this.$axios
-        .post('auth/signup', this.form)
-        .then(async response => {
-          this.$router.push('/timeline') 
-          await this.$store.dispatch('auth/login', {
-            email: this.form.email,
-            password: this.form.password
-          })
-        })
-        .catch(error => {
-          alert(error.response.data.message)
-        })
+            if (this.form.email === '' || this.form.email !== this.form.emailconfirm)
+              return
+            if (
+              this.form.password === '' ||
+              this.form.password !== this.form.confirmpassword
+            )
+              return
+            console.log(this.form)
+            this.$axios
+              .post('auth/signup', this.form)
+              .then(async response => {
+                this.$router.push('/timeline') 
+                await this.$store.dispatch('auth/login', {
+                  email: this.form.email,
+                  password: this.form.password
+                })
+              })
+              .catch(error => {
+                alert(error.response.data.message)
+              })
+      }
     }
-  }
 }
 </script>
 
@@ -313,4 +338,18 @@ a {
   white-space: normal;
   justify-content: center;
 }
+.selectedFile{
+    display:none;
+}
+.create_style img {
+  height: 50px;
+}
+.create_style span {
+  color:#5b9d7f;
+  font-size : 16px;
+  border: dashed #5b9d7f 1px;
+  padding: 5px;
+  border-radius: 5%;
+}
+
 </style>

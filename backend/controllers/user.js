@@ -5,6 +5,7 @@ const db = dbc.getDB()
 const check = require('../utils/helper')
 
 exports.signup = async (req, res) => {
+  console.log(req)
   const { password } = req.body //je crée une variable password à partir de la clé password
   const salt = await bcrypt.genSalt(10) //je declare un salage
   const hashPassword = await bcrypt.hash(password, salt) //je génére le hash avec salage sur le passowrd
@@ -17,11 +18,12 @@ exports.signup = async (req, res) => {
       return
     } else {
       sql =
-        'INSERT INTO users (users.firstname, users.lastname, users.pseudo, users.email, users.password)  VALUES (?,?,?,?,?)'
+        'INSERT INTO users (users.firstname, users.lastname, users.pseudo, users.email, users.password,users.avatar)  VALUES (?,?,?,?,?,?)'
       db.query(
         sql,
-        [user.firstname, user.lastname, user.pseudo, user.email, user.hashPassword],
+        [user.firstname, user.lastname, user.pseudo, user.email, user.hashPassword,user.avatar],
         function (err, result, fields) {
+          console.log(result)
           
           if (!result) {
             res.status(400).json({ message: 'email déja utilisé' })
@@ -58,6 +60,7 @@ exports.login = (req, res, next) => {
           lastname: user.lastname,
           pseudo: user.pseudo,
           avatar: user.avatar,
+          email: user.email,
           token: jwt.sign({ userId: user.id }, 'RANDOM_TOKEN_SECRET', {
             expiresIn: '24h'
           })

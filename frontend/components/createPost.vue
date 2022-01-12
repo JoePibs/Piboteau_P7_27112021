@@ -19,6 +19,7 @@
                     v-model="form.image" 
                     class="inputFile" 
                     name="post_image" 
+                    @change="imageChange"
                     id="post_image">
                     
                 </b-form-file >
@@ -56,32 +57,28 @@
  
   methods: {
 
-      /*onFileChange() {
-
-      this.$axios
-        .post('/post/images')        
-        .then(response => (response.data))
-    },*/
- 
-    
-    onSubmit (event) {
-        event.preventDefault()
+    imageChange() {
         var formData = new FormData();
         var imagefile = document.querySelector('#post_image');
         formData.append("image", imagefile.files[0]);
         this.$axios.post('/upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
         .then(res => {
             this.form.imageUrl= res.data.url
-            let userId = localStorage.getItem('userId')
-             this.form.userId = userId
-
-              this.$axios
-                .post('/post/createpost', this.form)        
-                .then(response => {})
-         })
+        })
+    },
+ 
+    
+    onSubmit (event) {
+        event.preventDefault()
+        let userId = localStorage.getItem('userId')
+        this.form.userId = userId
+        this.$axios
+        .post('/post/createpost', this.form)        
+        .then(response => {})
+     
     }
   }
-  }
+}
 </script>
 
 <style>
@@ -109,7 +106,7 @@
     background: none;
     border:1px #5b9d7f3f solid;
     margin-top : -15px;
-    width: 300px;
+    width: 400px;
     
 }
 
@@ -179,4 +176,5 @@
 .selectedFile{
     display:none;
 }
+
 </style>
