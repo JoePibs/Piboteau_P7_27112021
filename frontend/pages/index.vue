@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container class="container" v-if="$store.state.auth.loggedIn === false">
+    <b-container class="container" v-if="connected === false">
       <b-row class="form">
         <bodyHome />
       </b-row>
@@ -53,7 +53,18 @@ import stats from '../components/stats.vue'
 export default {
   components: { bodyHome, stats },
   name: 'test',
+  data () {
+      return {
+      connected:true,
 
+      }
+    },
+    mounted(){
+      let token = localStorage.getItem('token')
+      if (token === null){
+        this.connected =false
+      }
+    },
     methods: {
       timeline(){
          this.$router.push('/timeline') 

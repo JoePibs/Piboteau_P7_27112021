@@ -6,7 +6,7 @@
                 <h1> ERREUR 404 </h1>
                 <blockquote>" Même le plus fantastique animal peut choisir le mauvais chemin "
                     <p>Oli Corn KENOBI</p> </blockquote>
-                <b-button href="/" >Back over the rainbow</b-button>
+                <b-button id="return_login" href="/" >Back over the rainbow</b-button>
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@ p,blockquote{
     color:white;
     margin : 10px 20px 10px 20px;
 }
-.btn-secondary {
+#return_login {
     max-width: 70% ;
     margin: 10px auto 10px auto;
     background-image:linear-gradient(60deg, rgba(240,14,4,1) 0%, rgba(247,129,3,1) 17%, rgba(244,224,2,1) 34%, rgba(89,253,29,1) 47%, rgba(43,225,220,1) 60%, rgba(166,137,228,1) 74%, rgba(252,69,204,1) 90%);
@@ -61,7 +61,7 @@ p,blockquote{
     box-shadow: #5b9d7f79 0px 5px 10px, #5b9d7f81 0px 3px 3px;
     color: black;
 }
-.btn-secondary:hover {
+#return_login:hover {
     background-image: linear-gradient(90deg, rgba(240,14,4,1) 0%, rgba(247,129,3,1) 17%, rgba(244,224,2,1) 34%, rgba(89,253,29,1) 47%, rgba(43,225,220,1) 60%, rgba(166,137,228,1) 74%, rgba(252,69,204,1) 90%);
     background-clip: text;
     color: transparent;

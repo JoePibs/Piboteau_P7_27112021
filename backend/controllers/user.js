@@ -72,9 +72,11 @@ exports.login = (req, res, next) => {
 
 //descativer le compte
 exports.desactivateAccount = (req, res, next) => {
-  const userId = req.params.id
+  console.log(req)
+  const userId = req.userId
   const isAdmin = req.params.isAdmin
-  const sql = 'UPDATE users u SET isActive=0 WHERE u.user_id = ? or u.isAdmin=1'
+
+  const sql = 'UPDATE users u SET isActive=0 WHERE u.id = ? or u.isAdmin=1'
   db.query(sql, userId, (err, results) => {
     if (err) {
       return res.status(404).json({ err })
@@ -85,20 +87,20 @@ exports.desactivateAccount = (req, res, next) => {
 
 //modifier le compte
 exports.updateAccount = (req, res, next) => {
+  const id =req.userId
   const lastname = req.body.lastname
   const firstname = req.body.firstname
   const email = req.body.email
-  const avatarImg = localStorage.getItem('avatar')
+  const avatar = req.body.avatar
   const sql =
     'UPDATE users u SET u.firstname = ?, u.lastname = ?, u.email = ?, u.avatar = ? WHERE u.id = ?'
   db.query(
     sql,
-    [firstname, lastname, email, avatarImg, req.userId],
+    [firstname, lastname, email, avatar, id],
     (err, results) => {
       if (err) {
         return res.status(500).json({ err })
       }
-      localStorage.removeItem('avatar')
       res.status(200).json({ message: 'compte modifié' })
     }
   )
@@ -152,7 +154,7 @@ exports.updatePassword = (req, res, next) => {
 //afficher les posts commentés par un utilisateur
 
 exports.allPostUserHaveComment = (req, res, next) => {
-  let userId = req.params.id
+  let userId = req.userId
   let sql =
     "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo As pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND c.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'c.date_creation' ASC "
   let query = db.query(sql, [userId], function (err, result) {

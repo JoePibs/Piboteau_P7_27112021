@@ -47,42 +47,45 @@ import stats from '../components/stats.vue'
 
 export default {
   components: { postsTimeline, Most, MyPost, stats, PostIcommented },
-  name: 'timeline',
+  name: 'timelinecomposition',
   data () {
       return {
       postIcommenteds:[],
       mostPosts:[],
       myPosts:[],
-      user:"",
-
       }
     },
 
-  mounted(){
-   
-
-    this.user = localStorage.getItem('userId')
-
-    this.$axios
-      .$get('post/mostcommented')
-      .then((mostPosts) => {
-        this.mostPosts = mostPosts
-      })
-
-     this.$axios
-      .$get(`auth/${this.user}/commentedby`)
-      .then((postIcommenteds) => {
-        this.postIcommenteds = postIcommenteds
-      
-      })
-
-    this.$axios
-      .$get(`post/${this.user}/userposts`)
-      .then((myPosts) => {
-        this.myPosts = myPosts
-      })
+  mounted(){     
+    this.refresh()
   },
+  methods:{
+    refresh(){
+      this.user = localStorage.getItem('userId')
+
+      this.$axios
+        .$get('post/mostcommented')
+        .then((mostPosts) => {
+          this.mostPosts = mostPosts
+        })
+
+      this.$axios
+        .$get(`auth/commentedby`)
+        .then((postIcommenteds) => {
+          this.postIcommenteds = postIcommenteds
+        
+        })
+
+      this.$axios
+        .$get(`post/userposts`)
+        .then((myPosts) => {
+          this.myPosts = myPosts
+        })
+    
+      }
+  }
 }
+
 </script>
 
 <style>
@@ -140,5 +143,10 @@ export default {
   font-size :35px;
   margin: 0px 0px 0px 0px;
   text-align: center;
+}
+h2{
+  color: rgb(211, 11, 88);
+  font-size : 18px;
+
 }
 </style>

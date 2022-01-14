@@ -26,7 +26,7 @@ exports.getOnePost =(req,res,next) => {
 
 //afficher tous les posts d'un seul utilisateur si le post est actif
 exports.getAllUserPost =(req,res,next) =>{
-  var idUser = req.params.id ;
+  var idUser = req.userId;
   let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname,u.avatar,u.pseudo FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? ORDER BY 'last_update' ASC";
   let query = db.query (sql,[idUser], function (err, results,fields){
     if(err){
@@ -86,7 +86,8 @@ exports.updateOnePost = (req,res,next) => {
   
 //Liker un post
 exports.likePost =(req,res,next)=>{
-  let userId = req.params.user_id;
+  console.log(req)
+  let userId = req.userId;
   let type = "p";
   let idPost = req.params.post_id;
   let sql = "INSERT INTO likes (user_id,type,post_id) VALUES (?,?,?)";
@@ -100,25 +101,18 @@ exports.likePost =(req,res,next)=>{
 
 //disliker un post
 exports.dislikePost =(req,res,next)=>{
-  let userId = req.params.user_id;
+  let userId = req.userId;
   let type = "p";
-  let id = req.params.id;
   let idPost = req.params.post_id;
-  let sql = "SELECT * FROM likes l WHERE l.id = ? AND l.type = ? AND l.user_id = ? AND l.post_id = ?";
-  let query =db.query(sql,[id, type,userId, idPost],function (err, result){
+  let sql = "DELETE FROM likes l WHERE  l.type = ? AND l.user_id = ? AND l.post_id = ?";
+  let query =db.query(sql,[ type,userId, idPost],function (err, result){
     if(err){
       throw err
     }
-    let sql2 ="DELETE FROM likes l WHERE l.id = ?";
-    let query =db.query(sql2,[id],function (err, result){
-      if(err){
-        throw err
-        }
         res.status(200).json ({message: "post disliké"})
       })
-    }
-  )
-}
+  }
+  
 
 //compter le nombre de like sur un post
 
@@ -152,7 +146,8 @@ exports.mostCommentPost =(req,res,next)=>{
 //afficher les posts commentés par un utilisateur
 
 exports.allPostUserHaveComment =(req,res,next)=>{
-  let userId = req.params.id
+  console.log(req)
+  let userId = req.userId
   let sql = "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo AS pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND c.date_creation > (NOW() - INTERVAL 1 MONTH) GROUP BY p.id ORDER BY 'c.date_creation' ASC "
   let query =db.query(sql,[userId],function (err, result){
     if(err){
@@ -161,3 +156,17 @@ exports.allPostUserHaveComment =(req,res,next)=>{
     res.status(200).json (result)
   })
 };
+
+exports.countUserLikeByPost =(req,res,next)=>{
+  let userId = req.userId;
+  let type = "p";
+  let idPost = req.params.post_id;
+  let sql = "SELECT COUNT(post_id) AS total FROM likes l WHERE  l.type = ? AND l.user_id = ? AND l.post_id = ? ";
+  let query =db.query(sql,[ type,userId, idPost],function (err, result){
+    if(err){
+      throw err
+    }
+        
+    res.status(200).json (result)
+      })
+  }

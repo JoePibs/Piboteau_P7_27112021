@@ -31,10 +31,12 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios'
-  ],
+],
+bootstrapVue: {
+    icons: true
+},
 
   axios: {
     baseURL: 'http://localhost:8080/api'

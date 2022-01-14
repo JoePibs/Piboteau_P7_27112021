@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div  v-if ="storelogg === false" class="header">
+    <div  v-if="connected === false" class="header">
       <b-img class="logo"  src="@/assets/header_home.png" alt="logo"></b-img>
     </div>
     
@@ -28,29 +28,23 @@ export default {
   name: 'default',
   data () {
     return {
-      form: {
-        email: '',
-        emailconfirm: '',
-        password: '',
-        confirmpassword: '',
-        firstname: '',
-        lastname: '',
-        pseudo: ''
-      },
       loading: true,
-      storelogg: false,
-      modalShow: false
+      connected:true,
 
     }
   },
   async mounted () {
     await this.$store.dispatch('auth/init')
     this.loading = false
-    
-    if(this.$store.state.auth.loggedIn === true){
-      this.storelogg = true
+    let token = localStorage.getItem('token')
+    if (token === null){
+    this.connected =false
     }
-  },
+  }
+  
+  
+
+  
 }
 
   
@@ -164,41 +158,4 @@ h2{
   font-size : 18px;
 
 }
-
-#modal-1{
-  background: #49756136;
-}
-.monProfil_header{
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-.monProfil_header p{
-  font-size: 20px;
-}
-
-.monProfil_header span{
-  color: #5b9d7f;
-  margin-top :-20px;
-}
-.modal_avatar{
-  
-  height: 100px;
-  width: 100px;
-  max-height: 100px;
-  max-width: 100px;
-  margin: auto auto auto auto;
-  text-align: center;
-  border: #5b9d7f solid 3px;
-
-}
-.modal-header, .modal-footer{
-  display:none;
-}
-
-.modal-content {
-  background-color : black ;
-}
-
-
 </style>

@@ -1,13 +1,25 @@
 <template>
     <div>
-          <b-avatar v-b-modal.modal-1 class="header_avatar" variant="info" :src="$store.state.auth.user.avatar">
+          <b-avatar v-b-modal.modal-1 class="header_avatar" variant="info" :src="$store.state.auth.user.avatar" >
           </b-avatar>
           <b-modal id="modal-1" title="monProfil">
             <div class="monProfil_header">
-              <b-avatar  class="modal_avatar" variant="info" :src="$store.state.auth.user.avatar"></b-avatar>
-              <p class="userName"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}}</p>
-              <span>@{{$store.state.auth.user.pseudo}}</span>
+              <b-avatar  class="modal_avatar" :src="$store.state.auth.user.avatar"></b-avatar>
+              <p id="userName_modal"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}}</p>
+              <span id="pseudo_title_modal">@{{$store.state.auth.user.pseudo}}</span>
+              <div id="desinscription" class="desinscription">
+                <b-button @click="alert" variant="outline-info" class="mb-2">
+                  <b-icon icon="power" aria-hidden="true"></b-icon> Désactiver mon compte
+                </b-button>
+                <b-alert show v-if="alertMessage === true" variant="danger" id="alert"> Vous êtes sur ? 
+                  <b-button @click="desactivateAccount" variant="danger">Oui</b-button>
+                  <b-button @click ="closeAlert" variant="success">Oups </b-button>
+                  <p>En cliquant sur Oui, vous serez automatiquement renvoyé vers la page d'accueil, votre compte sera desactivé, il vous suffira de vous relogger pour reactiver votre compte</p>
+                </b-alert>
+              </div>
             </div>
+
+            
 
             <b-form @submit="onSubmit" >
               <b-form-group id="firstname-group" label="Prénom:" label-for="firstname">
@@ -39,7 +51,6 @@
                 ></b-form-input>
                 <div class="errorMessage" id="pseudoError"></div>
 
-                <div></div>
               </b-form-group>
               <b-form-group id="email-group" label="Email :" label-for="email">
                 <b-form-input
@@ -51,9 +62,24 @@
                 ></b-form-input>
                 <div class="errorMessage" id="emailRegexError"></div>
               </b-form-group>
-              <div class="button_inscription">
-                <img src="@/assets/unicorn_prout.png" alt="licorne lancement" />
-                <b-button type="submit" variant="primary" id="signupButton" >Modifier le profil </b-button>
+              <b-form-file 
+                    v-model="form.avatar"
+                    @change="avatarChange"
+                    class="inputFile" 
+                    name="change_avatar" 
+                    id="change_avatar">
+                    
+                </b-form-file >
+                
+                <div class="selectedFile">Selected file: {{ form.avatar ? form.avatar.name : '' }}</div>
+                
+                <div id="style_upload">
+                        <b-button onclick="document.querySelector('#change_avatar').click();" ><img id="profil_avatar" :src="form.avatar"/>   <span>Modifier votre avatar</span></b-button>  
+                        
+                </div>
+
+              <div class="button_modification">
+                <b-button type="submit" variant="primary" id="modificationButton" >Valider mes modifications</b-button>
               </div>
             </b-form>
           </b-modal>
@@ -70,32 +96,51 @@ export default {
         password: '',
         firstname: '',
         lastname: '',
-        pseudo: ''
+        pseudo: '',
+        avatar:'',
       },
       loading: true,
       storelogg: false,
-      modalShow: false
+      alertMessage :false,
 
     }
   },
   mounted () {
   this.form.email = localStorage.getItem('email')
-  this.form.firstname = this.$store.state.auth.user.firstname
-  this.form.lastname = this.$store.state.auth.user.lastname
-  this.form.pseudo = this.$store.state.auth.user.pseudo
+  this.form.firstname = localStorage.getItem('firstname')
+  this.form.lastname = localStorage.getItem('lastname')
+  this.form.pseudo = localStorage.getItem('pseudo')
+  this.form.avatar = localStorage.getItem('avatar')
   },
 methods:{
+  alert(){
+    this.alertMessage = true
+  },
+  closeAlert(){
+    var el = document.getElementById('alert');
+    el.remove()
+  },
+  desactivateAccount(){
+    this.$axios
+      .$put("auth/desactivate")
+      .then( response =>{
+      localStorage.clear();
+      this.$router.push('/');
+      }
+    )
+    
+  },
   checkFirstname(){
       const msgError = document.querySelector('#firstNameError')
       let firstname = this.form.firstname
       if(/^[a-zA-Z-\s]+$/.test(firstname)=== false){
         msgError.innerHTML = " Seul Elon Musk Jr a un symbole,chiffre ici 🦄"
-        signupButton.disabled = true;
+        modificationButton.disabled = true;
         document.querySelector('#firstname').style.border = "red 2px solid";
       }
       else{
         msgError.innerHTML = ""
-        signupButton.disabled = false;
+        modificationButton.disabled = false;
         document.querySelector('#firstname').style.border = "#5b9d7f 2px solid";
       }
     },
@@ -106,12 +151,12 @@ methods:{
       let lastname = this.form.lastname
       if(/^[a-zA-Z-\s]+$/.test(lastname)=== false){
         msgError.innerHTML = " No symbole & chiffre, faut pas déconner 🦄"
-        signupButton.disabled = true;
+        modificationButton.disabled = true;
         document.querySelector('#lastname').style.border = "red 2px solid";
       }
       else{
         msgError.innerHTML = ""
-        signupButton.disabled = false;
+        modificationButton.disabled = false;
         document.querySelector('#lastname').style.border = "#5b9d7f 2px solid";
       }
     },
@@ -124,11 +169,11 @@ methods:{
       if(/^\S{4,50}$/.test(pseudo)=== false){
         msgError.innerHTML = " Au moins 4 caractères, petite 🦄 !"
         document.querySelector('#pseudo').style.border = "red 2px solid";
-        signupButton.disabled = true;
+        modificationButton.disabled = true;
       }
       else{
         msgError.innerHTML = ""
-        signupButton.disabled = false;
+        modificationButton.disabled = false;
         document.querySelector('#pseudo').style.border = "#5b9d7f 2px solid";
       }
     },
@@ -140,15 +185,47 @@ methods:{
       if(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,7}$/.test(email)=== false){
         msgError.innerHTML = " Bien tenté mais un peu de serieux, petite 🦄 !"
         document.querySelector('#email').style.border = "red 2px solid";
-        signupButton.disabled = true;
+        modificationButton.disabled = true;
       }
       else{
         msgError.innerHTML = ""
-        signupButton.disabled = false;
+        modificationButton.disabled = false;
         document.querySelector('#email').style.border = "#5b9d7f 2px solid";
       }
     },
-}
+    
+    avatarChange() {
+        var formData = new FormData();
+        var imagefile = document.querySelector('#change_avatar');
+        formData.append("image", imagefile.files[0]);
+        this.$axios.post('/upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+        .then(res => {
+            this.form.avatar= res.data.url
+            imagefile = this.form.avatar
+
+        })
+    },
+    onSubmit (event) {
+      event.preventDefault()
+            this.$axios
+              .put('auth/update', this.form)
+              .then(async response => {
+                localStorage.setItem('email', this.form.email ) 
+                localStorage.setItem('firstname',this.form.firstname ) 
+                localStorage.setItem('lastname',this.form.lastname) 
+                localStorage.setItem('pseudo',this.form.pseudo) 
+                localStorage.setItem('avatar',this.form.avatar)
+                alert("Licorne Modifié ")
+                this.$router.push('/timeline') 
+                location.reload();
+                return false;
+
+                })
+              .catch(error => {
+                alert(error.response.data.message)
+              })
+    }
+  }
 }
 
   
@@ -157,7 +234,6 @@ methods:{
 </script>
 
 <style>
-
 .header_avatar{
   height: 50px;
   width: 50px;
@@ -184,7 +260,6 @@ methods:{
 
 .monProfil_header span{
   color: #5b9d7f;
-  margin-top :-20px;
 }
 .modal_avatar{
   
@@ -192,11 +267,13 @@ methods:{
   width: 100px;
   max-height: 100px;
   max-width: 100px;
-  margin: auto auto auto auto;
+  margin: -30px auto auto auto;
   text-align: center;
   border: #5b9d7f solid 3px;
 
 }
+
+  
 .modal-header, .modal-footer{
   display:none;
 }
@@ -225,5 +302,43 @@ methods:{
   margin : 3px 10px 0 20px;
   white-space: normal;
   justify-content: center;
+}
+
+#style_upload {
+  display:flex;
+  flex-direction:column;
+  width:70%;
+  margin: 0px auto 20px auto;
+
+}
+
+#style_upload img{
+  width:40%;
+  border-radius:5%;
+  border: #5b9d7f 2px solid;
+  margin-right:5px;
+}
+#style_upload span{
+  color: #5b9d7f;
+  font-size: 18px;
+}
+#modificationButton{
+  margin:0 auto 0 auto;
+}
+#modificationButton :disabled{
+  color: rgba(66, 65, 65, 0.541);
+  background-color: #0d0e0d;
+  border-color: #9d5b5b;
+  margin-left: 40px;
+}
+.mb-2{
+  margin-top :20px;
+  width: 30%;
+  font-size: 15px;
+}
+
+#userName_modal{
+  margin-bottom : 0px;
+
 }
 </style>

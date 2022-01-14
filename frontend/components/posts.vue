@@ -10,13 +10,15 @@
         <div>
             <div class="contentPost">
                 <p class="textPost"> {{post.content}} </p>
-                <b-img :src="post.imageUrl" fluid alt="image de post" class="imagePost"> </b-img>
+                <b-img :src="post.imageUrl" fluid alt="image de post" class="imagePost" v-if="post.imageUrl !=''"> </b-img>
 
             <div class="reactionUser">
                 <p> Commentaires </p>
-                <b-img src="@/assets/like_unicorn.png" fluid alt="funky licorne" class="like" > </b-img>
+                
+                <b-img @click="like" src="@/assets/like_unicorn_BW.png" fluid alt="funky licorne" class="like" v-if="userlike===false" > </b-img>
+                <b-img @click="dontlike" src="@/assets/like_unicorn.png" fluid alt="funky licorne" class="like" v-else > </b-img>
                 <p class="numberOfLikes">{{likes}}</p>
-                <p class=delete_post>Supprimer</p>
+                <b-icon v-if="owner ===true" icon="trash-fill" aria-hidden="true" class="trash"></b-icon>
             </div>
             </div>
         </div>
@@ -30,22 +32,70 @@ export default {
         return{
             likes:"",
             loadingLikes: true,
+            userlike : false,
+            owner : false,
+            
         }
     },
+    mounted(){
+        let userId = localStorage.getItem('userId')
+        let isAdmin = localStorage.getItem('isAdmin')
+    
+        if (this.post.user_id != userId || isAdmin === 0){
+            this.owner = false
+        }else{
+            this.owner = true
+        }
 
-    methods: {
 
-    },
+        console.log(this.owner)
 
-mounted(){
+
+        this.$axios.$get(`post/${this.post.id}/countLikesByPost`)
+        .then((ret) => {
+            if (ret === 1){
+                this.userlike = true
+            }
+            else{
+                this.userlike = false
+            }
+        }),
+
     this.$axios.$get(`post/${this.post.id}/countLikes`)
         .then((ret) => {
             this.likes = ret.likes,
             this.loadingLikes = false
         })
-    }
+    },
 
+    methods: {
+        like(){
+            this.$axios.$post(`post/${this.post.id}/like`)
+            
+            .then((ret) => {
+                this.userlike = true
+                this.$axios.$get(`post/${this.post.id}/countLikes`)
+                .then((ret)=>{
+                    this.likes = ret.likes,
+                    this.loadingLikes = false
+                    })
+            })
+        },
+        dontlike(){
+           this.$axios.$delete(`post/${this.post.id}/dislike`) 
+           .then((ret) => {
+                this.userlike = false
+                this.$axios.$get(`post/${this.post.id}/countLikes`)
+                .then((ret)=>{
+                    this.likes = ret.likes,
+                    this.loadingLikes = false
+                    })
+            })
+        }
+    }
 }
+
+
 </script>
 
 <style>
@@ -123,6 +173,9 @@ p{
 }
 .numberOfLikes{
     margin-right: 10px;
+}
+.trash{
+    color:#5b9d7f;
 }
 </style>
 
