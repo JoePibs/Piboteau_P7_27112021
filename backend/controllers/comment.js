@@ -4,9 +4,9 @@ const check = require('../utils/helper')
 
 //Créer un commentaire sous un post
 exports.createComment =(req,res,next) =>{
-    let img = localStorage.getItem("imageUrl");
-    let sql = "INSERT INTO comment (user_id,post_id,content,img,isActive) VALUES (?, ?, ?, ?, ?)";
-    let query = db.query(sql,[req.params.user_id,req.params.post_id, req.params.content,img, req.params.isActive],function (err, results,fields){
+    let userId = req.userId
+    let sql = "INSERT INTO comment (user_id,post_id,content,isActive) VALUES (?, ?, ?, 1)";
+    let query = db.query(sql,[userId,req.params.post_id, req.body.content,],function (err, results,fields){
       if(err){
         throw err
       }
@@ -16,7 +16,7 @@ exports.createComment =(req,res,next) =>{
 // afficher tous les commentaires d'un post
 exports.getAllComment =(req,res,next)=>{
     let postId = req.params.post_id;
-    let sql = "SELECT c.content,c.date_creation,u.firstname, u.lastname, u.pseudo FROM comment c, users u, post p WHERE c.post_id = 2 AND p.id = c.post_id AND c.user_id = u.id AND c.isActive=1 ORDER BY c.date_creation DESC";
+    let sql = "SELECT c.content,c.date_creation,u.firstname, u.lastname, u.pseudo FROM comment c, users u, post p WHERE c.post_id = ? AND p.id = c.post_id AND c.user_id = u.id AND c.isActive=1 ORDER BY c.date_creation DESC";
     let query =db.query(sql,[postId],function(err, result){
         if(err){
           throw err

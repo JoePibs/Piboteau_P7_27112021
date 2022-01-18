@@ -153,9 +153,5 @@ body {
   justify-content: space-between;
   padding:20px 0px 20px 10px;
 }
-h2{
-  color: rgb(211, 11, 88);
-  font-size : 18px;
 
-}
 </style>

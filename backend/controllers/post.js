@@ -38,7 +38,6 @@ exports.getAllUserPost =(req,res,next) =>{
 
 //Créer un post
 exports.createPost =(req,res,next) =>{
-  console.log(req)
   let sql = "INSERT INTO post (user_id,content,imageUrl) VALUES (?, ?, ?)";
   let query = db.query(sql,[req.body.userId, req.body.content,req.body.imageUrl],function (err, results,fields){
     console.log(query)
@@ -86,40 +85,56 @@ exports.updateOnePost = (req,res,next) => {
   
 //Liker un post
 exports.likePost =(req,res,next)=>{
-  console.log(req)
   let userId = req.userId;
   let type = "p";
   let idPost = req.params.post_id;
-  let sql = "INSERT INTO likes (user_id,type,post_id) VALUES (?,?,?)";
-  let query =db.query(sql,[userId, type,idPost],function (err, result){
+  let sql ="SELECT * FROM likes l WHERE l.user_id = ? AND l.post_id = ? AND l.type ='p' "
+  let query =db.query(sql,[userId,idPost],function (err, result){
     if(err){
     throw err
     }
-    res.status(200).json ({message: "post liké"})
+    if(result.length === 0){
+      let sql2 = "INSERT INTO likes (user_id,type,post_id,value) VALUES (?,?,?,1)";
+      let query =db.query(sql2,[userId, type,idPost],function (err, result){
+        if(err){
+          throw err
+        }
+      res.status(200).json (result) 
+    })
+
+    }else{
+      (result[0].value === 1) ? result[0].value = 0 : result[0].value = 1;
+      let sql3 = "UPDATE likes l SET l.value = ? where l.user_id = ? AND l.post_id = ? AND l.type ='p'";
+      let query =db.query(sql3,[result[0].value,userId,idPost,type],function (err, result){
+        if(err){
+          throw err
+        }
+      res.status(200).json (result)   
+    })
+    }
   })
 };
 
-//disliker un post
-exports.dislikePost =(req,res,next)=>{
+
+//compter le nombre de like sur un post par un user
+exports.likedby =(req,res,next) =>{
   let userId = req.userId;
-  let type = "p";
   let idPost = req.params.post_id;
-  let sql = "DELETE FROM likes l WHERE  l.type = ? AND l.user_id = ? AND l.post_id = ?";
-  let query =db.query(sql,[ type,userId, idPost],function (err, result){
+  let sql ="SELECT COUNT(id) AS TOTAL FROM likes l WHERE l.user_id = ? AND l.post_id = ? AND l.type ='p' AND l.value = '1' "
+  let query =db.query(sql,[userId,idPost],function (err, result){
     if(err){
-      throw err
+    throw err
     }
-        res.status(200).json ({message: "post disliké"})
-      })
-  }
-  
+    res.status(200).json ({liked :result[0].TOTAL})
+  })
+};
+
 
 //compter le nombre de like sur un post
-
 exports.countLike =(req,res,next)=>{
   let postId = req.params.post_id;
   let type = "p"
-  let sql = "SELECT COUNT(post_id) AS TOTAL FROM likes l where l.post_id = ? and l.type= ? "
+  let sql = "SELECT COUNT(post_id) AS TOTAL FROM likes l where l.post_id = ? and l.type= ? and l.value ='1' "
   let query =db.query(sql,[postId,type],function (err, result){
   
     if(err){
@@ -157,16 +172,4 @@ exports.allPostUserHaveComment =(req,res,next)=>{
   })
 };
 
-exports.countUserLikeByPost =(req,res,next)=>{
-  let userId = req.userId;
-  let type = "p";
-  let idPost = req.params.post_id;
-  let sql = "SELECT COUNT(post_id) AS total FROM likes l WHERE  l.type = ? AND l.user_id = ? AND l.post_id = ? ";
-  let query =db.query(sql,[ type,userId, idPost],function (err, result){
-    if(err){
-      throw err
-    }
-        
-    res.status(200).json (result)
-      })
-  }
+

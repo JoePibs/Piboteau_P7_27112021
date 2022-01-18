@@ -74,7 +74,10 @@
         this.form.userId = userId
         this.$axios
         .post('/post/createpost', this.form)        
-        .then(response => {})
+        .then(response => {
+            location.reload();
+                return false;
+        })
      
     }
   }

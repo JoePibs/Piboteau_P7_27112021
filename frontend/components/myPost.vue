@@ -73,15 +73,15 @@ p{
     padding-left:10px;
 }
 .contentMyPost{
-    border:solid 1px #5b9d7f3b;
+
+    background-color:rgb(17, 17, 17) ;
     border-radius : 3px 3px 3px 3px;
-    padding: 5px 0px 0px 5px;
     box-shadow:#5b9d7f 0px 1px 5px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    padding-bottom :1px;
+    padding-top:10px;
+    padding-left : 5px;
+    
 }
 
-.textMyPost{
-    padding: 0px 0px 0px 0px;
-    text-align: left;
-}
 
 </style>

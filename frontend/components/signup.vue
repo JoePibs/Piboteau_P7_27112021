@@ -96,8 +96,10 @@
                 
                 <div class="selectedFile">Selected file: {{ form.avatar ? form.avatar.name : '' }}</div>
                 
-                <div class="create_style">
-                        <b-button onclick="document.querySelector('#post_avatar').click();" ><img src="@/assets/like_unicorn.png" alt="logo image vectoriel" /><span>Ajouter votre avatar</span></b-button>      
+                <div class="create_style" id="style_upload" onclick="document.querySelector('#post_avatar').click();">
+                  
+                        <b-button id="inscription"  ><img id="new_avatar" :src="form.avatar"><span>votre avatar</span> </b-button> 
+      
                 </div>
 
     <div class="button_inscription">
@@ -119,7 +121,7 @@ export default {
         firstname: '',
         lastname: '',
         pseudo: '',
-        avatar:''
+        avatar:'http://localhost:8080/images/avatar_defaut.jpg'
       },
       show: true
     }
@@ -279,6 +281,9 @@ export default {
 </script>
 
 <style>
+.container{
+  padding: none;
+}
 .nav-tabs {
   border-bottom: 1px solid #5b9d7f;
 }
@@ -351,5 +356,18 @@ a {
   padding: 5px;
   border-radius: 5%;
 }
-
+#style_upload img{
+  width:30%;
+  border-radius:5%;
+  border: #5b9d7f 2px solid;
+  margin-right:5px;
+}
+#style_upload span{
+  color: #5b9d7f;
+  font-size: 15px;
+}
+#inscription{
+width: 100%;
+padding : 0px 0px 0px 0px;
+}
 </style>

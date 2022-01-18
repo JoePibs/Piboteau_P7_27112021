@@ -117,8 +117,7 @@ methods:{
     this.alertMessage = true
   },
   closeAlert(){
-    var el = document.getElementById('alert');
-    el.remove()
+    this.alertMessage = false
   },
   desactivateAccount(){
     this.$axios
