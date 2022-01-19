@@ -56,6 +56,7 @@ export const actions = {
       localStorage.setItem('avatar',ret.avatar)
       localStorage.setItem('isAdmin',ret.isAdmin)
       localStorage.setItem('email',ret.email)
+      localStorage.setItem('bio',ret.bio)
       commit('setUser', {
         userId: ret.userId,
         isAdmin : ret.isAdmin,
@@ -64,6 +65,7 @@ export const actions = {
         pseudo: ret.pseudo,
         avatar: ret.avatar,
         email: ret.email,
+        bio:ret.bio,
       })
       
     } else {

@@ -7,7 +7,10 @@
     <div  v-else class="header_logged">
       <b-img class="logo_logged"  src="@/assets/Logo_Timeline.png" fluid alt="logo"></b-img>
       <h1> Entre collègues, tout est possible ! </h1>
-       <profil/>   
+      <div @click="seeAuth" class="avatar_logged" v-b-modal.modal-1 > 
+       <b-avatar  class="header_avatar" variant="info" :src="$store.state.auth.user.avatar" ></b-avatar>
+        <profil v-if = "see_auth === true"/> 
+       </div>
     </div> 
 
     <div class="central" v-if="loading === false">
@@ -30,6 +33,7 @@ export default {
     return {
       loading: true,
       connected:true,
+      see_auth:false,
 
     }
   },
@@ -39,6 +43,11 @@ export default {
     let token = localStorage.getItem('token')
     if (token === null){
     this.connected =false
+    }
+  },
+  methods:{
+    seeAuth(){
+      this.see_auth = true
     }
   }
   

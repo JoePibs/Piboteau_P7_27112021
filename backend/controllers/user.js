@@ -61,6 +61,7 @@ exports.login = (req, res, next) => {
           pseudo: user.pseudo,
           avatar: user.avatar,
           email: user.email,
+          bio: user.bio,
           token: jwt.sign({ userId: user.id }, 'RANDOM_TOKEN_SECRET', {
             expiresIn: '24h'
           })
@@ -72,11 +73,9 @@ exports.login = (req, res, next) => {
 
 //descativer le compte
 exports.desactivateAccount = (req, res, next) => {
-  console.log(req)
   const userId = req.userId
-  const isAdmin = req.params.isAdmin
 
-  const sql = 'UPDATE users u SET isActive=0 WHERE u.id = ? or u.isAdmin=1'
+  const sql = 'UPDATE users u SET isActive=0 WHERE u.id = ?'
   db.query(sql, userId, (err, results) => {
     if (err) {
       return res.status(404).json({ err })
@@ -85,18 +84,56 @@ exports.desactivateAccount = (req, res, next) => {
   })
 }
 
+exports.desactivateByAdmin = (req, res, next) => {
+
+  const userPost = req.params.id
+  const userId = req.userId
+  const sql = 'SELECT COUNT(id) AS TOTAL FROM users u WHERE u.id = ? and u.isAdmin=1'
+  db.query(sql, userId, (err, results) => {
+    if (err) {
+      return res.status(404).json({ err })
+    }
+    const admin = results[0].TOTAL
+    console.log(admin)
+    if(admin === 1){
+      const sql2 = 'UPDATE users u SET isActive=0  WHERE u.id = ?'
+      db.query(sql2, userPost, (err, results) => {
+        if (err) {
+          return res.status(404).json({ err })
+        }
+        res.status(200).json({ message: 'compte desactivé par le modérateur' })
+      })
+    }
+    else{
+      res.status(401).json({ message: 'Interdit de supprimer , pas admin' }) 
+    }
+  })
+}
+/*
+  const sql2 = 'UPDATE users u SET isActive=0 WHEN isAdmin = 1 WHERE u.id = ?'
+  db.query(sql2, userId, (err, results) => {
+    if (err) {
+      return res.status(404).json({ err })
+    }
+    res.status(200).json({ message: 'compte desactivé par le modérateur' })
+  })
+} */
+
 //modifier le compte
 exports.updateAccount = (req, res, next) => {
+  
+  console.log(req)
   const id =req.userId
   const lastname = req.body.lastname
   const firstname = req.body.firstname
   const email = req.body.email
   const avatar = req.body.avatar
-  const sql =
-    'UPDATE users u SET u.firstname = ?, u.lastname = ?, u.email = ?, u.avatar = ? WHERE u.id = ?'
+  const bio = req.body.bio
+  const pseudo = req.body.pseudo
+  const sql = 'UPDATE users u SET u.firstname = ?, u.lastname = ?, u.email = ?, u.avatar = ?, u.bio = ?, u.pseudo = ? WHERE u.id = ?'
   db.query(
     sql,
-    [firstname, lastname, email, avatar, id],
+    [firstname, lastname, email, avatar,bio,pseudo, id],
     (err, results) => {
       if (err) {
         return res.status(500).json({ err })
@@ -107,9 +144,9 @@ exports.updateAccount = (req, res, next) => {
 }
 
 exports.seeAprofil = (req, res, next) => {
-  profilId = req.params.id
+  let profilId = req.params.id
   let sql =
-    'SELECT u.firstname, u.lastname, u.email, u.bio, u.avatar, u.pseudo FROM users u WHERE u.id = ? AND u.isActive=1'
+    'SELECT u.id, u.firstname, u.lastname, u.email, u.bio, u.avatar, u.pseudo, u.date_creation FROM users u WHERE u.id = ? AND u.isActive=1'
   let query = db.query(sql, [profilId], function (err, results, fields) {
     if (err) {
       throw err
@@ -156,7 +193,7 @@ exports.updatePassword = (req, res, next) => {
 exports.allPostUserHaveComment = (req, res, next) => {
   let userId = req.userId
   let sql =
-    "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo As pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND c.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'c.date_creation' ASC "
+    "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo As pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND u.isActive=1 AND c.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'c.date_creation' ASC "
   let query = db.query(sql, [userId], function (err, result) {
     if (err) {
       throw err

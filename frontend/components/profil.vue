@@ -1,7 +1,5 @@
 <template>
     <div>
-          <b-avatar v-b-modal.modal-1 class="header_avatar" variant="info" :src="$store.state.auth.user.avatar" >
-          </b-avatar>
           <b-modal id="modal-1" title="monProfil">
             <div class="monProfil_header">
               <b-avatar  class="modal_avatar" :src="$store.state.auth.user.avatar"></b-avatar>
@@ -62,6 +60,18 @@
                 ></b-form-input>
                 <div class="errorMessage" id="emailRegexError"></div>
               </b-form-group>
+
+              <b-form-group id="bio-group" label="Bio :" label-for="bio">
+                <b-form-textarea
+                      id="bioInput"
+                      class="bioInput"
+                      v-model="form.bio"
+                      type="textarea"
+                      placeholder="Détailler votre licorne life, job, etc..."
+                      rows="5"
+                      max-rows="5">
+                  </b-form-textarea>
+                </b-form-group>
               <b-form-file 
                     v-model="form.avatar"
                     @change="avatarChange"
@@ -88,16 +98,15 @@
 
 <script>
 export default {
-
   data () {
     return {
       form: {
         email: '',
-        password: '',
         firstname: '',
         lastname: '',
         pseudo: '',
         avatar:'',
+        bio:'',
       },
       loading: true,
       storelogg: false,
@@ -111,6 +120,10 @@ export default {
   this.form.lastname = localStorage.getItem('lastname')
   this.form.pseudo = localStorage.getItem('pseudo')
   this.form.avatar = localStorage.getItem('avatar')
+  const bio = localStorage.getItem('bio') 
+  if(bio != "null"){
+    this.form.bio = localStorage.getItem('bio')}
+  
   },
 methods:{
   alert(){
@@ -214,6 +227,7 @@ methods:{
                 localStorage.setItem('lastname',this.form.lastname) 
                 localStorage.setItem('pseudo',this.form.pseudo) 
                 localStorage.setItem('avatar',this.form.avatar)
+                localStorage.setItem('bio',this.form.bio)
                 alert("Licorne Modifié ")
                 this.$router.push('/timeline') 
                 location.reload();

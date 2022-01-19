@@ -45,6 +45,7 @@
 
 <script>
   export default {
+      
     data() {
       return {
         form: {
@@ -52,6 +53,7 @@
             content: '',
             imageUrl: '',
         },
+        
       }
     },
  

@@ -1,16 +1,20 @@
 <template>
-    <div class="onepost">
+    <div class="thepost">
          <div class="cardPost">
-            <div class="infoPost" >
-                <b-avatar :src="post.avatar" class="avatarPost"></b-avatar>
+            <div class="infoPost" @click="seeUser" v-b-modal.modal-2 >
+                <b-avatar :src="post.avatar"  class="avatarPost"></b-avatar>
+                <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
                 <p class="ownerName"> {{post.firstname}} {{post.lastname}} <span>@{{post.pseudo}}</span></p>
             </div>
             <p class="timePost"> il y a {{post.id}} jours</p>
         </div>
         <div>
             <div class="contentPost">
-                <p class="textPost"> {{post.content}} </p>
-                <b-img :src="post.imageUrl" fluid alt="image de post" class="imagePost" v-if="post.imageUrl !=''"> </b-img>
+                <div @click="seePost" class="one_post" v-b-modal.modal-3>
+                    <p class="textPost"> {{post.content}} </p>
+                    <b-img :src="post.imageUrl" fluid alt="image de post" class="imagePost" v-if="post.imageUrl !=''"> </b-img>
+                </div>
+                <seePost v-if ="seeOnePost=== true" :onePost="onePost" />
                 <div class="reactionUser">
                     <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Commentaires </p>
                     <p @click="hideComments" class="comment_intro" v-else> Cacher les commentaires </p>
@@ -61,15 +65,20 @@
 </template>
 
 <script>
+
+import seeProfil from '../components/seeProfil.vue'
 import Comments from '../components/comment.vue'
+import seePost from'../components/seeOnePost.vue'
 export default {
-    components:{Comments},
+    components:{Comments,seeProfil,seePost},
     props :['post'],
     data(){
         return{
             form: {
                 content: ''
             },
+            onePost:[],
+            userPost:[],
             commments:[],
             postLikes:"",
             likes:"",
@@ -78,7 +87,9 @@ export default {
             owner : false,
             visible_comments : false,
             click_comment : true,
-            alertDestroy : false
+            alertDestroy : false,
+            seeOneProfil : false,
+            seeOnePost : false
         }
     },
     mounted(){
@@ -114,6 +125,22 @@ export default {
     },
 
     methods: {
+        seeUser(){
+            this.seeOneProfil = true
+            this.$axios.$get(`auth/${this.post.user_id}/profil`)
+            .then((userPost)=>{
+                this.userPost = userPost[0]
+                console.log(this.userPost)
+            })
+        },
+        seePost(){
+            this.seeOnePost = true
+            this.$axios.$get(`post/${this.post.id}/onepost`)
+            .then((onePost)=>{
+                this.onePost = onePost[0]
+                console.log(this.onePost)
+            })
+        },
         seeComments(){
             this.$axios.$get(`comment/${this.post.id}/allcommentpost`)
             .then((comments)=>{
@@ -171,7 +198,6 @@ export default {
                 
             });
         })
-     
     }
     }
 }
@@ -185,7 +211,10 @@ p{
     color: aliceblue;
     font-size :12px
 }
-.onepost{
+.one_post{
+    cursor: pointer;
+}
+.thepost{
     margin: 10px 0 10px 0;
     padding: 10px 0 10px 0;
 }
@@ -203,6 +232,7 @@ p{
     margin-right : 5px;
     width: 35px;
     height: 35px;
+    cursor:pointer
 }
 
 .ownerName{
