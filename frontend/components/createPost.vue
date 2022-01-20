@@ -111,7 +111,7 @@
     background: none;
     border:1px #5b9d7f3f solid;
     margin-top : -15px;
-    width: 400px;
+    width: 340px;
     
 }
 
@@ -138,6 +138,7 @@
 .button_file img{
     width: 30px;
     margin-right: 5px;
+    margin-top:-15px;
 }
 .button_create{
   display: flex;

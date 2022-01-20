@@ -15,19 +15,20 @@ exports.getAllPost =(req,res, next) => {
 //Afficher un seul post
 exports.getOnePost =(req,res,next) => {
   postId = req.params.id;
-  let sql ="SELECT * FROM post p WHERE p.id = ? AND p.isActive=1";
+  let sql ="SELECT p.*,u.avatar,u.firstname,u.lastname,u.pseudo FROM post p,users u WHERE p.id = ? AND p.user_id = u.id AND p.isActive=1";
   let query = db.query (sql,[postId], function (err, results,fields){
     if(err){
       throw err
     }
     res.status(200).json (results)
+    console.log(results)
   })
 };
 
 //afficher tous les posts d'un seul utilisateur si le post est actif
 exports.getAllUserPost =(req,res,next) =>{
   var idUser = req.userId;
-  let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname,u.avatar,u.pseudo FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? AND u.isActive=1 ORDER BY 'last_update' DESC";
+  let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname,u.avatar,u.pseudo FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? AND u.isActive=1 ORDER BY p.date_creation DESC";
   let query = db.query (sql,[idUser], function (err, results,fields){
     if(err){
       throw err
@@ -149,7 +150,7 @@ exports.countLike =(req,res,next)=>{
 
 exports.mostCommentPost =(req,res,next)=>{
  
-  let sql = "SELECT p.id AS id ,p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo AS pseudo, COUNT(c.id) AS total_comment FROM post p, comment c , users u WHERE c.post_id = p.id AND u.isActive=1 AND p.user_id = u.id AND p.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'total_comments' ASC "
+  let sql = "SELECT p.id AS id ,p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo AS pseudo, COUNT(c.id) AS total_comment FROM post p, comment c , users u WHERE c.post_id = p.id AND u.isActive=1 AND p.user_id = u.id AND p.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'total_comments' DESC"
   let query =db.query(sql,function (err, result){
     if(err){
     throw err

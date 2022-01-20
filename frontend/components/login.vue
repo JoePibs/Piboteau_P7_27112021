@@ -12,6 +12,7 @@
     <b-form-group id="input-group-6" label="Password:" label-for="input-">
       <b-form-input
         id="input-6"
+        type="password"
         v-model="form.password"
         placeholder="Entrez votre mot de passe"
         required
@@ -51,8 +52,11 @@ export default {
         .catch(error => {
           alert(error.response.data.message)
         })
-    }
+    },
+    
+  
   }
+  
 }
 </script>
 

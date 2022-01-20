@@ -50,10 +50,6 @@ export default {
       this.see_auth = true
     }
   }
-  
-  
-
-  
 }
 
   

@@ -16,11 +16,12 @@ exports.createComment =(req,res,next) =>{
 // afficher tous les commentaires d'un post
 exports.getAllComment =(req,res,next)=>{
     let postId = req.params.post_id;
-    let sql = "SELECT c.content,c.date_creation,u.firstname, u.lastname, u.pseudo FROM comment c, users u, post p WHERE c.post_id = ? AND p.id = c.post_id AND c.user_id = u.id AND c.isActive=1 ORDER BY c.date_creation DESC";
+    let sql = "SELECT c.id,c.content,c.date_creation,c.user_id,u.firstname, u.lastname, u.pseudo, u.avatar FROM comment c, users u, post p WHERE c.post_id = ? AND p.id = c.post_id AND c.user_id = u.id AND c.isActive=1 ORDER BY c.date_creation DESC";
     let query =db.query(sql,[postId],function(err, result){
         if(err){
           throw err
         }
+        console.log(result)
         res.status(200).json (result)
       })
 };

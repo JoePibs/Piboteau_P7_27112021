@@ -8,7 +8,7 @@
                         <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
                         <p class="ownerName"> {{onePost.firstname}} {{onePost.lastname}} <span>@{{onePost.pseudo}}</span></p>
                     </div>
-                    <p class="timePost"> il y a {{onePost.id}} jours</p>
+                    <p class="timePost"> {{ $dayjs(onePost.date_creation).fromNow() }}</p>
                 </div>
                 <div>
                     <div class="contentPost">
@@ -17,7 +17,7 @@
                             <b-img :src="onePost.imageUrl" fluid alt="image de post" class="imagePost" v-if="onePost.imageUrl !=''"> </b-img>
                         </div>
                         <div class="reactionUser">
-                            <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Commentaires </p>
+                            <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Voir les commentaires </p>
                             <p @click="hideComments" class="comment_intro" v-else> Cacher les commentaires </p>
                             <b-img @click="like" src="@/assets/like_unicorn_BW.png" fluid alt="funky licorne" class="like" v-if="postLikes===0" > </b-img>
                             <b-img @click="like" src="@/assets/like_unicorn.png" fluid alt="funky licorne" class="like" v-else > </b-img>
@@ -73,7 +73,7 @@ import Comments from '../components/comment.vue'
     
 export default {
     components:{Comments,seeProfil},
-props :['onePost'],
+    props :['onePost'],
   data () {
     return{
             form: {
@@ -93,6 +93,7 @@ props :['onePost'],
         }
     },
     mounted(){
+
 
         let userId = localStorage.getItem('userId')
         let isAdmin = localStorage.getItem('isAdmin')

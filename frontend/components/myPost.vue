@@ -5,7 +5,7 @@
                 <b-avatar :src="myPost.avatar" class="avatarMyPost"></b-avatar>
                 <p class="ownerNameMyPost"> {{myPost.firstname}} {{myPost.lastname}} <span>@{{myPost.pseudo}}</span></p>
             </div>
-            <p class="timeMyPost"> il y a 5 jours</p>
+            <p class="timeMyPost"> {{ $dayjs(myPost.date_creation).fromNow() }} </p>
         </div>
         <div>
             <div class="contentMyPost">

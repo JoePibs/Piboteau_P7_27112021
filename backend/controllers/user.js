@@ -193,7 +193,7 @@ exports.updatePassword = (req, res, next) => {
 exports.allPostUserHaveComment = (req, res, next) => {
   let userId = req.userId
   let sql =
-    "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo As pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND u.isActive=1 AND c.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'c.date_creation' ASC "
+    "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo As pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND u.isActive=1 AND c.date_creation > (NOW() - INTERVAL 3 MONTH) ORDER BY p.date_creation DESC"
   let query = db.query(sql, [userId], function (err, result) {
     if (err) {
       throw err

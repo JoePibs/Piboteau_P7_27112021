@@ -32,15 +32,25 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     'bootstrap-vue/nuxt',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/dayjs',
 ],
+//using boostrapVue
 bootstrapVue: {
     icons: true
 },
-
+// using axios with url base
   axios: {
     baseURL: 'http://localhost:8080/api'
   },
+
+// using daysJS
+dayjs: {
+  locales: ['fr'],
+  defaultLocale: 'fr',
+  plugins: ['relativeTime', 'advancedFormat'],
+},
+
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {}

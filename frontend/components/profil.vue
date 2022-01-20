@@ -89,7 +89,8 @@
                 </div>
 
               <div class="button_modification">
-                <b-button type="submit" variant="primary" id="modificationButton" >Valider mes modifications</b-button>
+                <b-button type="submit" id="validation_button" >Valider</b-button>
+                <b-button @click="cancel" id="cancel_button" >Annuler</b-button>
               </div>
             </b-form>
           </b-modal>
@@ -115,15 +116,8 @@ export default {
     }
   },
   mounted () {
-  this.form.email = localStorage.getItem('email')
-  this.form.firstname = localStorage.getItem('firstname')
-  this.form.lastname = localStorage.getItem('lastname')
-  this.form.pseudo = localStorage.getItem('pseudo')
-  this.form.avatar = localStorage.getItem('avatar')
-  const bio = localStorage.getItem('bio') 
-  if(bio != "null"){
-    this.form.bio = localStorage.getItem('bio')}
-  
+    this.cancel()
+
   },
 methods:{
   alert(){
@@ -138,6 +132,7 @@ methods:{
       .then( response =>{
       localStorage.clear();
       this.$router.push('/');
+      this.$bvModal.hide('modal-1')
       }
     )
     
@@ -147,12 +142,12 @@ methods:{
       let firstname = this.form.firstname
       if(/^[a-zA-Z-\s]+$/.test(firstname)=== false){
         msgError.innerHTML = " Seul Elon Musk Jr a un symbole,chiffre ici 🦄"
-        modificationButton.disabled = true;
+        validation_button.disabled = true;
         document.querySelector('#firstname').style.border = "red 2px solid";
       }
       else{
         msgError.innerHTML = ""
-        modificationButton.disabled = false;
+        validation_button.disabled = false;
         document.querySelector('#firstname').style.border = "#5b9d7f 2px solid";
       }
     },
@@ -163,12 +158,12 @@ methods:{
       let lastname = this.form.lastname
       if(/^[a-zA-Z-\s]+$/.test(lastname)=== false){
         msgError.innerHTML = " No symbole & chiffre, faut pas déconner 🦄"
-        modificationButton.disabled = true;
+        validation_button.disabled = true;
         document.querySelector('#lastname').style.border = "red 2px solid";
       }
       else{
         msgError.innerHTML = ""
-        modificationButton.disabled = false;
+        validation_button.disabled = false;
         document.querySelector('#lastname').style.border = "#5b9d7f 2px solid";
       }
     },
@@ -181,11 +176,11 @@ methods:{
       if(/^\S{4,50}$/.test(pseudo)=== false){
         msgError.innerHTML = " Au moins 4 caractères, petite 🦄 !"
         document.querySelector('#pseudo').style.border = "red 2px solid";
-        modificationButton.disabled = true;
+        validation_button.disabled = true;
       }
       else{
         msgError.innerHTML = ""
-        modificationButton.disabled = false;
+        validation_button.disabled = false;
         document.querySelector('#pseudo').style.border = "#5b9d7f 2px solid";
       }
     },
@@ -197,11 +192,11 @@ methods:{
       if(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,7}$/.test(email)=== false){
         msgError.innerHTML = " Bien tenté mais un peu de serieux, petite 🦄 !"
         document.querySelector('#email').style.border = "red 2px solid";
-        modificationButton.disabled = true;
+        validation_button.disabled = true;
       }
       else{
         msgError.innerHTML = ""
-        modificationButton.disabled = false;
+        validation_button.disabled = false;
         document.querySelector('#email').style.border = "#5b9d7f 2px solid";
       }
     },
@@ -216,6 +211,16 @@ methods:{
             imagefile = this.form.avatar
 
         })
+    },
+    cancel(){
+      this.form.email = localStorage.getItem('email')
+      this.form.firstname = localStorage.getItem('firstname')
+      this.form.lastname = localStorage.getItem('lastname')
+      this.form.pseudo = localStorage.getItem('pseudo')
+      this.form.avatar = localStorage.getItem('avatar')
+      const bio = localStorage.getItem('bio') 
+        if(bio != "null"){
+        this.form.bio = localStorage.getItem('bio')}
     },
     onSubmit (event) {
       event.preventDefault()
@@ -285,23 +290,19 @@ methods:{
   border: #5b9d7f solid 3px;
 
 }
-
-  
-.modal-header, .modal-footer{
-  display:none;
-}
-
 .modal-content {
   background-color : black ;
 }
 
-.btn-primary {
+#validation_button {
   color: #fff;
   background-color: #5b9d7f;
   border-color: #5b9d7f;
-  margin-left: 40px;
+  padding : 10px 10px 10px 10px;
+  margin: 10px 10px 10px 10px;
+  font-size: 18px;
 }
-.btn-primary:disabled{
+#validation_button :disabled{
   color: rgba(66, 65, 65, 0.541);
   background-color: #0d0e0d;
   border-color: #9d5b5b;
@@ -335,14 +336,22 @@ methods:{
   color: #5b9d7f;
   font-size: 18px;
 }
-#modificationButton{
-  margin:0 auto 0 auto;
+
+.button_modification{
+
+  display : flex;
+  flex-direction: row;
+  justify-content: center;
 }
-#modificationButton :disabled{
-  color: rgba(66, 65, 65, 0.541);
-  background-color: #0d0e0d;
-  border-color: #9d5b5b;
-  margin-left: 40px;
+
+
+#cancel_button{
+  background-color :#a31d1d;
+  border: #a31d1d;
+  margin-left: 10px;
+  padding : 10px 10px 10px 10px;
+  margin: 10px 10px 10px 10px;
+  font-size: 18px;
 }
 .mb-2{
   margin-top :20px;

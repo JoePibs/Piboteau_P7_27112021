@@ -18,7 +18,14 @@
             </b-col>
               
 
-            <b-col cols="5" class= "visibility-principal" ><postsTimeline  /></b-col>
+            <b-col cols="5" class= "visibility-principal" >
+              <div>
+                <createPost/>
+                <div class="realtimeline">
+                  <Posts  class="posts" v-for="post in posts" :key="post.id" :post="post"/>
+                </div>
+              </div>
+            </b-col>
 
             <b-col class="visibility">
               <h2> Les posts les plus commentés </h2>
@@ -39,30 +46,47 @@
 </template>
 
 <script>
-import postsTimeline from '../components/postsTimeline.vue'
 import Most from '../components/mostCommentedPost.vue'
 import PostIcommented from '../components/postCommented.vue'
 import MyPost from '../components/myPost.vue'
 import stats from '../components/stats.vue'
+import createPost from'../components/createPost.vue'
+import Posts from '../components/posts.vue'
 
 export default {
-  components: { postsTimeline, Most, MyPost, stats, PostIcommented },
+  components: { Most, MyPost, stats, PostIcommented,createPost,Posts },
   name: 'timelinecomposition',
   data () {
       return {
       postIcommenteds:[],
       mostPosts:[],
       myPosts:[],
+      posts: [],
+      loading: true
       }
     },
 
-  mounted(){     
+  mounted(){ 
+    let userconnected = this.$store.state.auth.loggedIn
+    console.log(userconnected)
+    if (localStorage.getItem('userId')===null) {
+      setTimeout(function(){
+        window.location.reload();
+      }, 1);
+    }
+
     this.refresh()
+
+    this.$axios
+      .$get('post')
+      .then((posts) => {
+        this.posts = posts
+        this.loading = false
+      })
   },
   methods:{
     refresh(){
-      this.user = localStorage.getItem('userId')
-
+      
       this.$axios
         .$get('post/mostcommented')
         .then((mostPosts) => {

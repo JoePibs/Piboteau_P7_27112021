@@ -6,7 +6,7 @@
                 <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
                 <p class="ownerName"> {{post.firstname}} {{post.lastname}} <span>@{{post.pseudo}}</span></p>
             </div>
-            <p class="timePost"> il y a {{post.id}} jours</p>
+            <p class="timePost"> {{ $dayjs(post.date_creation).fromNow() }}</p>
         </div>
         <div>
             <div class="contentPost">
@@ -34,7 +34,8 @@
                 </div>
                 <div class="create_c"> 
                     <div class="create_comment">
-                        <p class="userName"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
+                        <b-avatar :src="$store.state.auth.user.avatar"  class="avatarPost" id="avatar_create_comment"></b-avatar>
+                        <p class="userName" id="userName_comment"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
                     </div>
                     <div >
                         <b-form @submit="onComment" enctype="multipart/form-data"  >
@@ -327,7 +328,7 @@ p{
 
 .userName span{
     color: #5b9d7f;
-    font-size: 10px ;
+    font-size: 8px ;
 }
 
 .btn-secondary {
@@ -380,6 +381,17 @@ p{
     text-decoration: none;
 }
 
+#avatar_create_comment{
+
+    height: 20px;
+    width:20px;
+    margin: 7px 2px 0px 5px ;
+}
+#userName_comment{
+    font-size: 12px;
+    margin: 8px 2px 5px 0px ;
+    padding-left:2px;
+}
 </style>
 
 

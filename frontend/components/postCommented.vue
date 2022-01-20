@@ -5,6 +5,7 @@
                 <b-avatar :src="postIcommented.avatar" class="avatarCommentedPost"></b-avatar>
                 <p class="ownerNameCommentedPost"> {{postIcommented.firstname}} {{postIcommented.lastname}} <span>@{{postIcommented.pseudo}}</span></p>
             </div>
+            <p class="timeMyPost"> {{ $dayjs(postIcommented.date_creation).fromNow() }} </p>
         </div>
         <div>
             <div class="contentCommentedPost">

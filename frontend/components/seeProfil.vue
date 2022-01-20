@@ -27,7 +27,7 @@
                     <div class="details_style" id="date_style">
 
                         <h3>🎂 My Inscription Day : </h3>
-                        <p>{{userPost.date_creation}}</p>
+                        <p>{{ $dayjs(userPost.date_creation).format('DD MMMM YYYY') }}</p>
                     </div>
                     <div class="details_style" id="email_style">
                         <h3>📧 My Email : </h3>
@@ -59,13 +59,15 @@ props :['userPost'],
     }
   },
   mounted () {
+
       const admin = localStorage.getItem('isAdmin')
-      if(admin != "0"){
+      console.log(admin)
+      if(admin === "1"){
           this.userIsAdmin = true
-          this.role = "Une simple 🦄"
-      }else{
-          this.userIsAdmin = false
           this.role = "Une Admin 🦄 : THE LICORN"
+      }else{   
+          this.userIsAdmin = false
+          this.role = "Une simple 🦄"
       } 
     
   },
@@ -138,19 +140,33 @@ methods:{
   width: 100px;
   max-height: 100px;
   max-width: 100px;
-  margin: -30px auto auto auto;
+  margin: -60px auto auto auto;
   text-align: center;
   border: #5b9d7f solid 3px;
 
 }
 
   
-.modal-header, .modal-footer{
+.modal-footer{
   display:none;
 }
-
+.modal-header{
+  color:#5b9d7f;
+  height: 0px;
+  border: none;
+}
+.modal-header h5{
+  display:none;
+}
+.close{
+  color:#14f590;
+}
+.close:hover {
+    color:#97032f;
+    text-decoration: none;
+}
 .modal-content {
-  background-color : black ;
+  background-color : rgb(0, 0, 0) ;
 }
 
 .btn-primary {
@@ -169,14 +185,14 @@ methods:{
     width: 100%;
 }
 .details_style h3{
-    font-size :20px;
+    font-size :16px;
     color: #5b9d7f;
     background-color: rgb(36, 35, 35);
     padding:10px 10px 10px 10px ;
 }
 .details_style p{
-    font-size :18px;
-    margin-left:15%;
+    font-size :14px;
+
 }
 
 
