@@ -10,7 +10,6 @@ router.get ('/userposts/',auth, postCtrl.getAllUserPost);
 router.post ('/createpost',auth,multer, postCtrl.createPost);
 router.get ('/:post_id/like',auth, postCtrl.likePost);
 router.get ('/:post_id/countLikes',auth, postCtrl.countLike);
-router.put ('/:id/updatepost',auth,multer,postCtrl.updateOnePost);
 router.put ('/:id/deletepost/',auth,postCtrl.deleteOnePost);
 router.get ('/mostcommented/',auth,postCtrl.mostCommentPost);
 router.get('/:post_id/likedby',auth,postCtrl.likedby)
