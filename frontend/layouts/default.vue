@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div  v-if="connected === false" class="header">
+    <div  v-if="this.$store.state.auth.loggedIn === false" class="header">
       <b-img class="logo"  src="@/assets/header_home.png" alt="logo"></b-img>
     </div>
     
     <div  v-else class="header_logged">
       <b-img class="logo_logged"  src="@/assets/Logo_Timeline.png" fluid alt="logo"></b-img>
       <h1> Entre collègues, tout est possible ! </h1>
+      <b-button @click="disconnect" id="logout"><b-icon icon="power" aria-hidden="true"></b-icon>Logout</b-button>
       <div @click="seeAuth" class="avatar_logged" v-b-modal.modal-1 > 
        <b-avatar  class="header_avatar" variant="info" :src="$store.state.auth.user.avatar" ></b-avatar>
         <profil v-if = "see_auth === true"/> 
@@ -32,7 +33,7 @@ export default {
   data () {
     return {
       loading: true,
-      connected:true,
+      connected:false,
       see_auth:false,
 
     }
@@ -40,14 +41,16 @@ export default {
   async mounted () {
     await this.$store.dispatch('auth/init')
     this.loading = false
-    let token = localStorage.getItem('token')
-    if (token === null){
-    this.connected =false
-    }
+    
   },
   methods:{
     seeAuth(){
       this.see_auth = true
+    },
+    
+    disconnect(){
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/');
     }
   }
 }
@@ -95,6 +98,11 @@ body {
   width: 100px;
   max-width:100px;
   
+}
+#logout{
+  color: #5b9d7f;
+  border: #5b9d7f 1px solid;
+  margin-right : 20px;
 }
 .header_avatar{
   height: 50px;
@@ -149,6 +157,7 @@ body {
   color: transparent;
   text-align: justify;
 }
+
 
 
 .central{

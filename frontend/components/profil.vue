@@ -1,6 +1,9 @@
 <template>
     <div>
           <b-modal id="modal-1" title="monProfil">
+            <div>
+                  <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
+            </div>
             <div class="monProfil_header">
               <b-avatar  class="modal_avatar" :src="$store.state.auth.user.avatar"></b-avatar>
               <p id="userName_modal"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}}</p>
@@ -11,8 +14,8 @@
                 </b-button>
                 <b-alert show v-if="alertMessage === true" variant="danger" id="alert"> Vous êtes sur ? 
                   <b-button @click="desactivateAccount" variant="danger">Oui</b-button>
-                  <b-button @click ="closeAlert" variant="success">Oups </b-button>
-                  <p>En cliquant sur Oui, vous serez automatiquement renvoyé vers la page d'accueil, votre compte sera desactivé, il vous suffira de vous relogger pour reactiver votre compte</p>
+                  <b-button @click ="closeAlert" variant="success" id="oups">Oups </b-button>
+                  <p id="alert_text">En cliquant sur Oui, vous serez automatiquement renvoyé vers la page d'accueil et votre compte sera desactivé</p>
                 </b-alert>
               </div>
             </div>
@@ -120,6 +123,10 @@ export default {
 
   },
 methods:{
+
+  closeModal(){
+    this.$bvModal.hide('modal-1')
+  },
   alert(){
     this.alertMessage = true
   },
@@ -130,7 +137,7 @@ methods:{
     this.$axios
       .$put("auth/desactivate")
       .then( response =>{
-      localStorage.clear();
+      this.$store.dispatch('auth/logout')
       this.$router.push('/');
       this.$bvModal.hide('modal-1')
       }
@@ -292,6 +299,18 @@ methods:{
 }
 .modal-content {
   background-color : black ;
+}
+#alert{
+  margin-left: 14px;
+  background-color: #5b9d7f;
+  border: #5b9d7f solid 3px;
+}
+#alert_text{
+  font-size : 14px;
+  font-style: italic;
+}
+#oups{
+  background: rgb(4, 84, 109);
 }
 
 #validation_button {

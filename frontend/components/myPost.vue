@@ -1,30 +1,54 @@
 <template>
     <div class="mypost">
-         <div class="cardMyPost">
+         <div class="cardMyPost" @click="seeUser" v-b-modal.modal-2 >
             <div class="infoMyPost" >
                 <b-avatar :src="myPost.avatar" class="avatarMyPost"></b-avatar>
                 <p class="ownerNameMyPost"> {{myPost.firstname}} {{myPost.lastname}} <span>@{{myPost.pseudo}}</span></p>
             </div>
             <p class="timeMyPost"> {{ $dayjs(myPost.date_creation).fromNow() }} </p>
         </div>
+        <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
         <div>
-            <div class="contentMyPost">
+            <div class="contentMyPost" @click="seePost"  v-b-modal.modal-3>
                 <p class="textmyPost"> {{myPost.content}} </p>
             </div>
-            </div>
         </div>
-
+        <seeOnePost v-if ="seeOnePost=== true" :onePost="onePost" />
+    </div>
 </template>
 
 <script>
+import seeProfil from '../components/seeProfil.vue'
 export default {
-    props :['myPost'],
+    components:{seeProfil},
+    props :['myPost' ],
     data(){
         return{
+            userPost:[],
+            onePost:[],
+            seeOneProfil:false,
+            seeOnePost:false
         }
     },
 
     methods: {
+        seeUser(){
+            this.$axios.$get(`auth/${this.myPost.user_id}/profil`)
+            .then((userPost)=>{
+                this.userPost = userPost[0]
+                this.seeOneProfil = true
+                
+            })
+        },
+        seePost(){
+            this.$axios.$get(`post/${this.myPost.id}/onepost`)
+            .then((onePost)=>{
+                this.onePost = onePost[0]
+                console.log(this.onePost)
+                this.seeOnePost = true
+            })
+        },
+
 
     },
 }

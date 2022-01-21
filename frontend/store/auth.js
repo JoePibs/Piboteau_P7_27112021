@@ -69,9 +69,13 @@ export const actions = {
       })
       
     } else {
-      localStorage.set('token', '')
+      localStorage.setItem('token', '')
       commit('setUser', null)
     }
     
-  }
+  },
+  logout({commit}) {
+    localStorage.clear()
+    commit('setUser', null)
+  },
 }

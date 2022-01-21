@@ -51,7 +51,7 @@ import PostIcommented from '../components/postCommented.vue'
 import MyPost from '../components/myPost.vue'
 import stats from '../components/stats.vue'
 import createPost from'../components/createPost.vue'
-import Posts from '../components/posts.vue'
+import Posts from '../components/post.vue'
 
 export default {
   components: { Most, MyPost, stats, PostIcommented,createPost,Posts },
@@ -67,12 +67,10 @@ export default {
     },
 
   mounted(){ 
-    let userconnected = this.$store.state.auth.loggedIn
-    console.log(userconnected)
-    if (localStorage.getItem('userId')===null) {
-      setTimeout(function(){
-        window.location.reload();
-      }, 1);
+   
+
+    if(this.$store.state.auth.loggedIn === false){
+      this.$router.push('/');
     }
 
     this.refresh()

@@ -14,7 +14,7 @@
                     <p class="textPost"> {{post.content}} </p>
                     <b-img :src="post.imageUrl" fluid alt="image de post" class="imagePost" v-if="post.imageUrl !=''"> </b-img>
                 </div>
-                <seePost v-if ="seeOnePost=== true" :onePost="onePost" />
+                <seeOnePost v-if ="seeOnePost=== true" :onePost="onePost" />
                 <div class="reactionUser">
                     <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Commentaires </p>
                     <p @click="hideComments" class="comment_intro" v-else> Cacher les commentaires </p>
@@ -69,9 +69,9 @@
 
 import seeProfil from '../components/seeProfil.vue'
 import Comments from '../components/comment.vue'
-import seePost from'../components/seeOnePost.vue'
+import seeOnePost from'../components/seeOnePost.vue'
 export default {
-    components:{Comments,seeProfil,seePost},
+    components:{Comments,seeProfil,seeOnePost},
     props :['post'],
     data(){
         return{
@@ -127,19 +127,17 @@ export default {
 
     methods: {
         seeUser(){
-            this.seeOneProfil = true
             this.$axios.$get(`auth/${this.post.user_id}/profil`)
             .then((userPost)=>{
                 this.userPost = userPost[0]
-                console.log(this.userPost)
+                this.seeOneProfil = true
             })
         },
         seePost(){
-            this.seeOnePost = true
             this.$axios.$get(`post/${this.post.id}/onepost`)
             .then((onePost)=>{
                 this.onePost = onePost[0]
-                console.log(this.onePost)
+                this.seeOnePost = true
             })
         },
         seeComments(){
@@ -262,7 +260,7 @@ p{
 .textPost{
     padding: 10px 5px 10px 10px;
     border-radius : 10px 10px 0px 0px;
-    background: #5b9d7f4f;
+    border-bottom:2px solid #5b9d7f4f;
 }
 
 .imagePost{
@@ -305,6 +303,7 @@ p{
 
     padding: 5px 5px 5px 5px;
     margin-top : 3px;
+    background-color: black ;
     box-shadow: #5b9d7f13 0px 3px 6px, #5b9d7f10 0px 3px 6px;
 }
 .create_comment{

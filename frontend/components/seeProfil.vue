@@ -1,10 +1,14 @@
 <template>
     <div>
           <b-modal id="modal-2" title="monProfil">
+            <div>
+                  <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
+            </div>
             <div class="monProfil_header">
               <b-avatar  class="modal_avatar" :src="userPost.avatar"></b-avatar>
               <p id="userName_modal"> {{userPost.firstname}} {{userPost.lastname}}</p>
               <span id="pseudo_title_modal">@{{userPost.pseudo}}</span>
+  
               <div v-if="userIsAdmin === true" id="desinscription" class="desinscription">
                 <b-button @click="alert" variant="outline-info" class="mb-2" id="erase">
                   <b-icon icon="power" aria-hidden="true"></b-icon> Désactiver le compte
@@ -16,30 +20,27 @@
                 <b-alert v-if ="userDesactivation === true" variant="success" show>Utilisateur désactivé 
                     <b-button @click ="closeDesactivateAlert" variant="success">Fermer et quitter le profil </b-button>
                 </b-alert>
+              </div>
 
-
-                <div class="profil_style">
-                    <div class="details_style" id="admin_style">
-                        <h3>My Role : </h3>
-                        <p>{{role}}</p>
-                    </div>
-                            
-                    <div class="details_style" id="date_style">
-
-                        <h3>🎂 My Inscription Day : </h3>
-                        <p>{{ $dayjs(userPost.date_creation).format('DD MMMM YYYY') }}</p>
-                    </div>
-                    <div class="details_style" id="email_style">
-                        <h3>📧 My Email : </h3>
-                        <p>{{userPost.email}}</p>
-                    </div>
-                    <div class="details_style" id="bio_style">
-                        <h3>📖My Story is : </h3>
-                        <p>{{userPost.bio}}</p>
-                    </div>
+              <div class="profil_style">
+                <div class="details_style" id="admin_style">
+                  <h3>My Role : </h3>
+                  <p v-if="this.userPost.isAdmin===0">Une simple 🦄</p>
+                  <p v-else>Une Admin 🦄 : THE LICORN</p>
                 </div>
-
-
+                            
+                <div class="details_style" id="date_style">
+                  <h3>🎂 My Inscription Day : </h3>
+                  <p>{{ $dayjs(userPost.date_creation).format('DD MMMM YYYY') }}</p>
+                </div>
+                  <div class="details_style" id="email_style">
+                    <h3>📧 My Email : </h3>
+                     <p>{{userPost.email}}</p>
+                  </div>
+                <div class="details_style" id="bio_style">
+                  <h3>📖My Story is : </h3>
+                  <p>{{userPost.bio}}</p>
+                </div>
               </div>
             </div>
           </b-modal>
@@ -55,11 +56,9 @@ props :['userPost'],
       userIsAdmin : false,
       alertMessage :false,
       userDesactivation : false,
-      role:"",
     }
   },
   mounted () {
-
       const admin = localStorage.getItem('isAdmin')
       console.log(admin)
       if(admin === "1"){
@@ -94,7 +93,11 @@ methods:{
 
   closeAlert(){
     this.alertMessage = false
-    }
+    },
+  closeModal(){
+    this.$bvModal.hide('modal-2')
+    location.reload()
+  }
 } 
 }
 
@@ -119,7 +122,7 @@ methods:{
 }
 
 
-#modal-1{
+#modal-2{
   background: #49756136;
 }
 .monProfil_header{
@@ -140,7 +143,7 @@ methods:{
   width: 100px;
   max-height: 100px;
   max-width: 100px;
-  margin: -60px auto auto auto;
+  margin: -30px auto auto auto;
   text-align: center;
   border: #5b9d7f solid 3px;
 
@@ -151,6 +154,8 @@ methods:{
   display:none;
 }
 .modal-header{
+
+  display:none;
   color:#5b9d7f;
   height: 0px;
   border: none;
@@ -195,9 +200,13 @@ methods:{
 
 }
 
-
 #userName_modal{
   margin-bottom : 0px;
 
+}
+
+.close{
+  color:#5b9d7f;
+  cursor: pointer;
 }
 </style>

@@ -28,7 +28,7 @@ exports.getOnePost =(req,res,next) => {
 //afficher tous les posts d'un seul utilisateur si le post est actif
 exports.getAllUserPost =(req,res,next) =>{
   var idUser = req.userId;
-  let sql = "SELECT p.content, p.date_creation,u.firstname, u.lastname,u.avatar,u.pseudo FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? AND u.isActive=1 ORDER BY p.date_creation DESC";
+  let sql = "SELECT p.content,p.user_id,p.id, p.date_creation,u.firstname, u.lastname,u.avatar,u.pseudo FROM post p, users u WHERE p.user_id = u.id AND p.isActive=1  AND u.id = ? AND u.isActive=1 ORDER BY p.date_creation DESC";
   let query = db.query (sql,[idUser], function (err, results,fields){
     if(err){
       throw err
@@ -137,7 +137,7 @@ exports.countLike =(req,res,next)=>{
 
 exports.mostCommentPost =(req,res,next)=>{
  
-  let sql = "SELECT p.id AS id ,p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo AS pseudo, COUNT(c.id) AS total_comment FROM post p, comment c , users u WHERE c.post_id = p.id AND u.isActive=1 AND p.isActive=1 AND p.user_id = u.id AND p.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'total_comments' DESC"
+  let sql = "SELECT p.id AS id ,p.user_id AS user_id,p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo AS pseudo, COUNT(c.id) AS total_comment FROM post p, comment c , users u WHERE c.post_id = p.id AND u.isActive=1 AND p.isActive=1 AND p.user_id = u.id AND p.date_creation > (NOW() - INTERVAL 3 MONTH) GROUP BY p.id ORDER BY 'total_comments' DESC"
   let query =db.query(sql,function (err, result){
     if(err){
     throw err

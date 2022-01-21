@@ -50,42 +50,7 @@ exports.getOneComment =(req,res,next)=>{
         res.status(200).json (result)
       })
 };
-/*Liker un commentaire
-exports.likeComment =(req,res,next)=>{
-  let userId = req.params.user_id;
-  let type = "c";
-  let idComment = req.params.comment_id;
-  let sql = "INSERT INTO likes (user_id,type,comment_id) VALUES (?,?,?)";
-  let query =db.query(sql,[userId, type, idComment],function (err, result){
-    if(err){
-    throw err
-    }
-    res.status(200).json ({message: "commentaire liké"})
-  })
-};
 
-
-//disliker un commentaire
-exports.dislikeComment =(req,res,next)=>{
-  let userId = req.params.user_id;
-  let type = "c";
-  let id = req.params.id;
-  let idComment = req.params.post_id;
-  let sql = "SELECT * FROM likes l WHERE l.id = ? AND l.type = ? AND l.user_id = ? AND l.comment_id = ?";
-  let query =db.query(sql,[id, type,userId, idComment],function (err, result){
-    if(err){
-      throw err
-    }
-    let sql2 ="DELETE FROM likes l WHERE l.id = ?";
-    let query =db.query(sql2,[id],function (err, result){
-      if(err){
-        throw err
-        }
-        res.status(200).json ({message: "commentaire disliké"})
-      })
-    }
-  )
-}
 
 //compter le nombre de like sur un like
 
@@ -100,7 +65,7 @@ exports.countLike =(req,res,next)=>{
     res.status(200).json ({message :"Le nombre de like sur ce commentaire est : "+ result[0].TOTAL})
   })
 };
-*/
+
 
 // modifier ou desactiver un post si on est l'utilisateur ou l'admin
 exports.deleteOneComment = (req,res,next) => {

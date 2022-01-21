@@ -2,45 +2,60 @@
     <div class="create"> 
         <div class="create_post">
             <b-avatar variant="info" :src="$store.state.auth.user.avatar" class="avatarUser" alt="userImage"></b-avatar>
-            <p class="userName"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
+            <p class="userName_create"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
         
-        <b-form @submit="onSubmit" enctype="multipart/form-data" >
-                <b-form-textarea
-                    id="postInput"
-                    class="postInput"
-                    v-model="form.content"
-                    type="textarea"
-                    placeholder="Hennir la bonne parole 👉"
-                    rows="2"
-                    max-rows="6">
-                </b-form-textarea>
+            <b-form @submit="onSubmit" enctype="multipart/form-data" >
+                    <b-form-textarea
+                        id="postInput"
+                        class="postInput"
+                        v-model="form.content"
+                        type="textarea"
+                        placeholder="Hennir la bonne parole 👉"
+                        rows="2"
+                        max-rows="6">
+                    </b-form-textarea>
 
-                <b-form-file 
-                    v-model="form.image" 
-                    class="inputFile" 
-                    name="post_image" 
-                    @change="imageChange"
-                    id="post_image">
+                    <b-form-file 
+                        v-model="form.image" 
+                        class="inputFile" 
+                        name="post_image" 
+                        @change="imageChange"
+                        id="post_image">
+                        
+                    </b-form-file >
                     
-                </b-form-file >
-                
-                <div class="selectedFile">Selected file: {{ form.imageUrl ? form.imageUrl.name : '' }}</div>
-                
-                <div class="create_input_style">
-                    <div class="button_file">
-                        <b-button onclick="document.querySelector('#post_image').click();" ><img src="@/assets/file_image.png" alt="logo image vectoriel" />add image</b-button>
-                    </div>
+                    <div class="selectedFile">Selected file: {{ form.imageUrl ? form.imageUrl.name : '' }}</div>
+                    
+                    <div class="create_input_style">
+                        <div id="overview" v-if="overviewSee === false" @click="seeOverview">Afficher l'aperçu</div>
+                        <div id="overview" v-if="overviewSee === true" @click="closeOverview">Fermer l'apercu</div>
+                        <div class="button_file">
+                            <b-button onclick="document.querySelector('#post_image').click();" ><img src="@/assets/file_image.png" alt="logo image vectoriel" />add image</b-button>
+                        </div>
 
-                    <div class="button_create">
-                        <img src="@/assets/unicorn_prout.png" alt="licorne fusée" />
-                        <b-button type="submit" variant="create">Lancement</b-button>
+                        <div class="button_create">
+                            <img src="@/assets/unicorn_prout.png" alt="licorne fusée" />
+                            <b-button type="submit" variant="create">Lancement</b-button>
+                        </div>
                     </div>
-                </div>
-        </b-form>
-            
+            </b-form>
         </div>
-        
+        <div v-if="overview === true" class="overview_style">
+            <div  class="infoPost">
+                <b-avatar :src="$store.state.auth.user.avatar"  class="avatarPost"></b-avatar>
+                <p class="ownerName"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
+            </div>
+            <div>
+                <p class="timePost"> il y a xx minutes</p>
+            </div>
+            <div class="contentPost">
+                    <p class="textPost"> {{form.content}} </p>
+                    <b-img :src="form.imageUrl" fluid alt="image de post" class="imagePost" v-if="form.imageUrl !=''"> </b-img>
+            </div>
+        </div>       
     </div>
+        
+
 </template>
 
 <script>
@@ -53,12 +68,24 @@
             content: '',
             imageUrl: '',
         },
+        overview: false,
+        overviewSee : false
         
       }
     },
  
   methods: {
+    seeOverview(){
+        this.overview = true
+        this.overviewSee = true
 
+    },
+    closeOverview(){
+
+        this.overview = false
+        this.overviewSee = false
+
+    },
     imageChange() {
         var formData = new FormData();
         var imagefile = document.querySelector('#post_image');
@@ -101,8 +128,11 @@
     flex-wrap: wrap;
     width: 100%;
 }
-
-.userName{
+.userName_create span{
+    font-size:10px;
+    color: #5b9d7f;
+}
+.userName_create{
     padding-left : 10px;
     font-size : 14px;
 }
@@ -129,17 +159,31 @@
     flex-direction: row;
 }
 
+#overview{
 
+    font-size : 13px;
+    color: #5b9d7f;
+    background-color: transparent;
+    margin-top:-5px;
+    margin-right:30px;
+    cursor: pointer;
+}
+
+.overview_style{
+    width:300px;
+    margin: 20px auto 10px auto;
+}
 .btn-secondary {
     font-size : 10px;
     background-color: transparent;
     border: none;
+    margin-top:-10px;
     }
 .button_file img{
     width: 30px;
     margin-right: 5px;
-    margin-top:-15px;
 }
+
 .button_create{
   display: flex;
   flex-direction: row;

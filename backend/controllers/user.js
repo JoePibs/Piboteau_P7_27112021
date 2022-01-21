@@ -38,12 +38,14 @@ exports.signup = async (req, res) => {
 
 //login
 exports.login = (req, res, next) => {
+  console.log(req)
   let email = req.body.email
-  const sql = 'SELECT * FROM users u WHERE u.email = ?'
+  const sql = 'SELECT * FROM users u WHERE u.email = ? AND u.isActive=1'
   db.query(sql, [email], (err, result) => {
+    console.log(result)
     // je passe mon email en second argument pour que ma requete recoivent les bonnes valeurs
-    if (!result) {
-      return res.status(403).json({ error: 'Utilisateur non trouvé !' }) // if not existing user
+    if (result.length === 0) {
+      return res.status(403).json({ message: 'Utilisateur non trouvé ! Veuillez vérifier votre email ou contacter un administrateur' }) // if not existing user
     }
     const user = result[0]
     bcrypt
@@ -146,7 +148,7 @@ exports.updateAccount = (req, res, next) => {
 exports.seeAprofil = (req, res, next) => {
   let profilId = req.params.id
   let sql =
-    'SELECT u.id, u.firstname, u.lastname, u.email, u.bio, u.avatar, u.pseudo, u.date_creation FROM users u WHERE u.id = ? AND u.isActive=1'
+    'SELECT u.id, u.firstname, u.lastname, u.email, u.bio, u.avatar, u.pseudo, u.date_creation, u.isAdmin FROM users u WHERE u.id = ? AND u.isActive=1'
   let query = db.query(sql, [profilId], function (err, results, fields) {
     if (err) {
       throw err
@@ -193,7 +195,7 @@ exports.updatePassword = (req, res, next) => {
 exports.allPostUserHaveComment = (req, res, next) => {
   let userId = req.userId
   let sql =
-    "SELECT p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo As pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND u.isActive=1 AND c.date_creation > (NOW() - INTERVAL 3 MONTH) ORDER BY p.date_creation DESC"
+    "SELECT p.content AS content, p.date_creation As date_creation,p.id AS id, p.user_id AS user_id, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo As pseudo FROM post p, comment c , users u WHERE c.user_id = ? AND p.id = c.post_id AND u.id = p.user_id AND u.isActive=1 AND c.date_creation > (NOW() - INTERVAL 3 MONTH) ORDER BY p.date_creation DESC"
   let query = db.query(sql, [userId], function (err, result) {
     if (err) {
       throw err

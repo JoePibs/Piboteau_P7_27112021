@@ -1,6 +1,10 @@
 <template>
     <div>
         <b-modal id="modal-3" title="post">
+
+            <div>
+                  <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
+            </div>
             <div class="thepost">
                 <div class="cardPost">
                     <div class="infoPost" @click="seeUser" v-b-modal.modal-2 >
@@ -80,7 +84,7 @@ export default {
                 content: ''
             },
             userPost:[],
-            commments:[],
+            comments:[],
             postLikes:"",
             likes:"",
             loadingLikes: true,
@@ -109,7 +113,6 @@ export default {
       this.$axios.$get(`comment/${this.onePost.id}/allcommentpost`)
         .then((comments)=>{
             this.comments = comments
-            console.log(this.comment)
         })
 
     this.$axios.$get(`post/${this.onePost.id}/countLikes`)
@@ -128,6 +131,11 @@ export default {
     },
 
     methods: {
+
+        closeModal(){
+            this.$bvModal.hide('modal-3')
+            location.reload()
+        },
         seeUser(){
             this.seeOneProfil = true
             this.$axios.$get(`auth/${this.onePost.user_id}/profil`)
@@ -199,5 +207,7 @@ export default {
 
 </script>
 <style>
-
+#modal-3{
+  background: #49756136;
+}
 </style>

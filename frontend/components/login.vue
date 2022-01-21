@@ -38,20 +38,14 @@ export default {
   },
 
   methods: {
-    onSubmit (event) {
+    async onSubmit (event) {
       event.preventDefault()
-      this.$axios
-        .post('auth/login', this.form)        
-        .then(async response => {
+      await this.$store.dispatch('auth/login', {
+        email: this.form.email,
+        password: this.form.password
+      })
+      if (this.$store.state.auth.loggedIn)
           this.$router.push('/timeline') 
-          await this.$store.dispatch('auth/login', {
-            email: this.form.email,
-            password: this.form.password
-          })
-        })
-        .catch(error => {
-          alert(error.response.data.message)
-        })
     },
     
   
