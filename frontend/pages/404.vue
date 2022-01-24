@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container" >
-                <b-img src="@/assets/bad_unicorn.png" fluid alt="licorne vomito"></b-img>
+                <b-img src="@/assets/images/bad_unicorn.png" fluid alt="licorne vomito"></b-img>
             <div class="content" >
                 <h1> ERREUR 404 </h1>
                 <blockquote>" Même le plus fantastique animal peut choisir le mauvais chemin "

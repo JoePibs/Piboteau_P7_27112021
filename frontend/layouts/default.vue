@@ -1,11 +1,11 @@
 <template>
   <div>
     <div  v-if="this.$store.state.auth.loggedIn === false" class="header">
-      <b-img class="logo"  src="@/assets/header_home.png" alt="logo"></b-img>
+      <b-img class="logo"  src="@/assets/images/header_home.png" alt="logo"></b-img>
     </div>
     
     <div  v-else class="header_logged">
-      <b-img class="logo_logged"  src="@/assets/Logo_Timeline.png" fluid alt="logo"></b-img>
+      <b-img class="logo_logged"  src="@/assets/images/Logo_Timeline.png" fluid alt="logo"></b-img>
       <h1> Entre collègues, tout est possible ! </h1>
       <b-button @click="disconnect" id="logout"><b-icon icon="power" aria-hidden="true"></b-icon>Logout</b-button>
       <div @click="seeAuth" class="avatar_logged" v-b-modal.modal-1 > 

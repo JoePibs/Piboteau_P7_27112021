@@ -5,7 +5,7 @@
             <b-col class="visibility">
                 <h2> Mes posts récents </h2>
                 <div v-if="myPosts.length === 0" class="noContentMore">
-                <img id="shame" src="@/assets/shame.png" alt="licorne on Shame">
+                <img id="shame" src="@/assets/images/shame.png" alt="licorne on Shame">
                 <p >Vous n'avez encore rien publié ? </p>
               </div>
               <div v-else class="contentMore">
@@ -34,7 +34,7 @@
               </div>
                 <h2> Les posts que j'ai commentés </h2>
               <div v-if="postIcommenteds.length === 0" class="noContentMore">
-                <img src="@/assets/echec_licorne.png" alt="licorne sauteuse">
+                <img src="@/assets/images/echec_licorne.png" alt="licorne sauteuse">
                 <p >Vous n'avez pas encore commenté de post </p>
               </div>
               <div v-else class="contentMore">

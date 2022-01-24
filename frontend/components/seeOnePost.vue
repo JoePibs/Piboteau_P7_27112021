@@ -23,8 +23,8 @@
                         <div class="reactionUser">
                             <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Voir les commentaires </p>
                             <p @click="hideComments" class="comment_intro" v-else> Cacher les commentaires </p>
-                            <b-img @click="like" src="@/assets/like_unicorn_BW.png" fluid alt="funky licorne" class="like" v-if="postLikes===0" > </b-img>
-                            <b-img @click="like" src="@/assets/like_unicorn.png" fluid alt="funky licorne" class="like" v-else > </b-img>
+                            <b-img @click="like" src="@/assets/images/like_unicorn_BW.png" fluid alt="funky licorne" class="like" v-if="postLikes===0" > </b-img>
+                            <b-img @click="like" src="@/assets/images/like_unicorn.png" fluid alt="funky licorne" class="like" v-else > </b-img>
                             <p class="numberOfLikes">{{likes}}</p>
                             <div class="trash" v-if="owner ===true" @click="warningDestroy">
                                 <b-icon  icon="trash-fill" aria-hidden="true" class="trash"></b-icon>
@@ -53,7 +53,7 @@
                                             max-rows="6">  
                                         </b-form-textarea>
                                     <div class="button_create">
-                                            <img src="@/assets/unicorn_prout.png" alt="licorne fusée" />
+                                            <img src="@/assets/images/unicorn_prout.png" alt="licorne fusée" />
                                             <b-button type="submit" variant="create">Lancement</b-button>
                                         </div>
                                 </b-form>
@@ -134,7 +134,6 @@ export default {
 
         closeModal(){
             this.$bvModal.hide('modal-3')
-            location.reload()
         },
         seeUser(){
             this.seeOneProfil = true

@@ -22,11 +22,3 @@ export default {
   name: 'joe'
 }
 </script>
-
-<style>
-.signup{
-  border: solid 1px #5b9d7f;
-  border-radius : 5px;
-  box-shadow: #5b9d7f79 0px 10px 20px, #5b9d7f81 0px 6px 6px;
-}
-</style>
