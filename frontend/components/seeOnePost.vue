@@ -1,22 +1,20 @@
 <template>
     <div>
         <b-modal id="modal-3" title="post">
-
             <div>
                   <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
             </div>
             <div class="thepost">
                 <div class="cardPost">
-                    <div class="infoPost" @click="seeUser" v-b-modal.modal-2 >
+                    <div class="infoPost"  >
                         <b-avatar :src="onePost.avatar"  class="avatarPost"></b-avatar>
-                        <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
                         <p class="ownerName"> {{onePost.firstname}} {{onePost.lastname}} <span>@{{onePost.pseudo}}</span></p>
                     </div>
                     <p class="timePost"> {{ $dayjs(onePost.date_creation).fromNow() }}</p>
                 </div>
                 <div>
                     <div class="contentPost">
-                        <div class="one_post_none" @click="seeUser" v-b-modal.modal-2>
+                        <div class="one_post_none" >
                             <p class="textPost"> {{onePost.content}} </p>
                             <b-img :src="onePost.imageUrl" fluid alt="image de post" class="imagePost" v-if="onePost.imageUrl !=''"> </b-img>
                         </div>
@@ -58,11 +56,12 @@
                                         </div>
                                 </b-form>
                             </div>            
-                        </div>
-                                    
+                        </div>                                  
                         <div v-if="visible_comments===true">
                             <Comments  class="comments" v-for="comment in comments" :key="comment.id" :comment="comment"/>
                         </div>
+                        <div v-if="visible_comments===true && this.comments.length ===0"> 
+                            <h2>Soyez le premier à à commenter ce post</h2> </div>
                     </div>
                 </div>
             </div>
@@ -71,27 +70,25 @@
 </template>
 
 <script>
-import seeProfil from '../components/seeProfil.vue'
 import Comments from '../components/comment.vue'
 
     
 export default {
-    components:{Comments,seeProfil},
+    components:{Comments},
     props :['onePost'],
   data () {
     return{
             form: {
                 content: ''
             },
-            userPost:[],
             comments:[],
             postLikes:"",
             likes:"",
             loadingLikes: true,
             userlike : false,
             owner : false,
-            visible_comments : true,
-            click_comment : false,
+            visible_comments : false,
+            click_comment : true,
             alertDestroy : false,
             seeOneProfil : false,
         }
@@ -134,14 +131,6 @@ export default {
 
         closeModal(){
             this.$bvModal.hide('modal-3')
-        },
-        seeUser(){
-            this.seeOneProfil = true
-            this.$axios.$get(`auth/${this.onePost.user_id}/profil`)
-            .then((userPost)=>{
-                this.userPost = userPost[0]
-                console.log(this.userPost)
-            })
         },
         seeComments(){
             this.$axios.$get(`comment/${this.onePost.id}/allcommentpost`)

@@ -3,9 +3,9 @@
          <div class="cardPost">
             <div class="infoPost" @click="seeUser" v-b-modal.modal-2 >
                 <b-avatar :src="post.avatar"  class="avatarPost"></b-avatar>
-                <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
                 <p class="ownerName"> {{post.firstname}} {{post.lastname}} <span>@{{post.pseudo}}</span></p>
             </div>
+            <seeProfil v-if = "seeOneProfil === true" :userPost="userPost" />
             <p class="timePost"> {{ $dayjs(post.date_creation).fromNow() }}</p>
         </div>
         <div>
@@ -14,7 +14,7 @@
                     <p class="textPost"> {{post.content}} </p>
                     <b-img :src="post.imageUrl" fluid alt="image de post" class="imagePost" v-if="post.imageUrl !=''"> </b-img>
                 </div>
-                <seeOnePost v-if ="seeOnePost=== true" :onePost="onePost" />
+                <seeOnePost v-if ="seeOnePost === true" :onePost="onePost" />
                 <div class="reactionUser">
                     <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Commentaires </p>
                     <p @click="hideComments" class="comment_intro" v-else> Cacher les commentaires </p>
@@ -127,12 +127,15 @@ export default {
 
     methods: {
         seeUser(){
+            this.seeOneProfil = true
             this.$axios.$get(`auth/${this.post.user_id}/profil`)
             .then((userPost)=>{
                 this.userPost = userPost[0]
+                this.seeOneProfil = true
             })
         },
         seePost(){
+            this.seeOnePost = true
             this.$axios.$get(`post/${this.post.id}/onepost`)
             .then((onePost)=>{
                 this.onePost = onePost[0]

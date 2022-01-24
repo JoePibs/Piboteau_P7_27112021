@@ -61,7 +61,7 @@ props :['userPost'],
   },
   mounted () {
       const admin = localStorage.getItem('isAdmin')
-      if(admin === "1"){
+      if(admin === 1){
           this.userIsAdmin = true
           this.role = "Une Admin 🦄 : THE LICORN"
       }else{   

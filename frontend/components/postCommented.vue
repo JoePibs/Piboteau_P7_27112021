@@ -5,15 +5,15 @@
                 <b-avatar :src="postIcommented.avatar" class="avatarCommentedPost"></b-avatar>
                 <p class="ownerNameCommentedPost"> {{postIcommented.firstname}} {{postIcommented.lastname}} <span>@{{postIcommented.pseudo}}</span></p>
             </div>
+            <seeProfil v-if = "seeOneProfil === true" :userPost="userPost" />
             <p class="timeMyPost"> {{ $dayjs(postIcommented.date_creation).fromNow() }} </p>
         </div>
-        <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
         <div>
-            <div class="contentCommentedPost" @click="seePost"  v-b-modal.modal-3>
+            <div class="contentCommentedPost" @click="seePost" v-b-modal.modal-3 >
                 <p class="textCommentedPost"> {{postIcommented.content}} </p>
+                <seeOnePost v-if ="seeOnePost === true" :onePost="onePost" />
             </div>
         </div>
-        <seeOnePost v-if ="seeOnePost=== true" :onePost="onePost" />
     </div>
 
 </template>
@@ -27,29 +27,33 @@ export default {
     props :['postIcommented'],
     data(){
         return{
-            userPost:[],
             onePost:[],
-            seeOneProfil:false,
-            seeOnePost:false
+            userPost:[],
+            seeOneProfil: false,
+            seeOnePost: false,
         }
     },
 
     methods: {
         seeUser(){
+            this.seeOneProfil = true
             this.$axios.$get(`auth/${this.postIcommented.user_id}/profil`)
             .then((userPost)=>{
+                console.log(userPost[0])
                 this.userPost = userPost[0]
                 this.seeOneProfil = true
-                
+                console.log(this.seeOneProfil)
             })
         },
         seePost(){
+            this.seeOnePost = true
             this.$axios.$get(`post/${this.postIcommented.id}/onepost`)
             .then((onePost)=>{
                 this.onePost = onePost[0]
                 this.seeOnePost = true
             })
         },
+        
 
     },
 }
