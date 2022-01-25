@@ -103,7 +103,7 @@
                 </div>
 
     <div class="button_inscription">
-      <img src="@/assets/unicorn_prout.png" alt="licorne lancement" />
+      <img src="@/assets/images/unicorn_prout.png" alt="licorne lancement" />
       <b-button type="submit" variant="primary" id="signupButton" >Launch</b-button>
     </div>
   </b-form>
@@ -280,94 +280,4 @@ export default {
 }
 </script>
 
-<style>
-.container{
-  padding: none;
-}
-.nav-tabs {
-  border-bottom: 1px solid #5b9d7f;
-}
-.nav-tabs .nav-link.active,
-.nav-tabs .nav-item.show .nav-link {
-  color: #f5f6f8;
-  background-color: #5b9d7f;
-  border-color: #5b9d7f;
-}
-a {
-  color: #5b9d7f;
-}
-.form-control {
-  color: #fff;
-  background-color: #212529;
-  border: 1px solid #212529;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.form-control:focus {
-  color: #5b9d7f;
-  background-color: #292828;
-  border-color: #5b9d7f;
-  box-shadow: 0 0 0 0.2rem #5b9d7f29;
-}
-.btn-primary {
-  color: #fff;
-  background-color: #5b9d7f;
-  border-color: #5b9d7f;
-  margin-left: 40px;
-}
-.btn-primary:disabled{
-  color: rgba(66, 65, 65, 0.541);
-  background-color: #0d0e0d;
-  border-color: #9d5b5b;
-  margin-left: 40px;
-}
-.button_inscription {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
 
-.button_inscription img {
-  height: 50px;
-  margin-left: auto;
-  margin-right: -55px;
-  z-index: 1;
-}
-
-.errorMessage {
-  font-size: 10px;
-  color: #5b9d7f;
-  display: flex;
-  margin : 3px 10px 0 20px;
-  white-space: normal;
-  justify-content: center;
-}
-.selectedFile{
-    display:none;
-}
-.create_style img {
-  height: 50px;
-}
-.create_style span {
-  color:#5b9d7f;
-  font-size : 16px;
-  border: dashed #5b9d7f 1px;
-  padding: 5px;
-  border-radius: 5%;
-}
-#style_upload img{
-  width:30%;
-  border-radius:5%;
-  border: #5b9d7f 2px solid;
-  margin-right:5px;
-}
-#style_upload span{
-  color: #5b9d7f;
-  font-size: 15px;
-}
-#inscription{
-width: 100%;
-padding : 0px 0px 0px 0px;
-}
-</style>

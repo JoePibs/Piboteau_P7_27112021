@@ -1,50 +1,53 @@
 <template>
     <div class="mypost">
-         <div class="cardMyPost" @click="seeUser" v-b-modal.modal-2 >
-            <div class="infoMyPost" >
+         <div class="cardMyPost"  >
+            <div class="infoMyPost" @click="seeUser" v-b-modal.modal-2 >
                 <b-avatar :src="myPost.avatar" class="avatarMyPost"></b-avatar>
                 <p class="ownerNameMyPost"> {{myPost.firstname}} {{myPost.lastname}} <span>@{{myPost.pseudo}}</span></p>
             </div>
+            <seeProfil v-if = "seeOneProfil === true" :userPost="userPost" />
             <p class="timeMyPost"> {{ $dayjs(myPost.date_creation).fromNow() }} </p>
         </div>
-        <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
         <div>
-            <div class="contentMyPost" @click="seePost"  v-b-modal.modal-3>
+            <div class="contentMyPost" @click="seePost" v-b-modal.modal-3 >
                 <p class="textmyPost"> {{myPost.content}} </p>
             </div>
+            <seeOnePost v-if ="seeOnePost === true" :onePost="onePost" />
         </div>
-        <seeOnePost v-if ="seeOnePost=== true" :onePost="onePost" />
     </div>
 </template>
 
 <script>
 import seeProfil from '../components/seeProfil.vue'
+import seeOnePost from'../components/seeOnePost.vue'
 export default {
-    components:{seeProfil},
+    components: {seeProfil,seeOnePost},
     props :['myPost' ],
     data(){
         return{
-            userPost:[],
             onePost:[],
-            seeOneProfil:false,
-            seeOnePost:false
+            userPost:[],
+            seeOneProfil: false,
+            seeOnePost: false,
+            
         }
     },
 
     methods: {
         seeUser(){
+            this.seeOneProfil = true
             this.$axios.$get(`auth/${this.myPost.user_id}/profil`)
             .then((userPost)=>{
+                console.log(userPost[0])
                 this.userPost = userPost[0]
                 this.seeOneProfil = true
-                
             })
         },
         seePost(){
+            this.seeOnePost = true
             this.$axios.$get(`post/${this.myPost.id}/onepost`)
             .then((onePost)=>{
                 this.onePost = onePost[0]
-                console.log(this.onePost)
                 this.seeOnePost = true
             })
         },

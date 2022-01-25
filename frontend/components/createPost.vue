@@ -30,11 +30,11 @@
                         <div id="overview" v-if="overviewSee === false" @click="seeOverview">Afficher l'aperçu</div>
                         <div id="overview" v-if="overviewSee === true" @click="closeOverview">Fermer l'apercu</div>
                         <div class="button_file">
-                            <b-button onclick="document.querySelector('#post_image').click();" ><img src="@/assets/file_image.png" alt="logo image vectoriel" />add image</b-button>
+                            <b-button onclick="document.querySelector('#post_image').click();" ><img src="@/assets/images/file_image.png" alt="logo image vectoriel" />add image</b-button>
                         </div>
 
                         <div class="button_create">
-                            <img src="@/assets/unicorn_prout.png" alt="licorne fusée" />
+                            <img src="@/assets/images/unicorn_prout.png" alt="licorne fusée" />
                             <b-button type="submit" variant="create">Lancement</b-button>
                         </div>
                     </div>

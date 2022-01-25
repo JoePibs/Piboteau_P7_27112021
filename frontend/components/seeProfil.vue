@@ -50,6 +50,7 @@
 <script>
 export default {
 props :['userPost'],
+
   data () {
     return {
       isAdmin:"",
@@ -60,8 +61,7 @@ props :['userPost'],
   },
   mounted () {
       const admin = localStorage.getItem('isAdmin')
-      console.log(admin)
-      if(admin === "1"){
+      if(admin === 1){
           this.userIsAdmin = true
           this.role = "Une Admin 🦄 : THE LICORN"
       }else{   
@@ -96,117 +96,9 @@ methods:{
     },
   closeModal(){
     this.$bvModal.hide('modal-2')
-    location.reload()
   }
 } 
 }
 
-   
-    
-          
-  
-
-
 </script>
 
-<style>
-.header_avatar{
-  height: 50px;
-  width: 50px;
-  max-height: 50px;
-  max-width: 50px;
-  margin: auto auto auto auto;
-  border: #5b9d7f solid 3px;
-  cursor: pointer;
-
-}
-
-
-#modal-2{
-  background: #49756136;
-}
-.monProfil_header{
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-.monProfil_header p{
-  font-size: 20px;
-}
-
-.monProfil_header span{
-  color: #5b9d7f;
-}
-.modal_avatar{
-  
-  height: 100px;
-  width: 100px;
-  max-height: 100px;
-  max-width: 100px;
-  margin: -30px auto auto auto;
-  text-align: center;
-  border: #5b9d7f solid 3px;
-
-}
-
-  
-.modal-footer{
-  display:none;
-}
-.modal-header{
-
-  display:none;
-  color:#5b9d7f;
-  height: 0px;
-  border: none;
-}
-.modal-header h5{
-  display:none;
-}
-.close{
-  color:#14f590;
-}
-.close:hover {
-    color:#97032f;
-    text-decoration: none;
-}
-.modal-content {
-  background-color : rgb(0, 0, 0) ;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #5b9d7f;
-  border-color: #5b9d7f;
-  margin-left: 40px;
-}
-.profil_style{
-    margin-top :30px;
-}
-.details_style{
-    display: flex;
-    flex-direction : column;
-    text-align: left;
-    width: 100%;
-}
-.details_style h3{
-    font-size :16px;
-    color: #5b9d7f;
-    background-color: rgb(36, 35, 35);
-    padding:10px 10px 10px 10px ;
-}
-.details_style p{
-    font-size :14px;
-
-}
-
-#userName_modal{
-  margin-bottom : 0px;
-
-}
-
-.close{
-  color:#5b9d7f;
-  cursor: pointer;
-}
-</style>

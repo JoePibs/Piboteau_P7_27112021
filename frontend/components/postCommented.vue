@@ -5,15 +5,15 @@
                 <b-avatar :src="postIcommented.avatar" class="avatarCommentedPost"></b-avatar>
                 <p class="ownerNameCommentedPost"> {{postIcommented.firstname}} {{postIcommented.lastname}} <span>@{{postIcommented.pseudo}}</span></p>
             </div>
+            <seeProfil v-if = "seeOneProfil === true" :userPost="userPost" />
             <p class="timeMyPost"> {{ $dayjs(postIcommented.date_creation).fromNow() }} </p>
         </div>
-        <seeProfil v-if ="seeOneProfil === true" :userPost="userPost" />
         <div>
-            <div class="contentCommentedPost" @click="seePost"  v-b-modal.modal-3>
+            <div class="contentCommentedPost" @click="seePost" v-b-modal.modal-3 >
                 <p class="textCommentedPost"> {{postIcommented.content}} </p>
+                <seeOnePost v-if ="seeOnePost === true" :onePost="onePost" />
             </div>
         </div>
-        <seeOnePost v-if ="seeOnePost=== true" :onePost="onePost" />
     </div>
 
 </template>
@@ -27,81 +27,39 @@ export default {
     props :['postIcommented'],
     data(){
         return{
-            userPost:[],
             onePost:[],
-            seeOneProfil:false,
-            seeOnePost:false
+            userPost:[],
+            seeOneProfil: false,
+            seeOnePost: false,
         }
     },
 
     methods: {
         seeUser(){
+            this.seeOneProfil = true
             this.$axios.$get(`auth/${this.postIcommented.user_id}/profil`)
             .then((userPost)=>{
+                console.log(userPost[0])
                 this.userPost = userPost[0]
                 this.seeOneProfil = true
-                
+                console.log(this.seeOneProfil)
             })
         },
         seePost(){
+            this.seeOnePost = true
             this.$axios.$get(`post/${this.postIcommented.id}/onepost`)
             .then((onePost)=>{
                 this.onePost = onePost[0]
                 this.seeOnePost = true
             })
         },
+        
 
     },
 }
 </script>
 
 
-<style>
-
-p{
-    color: aliceblue;
-    font-size :12px
-}
-.CommentedPost{
-    margin: 10px 0 10px 0;
-    padding: 10px 0 10px 0;
-}
-.cardCommentedPost{
-    display: flex;
-    flex-direction: column;
-
-    margin: 20px 0 10px 0;
-}
-.infoCommentedPost{
-    display: flex;
-    flex-direction: row;
-}
-
-.ownerNameCommentedPost{
-    font-size: 14px;
-    margin-top: -2px;
-    padding-left:10px;
-}
-
-.ownerNameCommentedPost span{
-    padding-right: 5px;
-    color: #5b9d7f;
-    font-size: 10px;
-}
-
-
-.contentCommentedPost{
-    background-color:rgb(17, 17, 17) ;
-    border-radius : 3px 3px 3px 3px;
-    box-shadow:#5b9d7f 0px 1px 5px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    padding-bottom: 1px
-}
-
-.textCommentedPost{
-    padding: 10px 5px 0px 10px;
-}
-
-</style>
 
 
 
