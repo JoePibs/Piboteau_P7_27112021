@@ -4,9 +4,9 @@
             <div>
                   <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
             </div>
-            <div class="monProfil_header">
+            <div class="myprofil_header">
               <b-avatar  class="modal_avatar" :src="$store.state.auth.user.avatar"></b-avatar>
-              <p id="userName_modal"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}}</p>
+              <p id="username_modal"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}}</p>
               <span id="pseudo_title_modal">@{{$store.state.auth.user.pseudo}}</span>
               <div id="desinscription" class="desinscription">
                 <b-button @click="alert" variant="outline-info" class="mb-2">
@@ -258,128 +258,4 @@ methods:{
 
 </script>
 
-<style>
-.header_avatar{
-  height: 50px;
-  width: 50px;
-  max-height: 50px;
-  max-width: 50px;
-  margin: auto auto auto auto;
-  border: #5b9d7f solid 3px;
-  cursor: pointer;
 
-}
-
-
-#modal-1{
-  background: #49756136;
-}
-.monProfil_header{
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-.monProfil_header p{
-  font-size: 20px;
-}
-
-.monProfil_header span{
-  color: #5b9d7f;
-}
-.modal_avatar{
-  
-  height: 100px;
-  width: 100px;
-  max-height: 100px;
-  max-width: 100px;
-  margin: -30px auto auto auto;
-  text-align: center;
-  border: #5b9d7f solid 3px;
-
-}
-.modal-content {
-  background-color : black ;
-}
-#alert{
-  margin-left: 14px;
-  background-color: #5b9d7f;
-  border: #5b9d7f solid 3px;
-}
-#alert_text{
-  font-size : 14px;
-  font-style: italic;
-}
-#oups{
-  background: rgb(4, 84, 109);
-}
-
-#validation_button {
-  color: #fff;
-  background-color: #5b9d7f;
-  border-color: #5b9d7f;
-  padding : 10px 10px 10px 10px;
-  margin: 10px 10px 10px 10px;
-  font-size: 18px;
-}
-#validation_button :disabled{
-  color: rgba(66, 65, 65, 0.541);
-  background-color: #0d0e0d;
-  border-color: #9d5b5b;
-  margin-left: 40px;
-}
-
-.errorMessage {
-  font-size: 10px;
-  color: #5b9d7f;
-  display: flex;
-  margin : 3px 10px 0 20px;
-  white-space: normal;
-  justify-content: center;
-}
-
-#style_upload {
-  display:flex;
-  flex-direction:column;
-  width:70%;
-  margin: 0px auto 20px auto;
-
-}
-
-#style_upload img{
-  width:40%;
-  border-radius:5%;
-  border: #5b9d7f 2px solid;
-  margin-right:5px;
-}
-#style_upload span{
-  color: #5b9d7f;
-  font-size: 18px;
-}
-
-.button_modification{
-
-  display : flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-
-#cancel_button{
-  background-color :#a31d1d;
-  border: #a31d1d;
-  margin-left: 10px;
-  padding : 10px 10px 10px 10px;
-  margin: 10px 10px 10px 10px;
-  font-size: 18px;
-}
-.mb-2{
-  margin-top :20px;
-  width: 30%;
-  font-size: 15px;
-}
-
-#userName_modal{
-  margin-bottom : 0px;
-
-}
-</style>

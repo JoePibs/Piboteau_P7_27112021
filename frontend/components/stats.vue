@@ -46,31 +46,3 @@ export default{
 
 
 </script>
-
-<style>
-.stats_container{
-    width: 90%;
-    margin : 0px auto 20px auto;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-.stats_bloc{
-    width: 40%;
-    padding:20px;
-    border: solid 1px #5b9d7f;
-    border-radius : 5px;
-    box-shadow: #5b9d7f79 0px 10px 20px, #5b9d7f81 0px 6px 6px;
-    margin : 20px auto 20px auto;
-}
-.stats_bloc h3{
-    font-size : 18px;
-    color: white;
-    text-align: center;
-}
-
-.stats_bloc p{
-    font-size : 24px;
-    color: #5b9d7f;
-}
-</style>

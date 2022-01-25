@@ -4,13 +4,12 @@
       <b-row class="form">
         <bodyHome />
       </b-row>
-
+  
       <b-row class="description">
-        <b-col>
-          <b-row class="title">
-            <h2>My Groupomania Socia Network</h2>
-          </b-row>
-
+        <b-row class="title">
+          <h2>My Groupomania Socia Network</h2>
+        </b-row>
+        <b-row class="explain">
           <b-row class="description_theme">
             <div class="bloc">
               <img src="@/assets/images/welcome_unicorn.png" alt="licorne dit hello" />
@@ -19,7 +18,7 @@
               </div>
             </div>
           </b-row>
-
+        
           <b-row class="description_theme">
             <div class="bloc">
               <img src="@/assets/images/succes_unicorn.png" alt="licorne qui danse" />
@@ -29,12 +28,16 @@
               </div>
             </div>
           </b-row>
-        </b-col>
+        </b-row>
       </b-row>
+       <b-row class="title">
+          <h2>La famille en chiffres</h2>
+        </b-row>
       <b-row class="stats">
         <stats />
       </b-row>
     </b-container>
+
     <b-container class="container_else" v-else>
       <img src="@/assets/images/gif_licorne.gif" alt="licorne dit hello" />
       <div>

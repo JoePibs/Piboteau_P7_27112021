@@ -4,9 +4,9 @@
             <div>
                   <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
             </div>
-            <div class="monProfil_header">
+            <div class="myprofil_header">
               <b-avatar  class="modal_avatar" :src="userPost.avatar"></b-avatar>
-              <p id="userName_modal"> {{userPost.firstname}} {{userPost.lastname}}</p>
+              <p id="username_modal"> {{userPost.firstname}} {{userPost.lastname}}</p>
               <span id="pseudo_title_modal">@{{userPost.pseudo}}</span>
   
               <div v-if="userIsAdmin === true" id="desinscription" class="desinscription">

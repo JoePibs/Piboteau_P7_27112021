@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="comment_overflow">
         <div class="comment">
             <div class="card_comment">
                 <div class="info_comment" >
@@ -11,16 +11,15 @@
                 <div class="content_comment">
                     <p class="text_comment"> {{comment.content}} </p>
                 </div>
-                <div id="trash_comment" v-if="owner===true" @click="warningDestroyComment">
+                <div class="trash_comment" v-if="owner===true" @click="warningDestroyComment">
                     <p> 🧨 Destroy</p>
                 </div>
             </div>
         </div>
-
-                <b-alert show v-if="alertDestroyComment === true" variant="danger" id="alert"> Vous êtes sur ? 
-                    <b-button @click="destroyComment" variant="danger">Oui</b-button>
-                    <b-button @click ="closeDestroyComment" variant="success">Oups </b-button>
-                </b-alert>
+        <b-alert show v-if="alertDestroyComment === true" variant="danger" id="alert"> Vous êtes sur ? 
+            <b-button @click="destroyComment" variant="danger">Oui</b-button>
+            <b-button @click ="closeDestroyComment" variant="success">Oups </b-button>
+        </b-alert>
     </div>
 </template>
 

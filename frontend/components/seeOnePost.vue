@@ -5,25 +5,27 @@
                   <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
             </div>
             <div class="thepost">
-                <div class="cardPost">
-                    <div class="infoPost"  >
-                        <b-avatar :src="onePost.avatar"  class="avatarPost"></b-avatar>
-                        <p class="ownerName"> {{onePost.firstname}} {{onePost.lastname}} <span>@{{onePost.pseudo}}</span></p>
+                <div class="thepost_card">
+                    <div class="thepost_info"  >
+                        <b-avatar :src="onePost.avatar"  class="thepost_avatar"></b-avatar>
+                        <p class="thepost_ownername"> {{onePost.firstname}} {{onePost.lastname}} <span>@{{onePost.pseudo}}</span></p>
                     </div>
-                    <p class="timePost"> {{ $dayjs(onePost.date_creation).fromNow() }}</p>
+                    <p class="thepost_time"> {{ $dayjs(onePost.date_creation).fromNow() }}</p>
                 </div>
                 <div>
-                    <div class="contentPost">
+                    <div class="thepost_content">
                         <div class="one_post_none" >
-                            <p class="textPost"> {{onePost.content}} </p>
-                            <b-img :src="onePost.imageUrl" fluid alt="image de post" class="imagePost" v-if="onePost.imageUrl !=''"> </b-img>
+                            <div class="thepost_text_style">
+                                <p class="thepost_text"> {{onePost.content}} </p>
+                            </div>
+                            <b-img :src="onePost.imageUrl" fluid alt="image de post" class="thepost_image" v-if="onePost.imageUrl !=''"> </b-img>
                         </div>
-                        <div class="reactionUser">
+                        <div class="reaction_user">
                             <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Voir les commentaires </p>
                             <p @click="hideComments" class="comment_intro" v-else> Cacher les commentaires </p>
                             <b-img @click="like" src="@/assets/images/like_unicorn_BW.png" fluid alt="funky licorne" class="like" v-if="postLikes===0" > </b-img>
                             <b-img @click="like" src="@/assets/images/like_unicorn.png" fluid alt="funky licorne" class="like" v-else > </b-img>
-                            <p class="numberOfLikes">{{likes}}</p>
+                            <p class="number_of_likes">{{likes}}</p>
                             <div class="trash" v-if="owner ===true" @click="warningDestroy">
                                 <b-icon  icon="trash-fill" aria-hidden="true" class="trash"></b-icon>
                                 <p> Destroy🧨</p>
@@ -37,13 +39,13 @@
                         </div>
                         <div class="create_c"> 
                             <div class="create_comment">
-                                <p class="userName"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
+                                <p class="comment_username"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
                             </div>
                             <div >
                                 <b-form @submit="onComment" enctype="multipart/form-data"  >
                                         <b-form-textarea
                                             id="commentInput"
-                                            class="commentInput"
+                                            class="comment_input"
                                             v-model="form.content"
                                             type="textarea"
                                             placeholder="Hennir un commentaire 👉"
@@ -57,11 +59,14 @@
                                 </b-form>
                             </div>            
                         </div>                                  
-                        <div v-if="visible_comments===true">
+                        <div class="comment_overflow" v-if="visible_comments===true">
                             <Comments  class="comments" v-for="comment in comments" :key="comment.id" :comment="comment"/>
                         </div>
-                        <div v-if="visible_comments===true && this.comments.length ===0"> 
-                            <h2>Soyez le premier à à commenter ce post</h2> </div>
+                        <div class="nocomment" v-if="visible_comments===true && this.comments.length ===0"> 
+                            <img src="@/assets/images/welcome_unicorn.png" alt="licorne dit hello" /> 
+                            <h2>Soyez le premier à à commenter ce post</h2>
+                            
+                        </div>
                     </div>
                 </div>
             </div>

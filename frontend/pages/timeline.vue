@@ -1,24 +1,28 @@
 <template >
     <b-container >
-      
-        <b-row class="timelineBlock">
-            <b-col class="visibility">
-                <h2> Mes posts récents </h2>
-                <div v-if="myPosts.length === 0" class="noContentMore">
+        <div class="menu" >
+            <div class="mytimeline" @click="seeTimeline" >Ma timeline</div>
+            <div class="recent" @click="seeRecent">Mes Posts récents</div>
+            <div class="commented" @click="seeCommented">Posts commentés </div>
+        </div>
+        <b-row class="timeline_bloc" >
+            <b-col class="recent_post" v-if ="displayedRecent === true">
+                <h2 class="subtitle"> Mes posts récents </h2>
+                <div v-if="myPosts.length === 0" class="nocontent_more">
                 <img id="shame" src="@/assets/images/shame.png" alt="licorne on Shame">
                 <p >Vous n'avez encore rien publié ? </p>
               </div>
-              <div v-else class="contentMore">
-                <MyPost class="myPosts" v-for="myPost in myPosts" :key="myPost.id" :myPost="myPost"/>
+              <div v-else class="content_more">
+                <MyPost class="my_posts" v-for="myPost in myPosts" :key="myPost.id" :myPost="myPost"/>
               </div>
-              <h2> Les stats de la famille </h2>
-              <div class="contentMore">
+              <h2 class="subtitle"> Les stats de la famille </h2>
+              <div class="content_more">
                 <stats/>
               </div>
             </b-col>
               
 
-            <b-col cols="5" class= "visibility-principal" >
+            <b-col cols="5" class= "timeline_view" v-if="displayedTimeline === true"  >
               <div>
                 <createPost/>
                 <div class="realtimeline">
@@ -27,22 +31,22 @@
               </div>
             </b-col>
 
-            <b-col class="visibility">
-              <h2> Les posts les plus commentés </h2>
-              <div class="contentMore">
-                <Most class="mostPosts" v-for="mostPost in mostPosts" :key="mostPost.id" :mostPost="mostPost"/>
+            <b-col class="commented_post" v-if="displayedCommented = true" >
+              <h2 class="subtitle"> Les posts les plus commentés </h2>
+              <div class="content_more">
+                <Most class="most_posts" v-for="mostPost in mostPosts" :key="mostPost.id" :mostPost="mostPost"/>
               </div>
-                <h2> Les posts que j'ai commentés </h2>
-              <div v-if="postIcommenteds.length === 0" class="noContentMore">
+                <h2 class="subtitle"> Les posts que j'ai commentés </h2>
+              <div v-if="postIcommenteds.length === 0" class="nocontent_more">
                 <img src="@/assets/images/echec_licorne.png" alt="licorne sauteuse">
                 <p >Vous n'avez pas encore commenté de post </p>
               </div>
-              <div v-else class="contentMore">
-                <PostIcommented class="postIcommented" v-for="postIcommented in postIcommenteds" :key="postIcommented.id" :postIcommented="postIcommented"/>
+              <div v-else class="content_more">
+                <PostIcommented class="post_i_commented" v-for="postIcommented in postIcommenteds" :key="postIcommented.id" :postIcommented="postIcommented"/>
               </div>
             </b-col>
         </b-row>
-</b-container>
+    </b-container>
 </template>
 
 <script>
@@ -54,7 +58,7 @@ import createPost from'../components/createPost.vue'
 import Posts from '../components/post.vue'
 
 export default {
-  components: { Most, MyPost, stats, PostIcommented,createPost,Posts },
+  components: { Most, MyPost, stats, PostIcommented,createPost,Posts},
   name: 'timelinecomposition',
   data () {
       return {
@@ -62,7 +66,11 @@ export default {
       mostPosts:[],
       myPosts:[],
       posts: [],
-      loading: true
+      loading: true,
+      displayedTimeline : true,
+      displayedRecent : true,
+      displayedCommented : true,
+
       }
     },
 
@@ -83,6 +91,46 @@ export default {
       })
   },
   methods:{
+    seeTimeline(){
+
+      let commented = document.querySelector('.commented_post')
+      let recent = document.querySelector('.recent_post')
+      let timeline = document.querySelector('.timeline_view')
+      recent.style.display = "none";
+      commented.style.display = "none";
+      timeline.style.display = "block";
+    
+      this.displayedTimeline = true
+      this.displayedCommented = false
+      this.displayedRecent = false
+    },
+    seeRecent(){
+      let commented = document.querySelector('.commented_post')
+      let timeline = document.querySelector('.timeline_view')
+      let recent = document.querySelector('.recent_post')
+      commented.style.display = "none";
+      timeline.style.display = "none";
+      recent.style.display = "block";
+      this.displayedTimeline = false
+      this.displayedCommented = false
+      this.displayedRecent = true
+      
+
+    },
+
+    seeCommented(){
+      let commented = document.querySelector('.commented_post')
+      let timeline = document.querySelector('.timeline_view')
+      let recent = document.querySelector('.recent_post')
+      timeline.style.display = "none";
+      recent.style.display = "none";
+      commented.style.display = "block";
+      this.displayedTimeline = false
+      this.displayedCommented = true
+      this.displayedRecent = false
+     
+
+    },
     refresh(){
       
       this.$axios

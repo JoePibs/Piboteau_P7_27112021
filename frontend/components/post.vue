@@ -1,26 +1,28 @@
 <template>
     <div class="thepost">
-         <div class="cardPost">
-            <div class="infoPost" @click="seeUser" v-b-modal.modal-2 >
-                <b-avatar :src="post.avatar"  class="avatarPost"></b-avatar>
-                <p class="ownerName"> {{post.firstname}} {{post.lastname}} <span>@{{post.pseudo}}</span></p>
+        <div class="thepost_card">
+            <div class="thepost_info" @click="seeUser" v-b-modal.modal-2 >
+                <b-avatar :src="post.avatar"  class="thepost_avatar"></b-avatar>
+                <p class="thepost_ownername"> {{post.firstname}} {{post.lastname}} <span>@{{post.pseudo}}</span></p>
             </div>
             <seeProfil v-if = "seeOneProfil === true" :userPost="userPost" />
-            <p class="timePost"> {{ $dayjs(post.date_creation).fromNow() }}</p>
+            <p class="thepost_time"> {{ $dayjs(post.date_creation).fromNow() }}</p>
         </div>
         <div>
-            <div class="contentPost">
+            <div class="thepost_content">
                 <div @click="seePost" class="one_post" v-b-modal.modal-3>
-                    <p class="textPost"> {{post.content}} </p>
-                    <b-img :src="post.imageUrl" fluid alt="image de post" class="imagePost" v-if="post.imageUrl !=''"> </b-img>
+                    <div class="thepost_text_style">
+                        <p class="thepost_text"> {{post.content}} </p>
+                    </div>
+                    <b-img :src="post.imageUrl" fluid alt="image de post" class="thepost_image" v-if="post.imageUrl !=''"> </b-img>
                 </div>
                 <seeOnePost v-if ="seeOnePost === true" :onePost="onePost" />
-                <div class="reactionUser">
+                <div class="reaction_user">
                     <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Commentaires </p>
                     <p @click="hideComments" class="comment_intro" v-else> Cacher les commentaires </p>
                     <b-img @click="like" src="@/assets/images/like_unicorn_BW.png" fluid alt="funky licorne" class="like" v-if="postLikes===0" > </b-img>
                     <b-img @click="like" src="@/assets/images/like_unicorn.png" fluid alt="funky licorne" class="like" v-else > </b-img>
-                    <p class="numberOfLikes">{{likes}}</p>
+                    <p class="number_of_likes">{{likes}}</p>
                     <div class="trash" v-if="owner ===true" @click="warningDestroy">
                         <b-icon  icon="trash-fill" aria-hidden="true" class="trash"></b-icon>
                         <p> Destroy🧨</p>
@@ -34,14 +36,14 @@
                 </div>
                 <div class="create_c"> 
                     <div class="create_comment">
-                        <b-avatar :src="$store.state.auth.user.avatar"  class="avatarPost" id="avatar_create_comment"></b-avatar>
-                        <p class="userName" id="userName_comment"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
+                        <b-avatar :src="$store.state.auth.user.avatar"  class="thepost_avatar" id="avatar_create_comment"></b-avatar>
+                        <p class="comment_username" id="comment_username"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
                     </div>
                     <div >
                         <b-form @submit="onComment" enctype="multipart/form-data"  >
                                 <b-form-textarea
                                     id="commentInput"
-                                    class="commentInput"
+                                    class="comment_input"
                                     v-model="form.content"
                                     type="textarea"
                                     placeholder="Hennir un commentaire 👉"
@@ -56,7 +58,7 @@
                     </div>            
                 </div>
                             
-                <div v-if="visible_comments===true">
+                <div class="comment_overflow" v-if="visible_comments===true">
                     <Comments  class="comments" v-for="comment in comments" :key="comment.id" :comment="comment"/>
                 </div>
             </div>

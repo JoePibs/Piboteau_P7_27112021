@@ -1,8 +1,8 @@
 <template>
     <div class="create"> 
         <div class="create_post">
-            <b-avatar variant="info" :src="$store.state.auth.user.avatar" class="avatarUser" alt="userImage"></b-avatar>
-            <p class="userName_create"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
+            <b-avatar variant="info" :src="$store.state.auth.user.avatar" class="avatar_user" alt="userImage"></b-avatar>
+            <p class="username_create"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
         
             <b-form @submit="onSubmit" enctype="multipart/form-data" >
                     <b-form-textarea
@@ -11,7 +11,7 @@
                         v-model="form.content"
                         type="textarea"
                         placeholder="Hennir la bonne parole 👉"
-                        rows="2"
+                        rows="4"
                         max-rows="6">
                     </b-form-textarea>
 
@@ -21,7 +21,6 @@
                         name="post_image" 
                         @change="imageChange"
                         id="post_image">
-                        
                     </b-form-file >
                     
                     <div class="selectedFile">Selected file: {{ form.imageUrl ? form.imageUrl.name : '' }}</div>
@@ -41,16 +40,18 @@
             </b-form>
         </div>
         <div v-if="overview === true" class="overview_style">
-            <div  class="infoPost">
-                <b-avatar :src="$store.state.auth.user.avatar"  class="avatarPost"></b-avatar>
-                <p class="ownerName"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
+            <div  class="thepost_info">
+                <b-avatar :src="$store.state.auth.user.avatar"  class="post_avatar"></b-avatar>
+                <p class="thepost_ownername"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
             </div>
             <div>
-                <p class="timePost"> il y a xx minutes</p>
+                <p class="thepost_time"> il y a xx minutes</p>
             </div>
-            <div class="contentPost">
-                    <p class="textPost"> {{form.content}} </p>
-                    <b-img :src="form.imageUrl" fluid alt="image de post" class="imagePost" v-if="form.imageUrl !=''"> </b-img>
+            <div class="thepost_content">
+                <div class="thepost_text_style">
+                    <p class="thepost_text"> {{form.content}} </p>
+                </div>
+                <b-img :src="form.imageUrl" fluid alt="image de post" class="thepost_image" v-if="form.imageUrl !=''"> </b-img>
             </div>
         </div>       
     </div>
@@ -112,119 +113,3 @@
   }
 }
 </script>
-
-<style>
-.create{
-
-    border-bottom: dashed 1px#5b9d7f;
-    padding: 5px 5px 10px 5px;
-    margin-top : 3px;
-    margin-bottom:20px;
-}
-.create_post{
-    margin-top : 10px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-}
-.userName_create span{
-    font-size:10px;
-    color: #5b9d7f;
-}
-.userName_create{
-    padding-left : 10px;
-    font-size : 14px;
-}
-.postInput{
-    margin-left:30px;
-    background: none;
-    border:1px #5b9d7f3f solid;
-    margin-top : -15px;
-    width: 340px;
-    
-}
-
-.userName span{
-    color: #5b9d7f;
-    font-size: 10px ;
-}
-.inputFile{
-    display: none;
-
-}
-.button_file{
-    width: auto;
-    display: flex;
-    flex-direction: row;
-}
-
-#overview{
-
-    font-size : 13px;
-    color: #5b9d7f;
-    background-color: transparent;
-    margin-top:-5px;
-    margin-right:30px;
-    cursor: pointer;
-}
-
-.overview_style{
-    width:300px;
-    margin: 20px auto 10px auto;
-}
-.btn-secondary {
-    font-size : 10px;
-    background-color: transparent;
-    border: none;
-    margin-top:-10px;
-    }
-.button_file img{
-    width: 30px;
-    margin-right: 5px;
-}
-
-.button_create{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-}
-.button_create img {
-  height: 40px;
-  margin-left: auto;
-  margin-right: -55px;
-  z-index: 5;
-}
-
-.btn-create {
-    color: #fff;
-    font-size:10px;
-    background-color: #5b9d7f;
-    border-color: #5b9d7f;
-    margin-left: 45px;
-}
-
-.create_input_style{
-    display: flex;
-    flex-direction: nowrap;
-    justify-content: flex-end;
-    margin-top:5px;
-    z-index: 4;
-}
-
-.btn-secondary:hover {
-    
-    background-color: transparent;
-    border-color: #5b9d7f;
-}
-
-.btn:hover {
-    color: #212529;
-    text-decoration: none;
-}
-.selectedFile{
-    display:none;
-}
-
-</style>

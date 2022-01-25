@@ -1,16 +1,16 @@
 <template>
-    <div class="commentedPost">
-         <div class="cardCommentedPost">
-            <div class="infoCommentedPost" @click="seeUser" v-b-modal.modal-2 >
-                <b-avatar :src="postIcommented.avatar" class="avatarCommentedPost"></b-avatar>
-                <p class="ownerNameCommentedPost"> {{postIcommented.firstname}} {{postIcommented.lastname}} <span>@{{postIcommented.pseudo}}</span></p>
+    <div class="post">
+         <div class="post_card">
+            <div class="post_info" @click="seeUser" v-b-modal.modal-2 >
+                <b-avatar :src="postIcommented.avatar" class="post_avatar"></b-avatar>
+                <p class="post_ownername"> {{postIcommented.firstname}} {{postIcommented.lastname}} <span>@{{postIcommented.pseudo}}</span></p>
             </div>
             <seeProfil v-if = "seeOneProfil === true" :userPost="userPost" />
-            <p class="timeMyPost"> {{ $dayjs(postIcommented.date_creation).fromNow() }} </p>
+            <p class="post_time"> {{ $dayjs(postIcommented.date_creation).fromNow() }} </p>
         </div>
         <div>
-            <div class="contentCommentedPost" @click="seePost" v-b-modal.modal-3 >
-                <p class="textCommentedPost"> {{postIcommented.content}} </p>
+            <div class="post_content" @click="seePost" v-b-modal.modal-3 >
+                <p class="post_text"> {{postIcommented.content}} </p>
                 <seeOnePost v-if ="seeOnePost === true" :onePost="onePost" />
             </div>
         </div>
