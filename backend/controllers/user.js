@@ -5,7 +5,6 @@ const db = dbc.getDB()
 const check = require('../utils/helper')
 
 exports.signup = async (req, res) => {
-  console.log(req)
   const { password } = req.body //je crée une variable password à partir de la clé password
   const salt = await bcrypt.genSalt(10) //je declare un salage
   const hashPassword = await bcrypt.hash(password, salt) //je génére le hash avec salage sur le passowrd
@@ -23,8 +22,6 @@ exports.signup = async (req, res) => {
         sql,
         [user.firstname, user.lastname, user.pseudo, user.email, user.hashPassword,user.avatar],
         function (err, result, fields) {
-          console.log(result)
-          
           if (!result) {
             res.status(400).json({ message: 'email déja utilisé' })
           } else {
@@ -38,11 +35,9 @@ exports.signup = async (req, res) => {
 
 //login
 exports.login = (req, res, next) => {
-  console.log(req)
   let email = req.body.email
   const sql = 'SELECT * FROM users u WHERE u.email = ? AND u.isActive=1'
   db.query(sql, [email], (err, result) => {
-    console.log(result)
     // je passe mon email en second argument pour que ma requete recoivent les bonnes valeurs
     if (result.length === 0) {
       return res.status(403).json({ message: 'Utilisateur non trouvé ! Veuillez vérifier votre email ou contacter un administrateur' }) // if not existing user
@@ -69,7 +64,7 @@ exports.login = (req, res, next) => {
           })
         })
       })
-      .catch(error => res.status(500).json({message : "fuck you" }))
+      .catch(error => res.status(500).json({message : "Utilisateur inconnu" }))
   })
 }
 
@@ -96,7 +91,6 @@ exports.desactivateByAdmin = (req, res, next) => {
       return res.status(404).json({ err })
     }
     const admin = results[0].TOTAL
-    console.log(admin)
     if(admin === 1){
       const sql2 = 'UPDATE users u SET isActive=0  WHERE u.id = ?'
       db.query(sql2, userPost, (err, results) => {
@@ -111,20 +105,9 @@ exports.desactivateByAdmin = (req, res, next) => {
     }
   })
 }
-/*
-  const sql2 = 'UPDATE users u SET isActive=0 WHEN isAdmin = 1 WHERE u.id = ?'
-  db.query(sql2, userId, (err, results) => {
-    if (err) {
-      return res.status(404).json({ err })
-    }
-    res.status(200).json({ message: 'compte desactivé par le modérateur' })
-  })
-} */
 
 //modifier le compte
 exports.updateAccount = (req, res, next) => {
-  
-  console.log(req)
   const id =req.userId
   const lastname = req.body.lastname
   const firstname = req.body.firstname
@@ -157,6 +140,7 @@ exports.seeAprofil = (req, res, next) => {
   })
 }
 
+/*
 exports.controlPassword = (req, res, next) => {
   let email = req.body.email
   let password = req.body.password
@@ -189,7 +173,7 @@ exports.updatePassword = (req, res, next) => {
     res.status(200).json({ message: 'mot de passe vérifié' })
   })
 }
-
+*/
 //afficher les posts commentés par un utilisateur
 
 exports.allPostUserHaveComment = (req, res, next) => {

@@ -58,15 +58,15 @@ export default {
   name: 'test',
   data () {
       return {
-      connected:true,
+      connected:false,
 
       }
     },
     mounted(){
-      let token = localStorage.getItem('token')
-      if (token === null){
-        this.connected =false
+      if (this.$store.state.auth.loggedIn === true){
+        this.connected = true
       }
+      
     },
     methods: {
       timeline(){

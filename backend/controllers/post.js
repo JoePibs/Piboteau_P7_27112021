@@ -21,7 +21,6 @@ exports.getOnePost =(req,res,next) => {
       throw err
     }
     res.status(200).json (results)
-    console.log(results)
   })
 };
 
@@ -41,7 +40,6 @@ exports.getAllUserPost =(req,res,next) =>{
 exports.createPost =(req,res,next) =>{
   let sql = "INSERT INTO post (user_id,content,imageUrl) VALUES (?, ?, ?)";
   let query = db.query(sql,[req.body.userId, req.body.content,req.body.imageUrl],function (err, results,fields){
-    console.log(query)
     if(err){
       throw err
     }

@@ -121,7 +121,7 @@ export default {
         firstname: '',
         lastname: '',
         pseudo: '',
-        avatar:'http://localhost:8080/images/avatar_defaut.jpg'
+        avatar:'http://localhost:8080/images/ponita.png1642095102033.png'
       },
       show: true
     }
@@ -262,18 +262,17 @@ export default {
               this.form.password !== this.form.confirmpassword
             )
               return
-            console.log(this.form)
             this.$axios
               .post('auth/signup', this.form)
               .then(async response => {
-                this.$router.push('/timeline') 
                 await this.$store.dispatch('auth/login', {
                   email: this.form.email,
                   password: this.form.password
                 })
+                this.$router.push('/timeline') 
               })
               .catch(error => {
-                alert(error.response.data.message)
+                alert(error.data.message)
               })
       }
     }

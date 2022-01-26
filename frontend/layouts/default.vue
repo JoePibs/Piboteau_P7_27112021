@@ -4,8 +4,8 @@
       <b-img class="logo"  src="@/assets/images/header_home.png" alt="logo"></b-img>
     </div>
     
-    <div  v-else class="header_logged" @click="returnHome">
-      <b-img class="logo_logged"  src="@/assets/images/Logo_Timeline.png" fluid alt="logo"></b-img>
+    <div  v-else class="header_logged">
+      <b-img class="logo_logged" @click="returnHome" src="@/assets/images/Logo_Timeline.png" fluid alt="logo"></b-img>
       <div class="header_action">
         <b-button @click="disconnect" id="logout"><b-icon icon="power" aria-hidden="true"></b-icon>Logout</b-button>
         <div @click="seeAuth" class="avatar_logged" v-b-modal.modal-1 > 

@@ -4,7 +4,6 @@ const db = dbc.getDB();
 exports.memberCount = (req, res, next) => {
     let sql = "SELECT COUNT(id) AS TOTAL FROM users u"
     let query =db.query(sql,function (err, result){
-    console.log(result)
       if(err){
       throw err
       }
@@ -15,7 +14,6 @@ exports.memberCount = (req, res, next) => {
 exports.postCount = (req, res, next) => {
     let sql = "SELECT COUNT(id) AS TOTAL FROM post"
     let query =db.query(sql,function (err, result){
-    console.log(result)
       if(err){
       throw err
       }
@@ -26,7 +24,6 @@ exports.postCount = (req, res, next) => {
 exports.commentCount = (req, res, next) => {
     let sql = "SELECT COUNT(id) AS TOTAL FROM comment"
     let query =db.query(sql,function (err, result){
-    console.log(result)
       if(err){
       throw err
       }

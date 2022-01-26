@@ -27,6 +27,7 @@ export const mutations = {
     } else {
       state.loggedIn = true
       state.user = val
+      console.log(state.loggedIn)
     }
   }
 }
@@ -43,37 +44,42 @@ export const actions = {
     }
   },
   async login ({ commit }, { email, password }) {
-    const ret = await this.$axios.$post('auth/login', {
-      email,
-      password
-    })
-    if (ret) {
-      localStorage.setItem('userId', ret.userId)
-      localStorage.setItem('token', ret.token)
-      localStorage.setItem('lastname', ret.lastname)
-      localStorage.setItem('firstname', ret.firstname)
-      localStorage.setItem('pseudo', ret.pseudo)
-      localStorage.setItem('avatar',ret.avatar)
-      localStorage.setItem('isAdmin',ret.isAdmin)
-      localStorage.setItem('email',ret.email)
-      localStorage.setItem('bio',ret.bio)
-      commit('setUser', {
-        userId: ret.userId,
-        isAdmin : ret.isAdmin,
-        firstname: ret.firstname,
-        lastname: ret.lastname,
-        pseudo: ret.pseudo,
-        avatar: ret.avatar,
-        email: ret.email,
-        bio:ret.bio,
+    try {
+      const ret = await this.$axios.$post('auth/login', {
+        email,
+        password
       })
-      
-    } else {
-      localStorage.setItem('token', '')
-      commit('setUser', null)
-    }
-    
+      if (ret) {
+        localStorage.setItem('userId', ret.userId)
+        localStorage.setItem('token', ret.token)
+        localStorage.setItem('lastname', ret.lastname)
+        localStorage.setItem('firstname', ret.firstname)
+        localStorage.setItem('pseudo', ret.pseudo)
+        localStorage.setItem('avatar',ret.avatar)
+        localStorage.setItem('isAdmin',ret.isAdmin)
+        localStorage.setItem('email',ret.email)
+        localStorage.setItem('bio',ret.bio)
+
+        commit('setUser', {
+          userId: ret.userId,
+          isAdmin : ret.isAdmin,
+          firstname: ret.firstname,
+          lastname: ret.lastname,
+          pseudo: ret.pseudo,
+          avatar: ret.avatar,
+          email: ret.email,
+          bio:ret.bio,
+        })  
+      } else {
+          localStorage.setItem('token', '')
+          commit('setUser', null)
+         }
+     } catch {
+        localStorage.setItem('token', '')
+        commit('setUser', null)
+     }
   },
+  
   logout({commit}) {
     localStorage.clear()
     commit('setUser', null)

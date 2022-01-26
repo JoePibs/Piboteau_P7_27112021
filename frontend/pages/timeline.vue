@@ -76,7 +76,6 @@ export default {
 
   mounted(){ 
    
-
     if(this.$store.state.auth.loggedIn === false){
       this.$router.push('/');
     }
@@ -92,14 +91,12 @@ export default {
   },
   methods:{
     seeTimeline(){
-
       let commented = document.querySelector('.commented_post')
       let recent = document.querySelector('.recent_post')
       let timeline = document.querySelector('.timeline_view')
       recent.style.display = "none";
       commented.style.display = "none";
       timeline.style.display = "block";
-    
       this.displayedTimeline = true
       this.displayedCommented = false
       this.displayedRecent = false

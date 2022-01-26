@@ -21,7 +21,6 @@ exports.getAllComment =(req,res,next)=>{
         if(err){
           throw err
         }
-        console.log(result)
         res.status(200).json (result)
       })
 };
@@ -74,7 +73,6 @@ exports.deleteOneComment = (req,res,next) => {
       .then(function(isAllowed) {
           db.query('UPDATE comment c SET c.isActive=0 where c.id=?', [req.params.id], function(err, result) {
             //db.query ('DELETE FROM post p where p.id =?) pour le supprimer définitivement
-            console.log(req.userId)
               if (err) {
                   return res.status(500).json({error: err.message})
               }
