@@ -75,8 +75,7 @@ export default {
     },
 
   mounted(){ 
-   
-   
+
     if(this.$store.state.auth.loggedIn === false){
       this.$router.push('/');
     }
@@ -90,9 +89,13 @@ export default {
         this.loading = false
       })
   },
+
   methods:{
+
     displayedTimeline(){
       this.displayedtimeline = false
+      this.displayedcommented=false
+      this.displayedrecent=false
     },
     displayedRecent(){
       this.displayedtimeline = true
@@ -103,9 +106,7 @@ export default {
       this.displayedcommented=true
       this.displayedrecent=false
     },
-   
     refresh(){
-      
       this.$axios
         .$get('post/mostcommented')
         .then((mostPosts) => {
@@ -124,9 +125,9 @@ export default {
         .then((myPosts) => {
           this.myPosts = myPosts
         })
-    
       }
   }
+
 }
 
 </script>
