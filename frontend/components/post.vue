@@ -18,7 +18,7 @@
                 </div>
                 <seeOnePost v-if ="seeOnePost === true" :onePost="onePost" />
                 <div class="reaction_user">
-                    <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Commentaires </p>
+                    <p @click="seeComments" class="comment_intro" v-if="click_comment === true"> Voir les commentaires </p>
                     <p @click="hideComments" class="comment_intro" v-else> Cacher les commentaires </p>
                     <b-img @click="like" src="@/assets/images/like_unicorn_BW.png" fluid alt="funky licorne" class="like" v-if="postLikes===0" > </b-img>
                     <b-img @click="like" src="@/assets/images/like_unicorn.png" fluid alt="funky licorne" class="like" v-else > </b-img>
@@ -46,6 +46,8 @@
                                     class="comment_input"
                                     v-model="form.content"
                                     type="textarea"
+                                    label ="taper votre commentaire"
+                                    label-for="commentInput"
                                     placeholder="Hennir un commentaire 👉"
                                     rows="1"
                                     max-rows="6">  

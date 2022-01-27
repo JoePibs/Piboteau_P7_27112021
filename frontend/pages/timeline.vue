@@ -1,12 +1,12 @@
 <template >
     <b-container >
         <div class="menu" >
-            <div class="mytimeline" @click="seeTimeline" >Ma timeline</div>
-            <div class="recent" @click="seeRecent">Mes Posts récents</div>
-            <div class="commented" @click="seeCommented">Posts commentés </div>
+            <div class="mytimeline" @click="displayedTimeline">Ma timeline</div>
+            <div class="recent" @click="displayedRecent" >Mes Posts récents</div>
+            <div class="commented" @click="displayedCommented ">Posts commentés </div>
         </div>
         <b-row class="timeline_bloc" >
-            <b-col class="recent_post" v-if ="displayedRecent === true">
+            <b-col class="recent_post" :class="{displayedrecent}">
                 <h2 class="subtitle"> Mes posts récents </h2>
                 <div v-if="myPosts.length === 0" class="nocontent_more">
                 <img id="shame" src="@/assets/images/shame.png" alt="licorne on Shame">
@@ -22,7 +22,7 @@
             </b-col>
               
 
-            <b-col cols="5" class= "timeline_view" v-if="displayedTimeline === true"  >
+            <b-col cols="5" class= "timeline_view" :class="{displayedtimeline}" >
               <div>
                 <createPost/>
                 <div class="realtimeline">
@@ -31,7 +31,7 @@
               </div>
             </b-col>
 
-            <b-col class="commented_post" v-if="displayedCommented = true" >
+            <b-col class="commented_post" :class="{displayedcommented}" >
               <h2 class="subtitle"> Les posts les plus commentés </h2>
               <div class="content_more">
                 <Most class="most_posts" v-for="mostPost in mostPosts" :key="mostPost.id" :mostPost="mostPost"/>
@@ -67,14 +67,15 @@ export default {
       myPosts:[],
       posts: [],
       loading: true,
-      displayedTimeline : true,
-      displayedRecent : true,
-      displayedCommented : true,
+      displayedtimeline: false,
+      displayedrecent : false,
+      displayedcommented :false,
 
       }
     },
 
   mounted(){ 
+   
    
     if(this.$store.state.auth.loggedIn === false){
       this.$router.push('/');
@@ -90,44 +91,19 @@ export default {
       })
   },
   methods:{
-    seeTimeline(){
-      let commented = document.querySelector('.commented_post')
-      let recent = document.querySelector('.recent_post')
-      let timeline = document.querySelector('.timeline_view')
-      recent.style.display = "none";
-      commented.style.display = "none";
-      timeline.style.display = "block";
-      this.displayedTimeline = true
-      this.displayedCommented = false
-      this.displayedRecent = false
+    displayedTimeline(){
+      this.displayedtimeline = false
     },
-    seeRecent(){
-      let commented = document.querySelector('.commented_post')
-      let timeline = document.querySelector('.timeline_view')
-      let recent = document.querySelector('.recent_post')
-      commented.style.display = "none";
-      timeline.style.display = "none";
-      recent.style.display = "block";
-      this.displayedTimeline = false
-      this.displayedCommented = false
-      this.displayedRecent = true
-      
-
+    displayedRecent(){
+      this.displayedtimeline = true
+      this.displayedrecent=true
     },
-
-    seeCommented(){
-      let commented = document.querySelector('.commented_post')
-      let timeline = document.querySelector('.timeline_view')
-      let recent = document.querySelector('.recent_post')
-      timeline.style.display = "none";
-      recent.style.display = "none";
-      commented.style.display = "block";
-      this.displayedTimeline = false
-      this.displayedCommented = true
-      this.displayedRecent = false
-     
-
+    displayedCommented(){
+      this.displayedtimeline = true
+      this.displayedcommented=true
+      this.displayedrecent=false
     },
+   
     refresh(){
       
       this.$axios

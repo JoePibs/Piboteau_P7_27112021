@@ -4,7 +4,7 @@ const check = require('../utils/helper')
 
 // Afficher tous les posts si le post est actif
 exports.getAllPost =(req,res, next) => {
-  let sql = "SELECT p.*,u.avatar,u.firstname,u.lastname,u.pseudo FROM post p,users u WHERE p.isActive=1 AND p.user_id = u.id AND u.isActive=1 ORDER BY p.last_update DESC";
+  let sql = "SELECT p.*,u.avatar,u.firstname,u.lastname,u.pseudo FROM post p,users u WHERE p.isActive=1 AND p.user_id = u.id AND u.isActive=1 ORDER BY p.date_creation DESC";
   let query = db.query (sql, (err,result)=>{
     if(err){
       throw err

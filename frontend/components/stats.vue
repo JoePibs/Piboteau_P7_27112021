@@ -30,15 +30,15 @@ export default{
   },
   mounted () {
     axios
-      .get('http://localhost:8080/api/stats/member')
+      .get('http://localhost:3000/api/stats/member')
       .then(response => (this.member = response.data))
 
     axios
-      .get('http://localhost:8080/api/stats/post')
+      .get('http://localhost:3000/api/stats/post')
       .then(response => (this.post= response.data))
 
     axios
-      .get('http://localhost:8080/api/stats/comment')
+      .get('http://localhost:3000/api/stats/comment')
       .then(response => (this.comment= response.data))
   }
 }

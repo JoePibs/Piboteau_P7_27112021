@@ -99,8 +99,8 @@
       <b-button id="inscription"  ><img id="new_avatar" :src="form.avatar"><span>Votre avatar</span> </b-button> 
     </div>
 
-    <b-alert show variant="danger" v-if="alert===true"><span>{{errorAlert}}</span>
-      <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeAlert"></b-icon>
+    <b-alert class="alert_signup" show variant="danger" v-if="alert===true"><span>{{errorAlert}}</span>
+      <b-icon icon="x-square-fill" aria-hidden="true" class="close" id="close_signup" @click="closeAlert"></b-icon>
     </b-alert>
 
     <div class="button_inscription">
@@ -122,7 +122,7 @@ export default {
         firstname: '',
         lastname: '',
         pseudo: '',
-        avatar:'http://localhost:8080/images/ponita.png1642095102033.png'
+        avatar:'http://localhost:3000/images/avatar_defaut.png'
       },
       show: true,
       errorAlert :"",

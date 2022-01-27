@@ -9,6 +9,8 @@
                         id="postInput"
                         class="postInput"
                         v-model="form.content"
+                        label="Taper votre post"
+                        label-for="postInput"
                         type="textarea"
                         placeholder="Hennir la bonne parole 👉"
                         rows="4"

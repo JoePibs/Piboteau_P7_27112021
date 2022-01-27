@@ -2,11 +2,14 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  server: {
+    port: 8000 // default: 3000
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'frontend',
+    title: 'GroupoPosts',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'fr'
     },
     meta: [
       { charset: 'utf-8' },
@@ -43,7 +46,7 @@ bootstrapVue: {
 },
 // using axios with url base
   axios: {
-    baseURL: 'http://localhost:8080/api'
+    baseURL: 'http://localhost:3000/api'
   },
 
 // using daysJS
@@ -57,3 +60,5 @@ dayjs: {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {}
 }
+
+

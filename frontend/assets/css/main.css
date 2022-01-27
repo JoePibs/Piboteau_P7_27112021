@@ -266,13 +266,24 @@ cursor: pointer;
 .recent_post {
 display: none;
 }
+.displayedrecent{
+  display: block;
+}
 
 .commented_post{
 display:none ;
 }
+.displayedcommented{
+  display: block;
+}
+
+
 .col-5 {
 flex: 0 0 100%;
 max-width: 98%;
+}
+.displayedtimeline{
+  display: none;
 }
 
 .content_more {
@@ -1230,7 +1241,12 @@ flex-wrap: wrap;
   max-width: 810px;
 }
 /*index*/
-
+.menu{
+  display:none;
+}
+.recent_post,.col-5,.commented_post{
+  display: block;
+}
 
 .col-5 {
   border-left : none;
@@ -1272,6 +1288,11 @@ flex-wrap: wrap;
       overflow: scroll;
       max-height: 780px;
   }
+
+  .overview_style {
+    width: 400px;
+    margin: 20px auto 10px auto;
+}
 
 }
 
