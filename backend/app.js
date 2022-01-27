@@ -1,6 +1,7 @@
 const express = require('express')
 const mysql = require('mysql')
 const morgan = require('morgan')
+const nocache = require('nocache');
 const favicon = require('serve-favicon')
 const path = require('path')
 const postRoutes = require('./routes/post')
@@ -10,6 +11,11 @@ const statsRoutes = require('./routes/stats')
 const uploadRoutes = require('./routes/upload')
 
 const app = express()
+
+
+app.use(nocache());//Turns off browser caching
+
+
 app.use(express.json())
 
 //dev control in terminal

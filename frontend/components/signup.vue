@@ -85,22 +85,23 @@
       ></b-form-input>
       <div class="errorMessage" id="passwordError"></div>      
     </b-form-group>
-                   <b-form-file 
-                    v-model="form.avatar"
-                    @change="avatarChange"
-                    class="inputFile" 
-                    name="post_avatar" 
-                    id="post_avatar">
-                    
-                </b-form-file >
+    <b-form-file 
+      v-model="form.avatar"
+      @change="avatarChange"
+      class="inputFile" 
+      name="post_avatar" 
+      id="post_avatar">
+    </b-form-file >
                 
-                <div class="selectedFile">Selected file: {{ form.avatar ? form.avatar.name : '' }}</div>
+    <div class="selectedFile">Selected file: {{ form.avatar ? form.avatar.name : '' }}</div>
                 
-                <div class="create_style" id="style_upload" onclick="document.querySelector('#post_avatar').click();">
-                  
-                        <b-button id="inscription"  ><img id="new_avatar" :src="form.avatar"><span>votre avatar</span> </b-button> 
-      
-                </div>
+    <div class="create_style" id="style_upload" onclick="document.querySelector('#post_avatar').click();">            
+      <b-button id="inscription"  ><img id="new_avatar" :src="form.avatar"><span>Votre avatar</span> </b-button> 
+    </div>
+
+    <b-alert show variant="danger" v-if="alert===true"><span>{{errorAlert}}</span>
+      <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeAlert"></b-icon>
+    </b-alert>
 
     <div class="button_inscription">
       <img src="@/assets/images/unicorn_prout.png" alt="licorne lancement" />
@@ -123,7 +124,9 @@ export default {
         pseudo: '',
         avatar:'http://localhost:8080/images/ponita.png1642095102033.png'
       },
-      show: true
+      show: true,
+      errorAlert :"",
+      alert : false,
     }
   },
 
@@ -131,7 +134,6 @@ export default {
     checkingFirstname(){
       const msgError = document.querySelector('#firstNameError')
       let firstname = this.form.firstname
-      console.log(firstname)
       if(/^[a-zA-Z-\s]+$/.test(firstname)=== false){
         msgError.innerHTML = " Seul Elon Musk Jr a un symbole,chiffre ici 🦄"
         signupButton.disabled = true;
@@ -252,6 +254,9 @@ export default {
             this.form.avatar= res.data.url
         })
     },
+    closeAlert() {
+      this.alert = false
+    },
 
     onSubmit (event) {
       event.preventDefault()
@@ -265,6 +270,7 @@ export default {
             this.$axios
               .post('auth/signup', this.form)
               .then(async response => {
+                
                 await this.$store.dispatch('auth/login', {
                   email: this.form.email,
                   password: this.form.password
@@ -272,8 +278,12 @@ export default {
                 this.$router.push('/timeline') 
               })
               .catch(error => {
-                alert(error.data.message)
+                  this.errorAlert = error.response.data.message
+                  this.alert = true
+                  console.log(error.response.status);
+                  console.log(error.response.headers);
               })
+              
       }
     }
 }

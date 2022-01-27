@@ -13,7 +13,7 @@ exports.signup = async (req, res) => {
   let sql = 'SELECT u.* FROM users u WHERE u.pseudo = ?'
   db.query(sql, [user.pseudo], function (err, result, fields) {
     if (result.length > 0) {
-      res.status(400).json({ message: 'Pseudo déja utilisé' })
+      res.status(401).json({ message: 'Pseudo déja utilisé' })
       return
     } else {
       sql =
