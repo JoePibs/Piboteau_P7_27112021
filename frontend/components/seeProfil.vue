@@ -9,7 +9,7 @@
               <p id="username_modal"> {{userPost.firstname}} {{userPost.lastname}}</p>
               <span id="pseudo_title_modal">@{{userPost.pseudo}}</span>
   
-              <div v-if="userIsAdmin === true" id="desinscription" class="desinscription">
+              <div v-if="$store.state.auth.user.isAdmin === 1" id="desinscription" class="desinscription">
                 <b-button @click="alert" variant="outline-info" class="mb-2" id="erase">
                   <b-icon icon="power" aria-hidden="true"></b-icon> Désactiver le compte
                 </b-button>

@@ -121,6 +121,7 @@ export default {
         })
     
 
+
       this.$axios.$get(`post/${this.post.id}/likedBy`)
         .then((ret) => {
             this.postLikes = ret.liked

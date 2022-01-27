@@ -7,7 +7,7 @@
   
       <b-row class="description">
         <b-row class="title">
-          <h2>My Groupomania Socia Network</h2>
+          <h2 class="subtitle">My Groupomania Socia Network</h2>
         </b-row>
         <b-row class="explain">
           <b-row class="description_theme">
@@ -31,7 +31,7 @@
         </b-row>
       </b-row>
        <b-row class="title">
-          <h2>La famille en chiffres</h2>
+          <h2 class="subtitle">La famille en chiffres</h2>
         </b-row>
       <b-row class="stats">
         <stats />
@@ -40,11 +40,11 @@
 
     <b-container class="container_else" v-else>
       <img src="@/assets/images/gif_licorne.gif" alt="licorne dit hello" />
-      <div>
-      <h2>Hello <span>{{ $store.state.auth.user.pseudo }} !</span> </H2>
-      <p>Déja de retour ?? </p>
-      <router-link to="/timeline">
-      <button > Go to the rainbow 🌈  ? </button></router-link>
+      <div class="comeback">
+        <h2>Hello <span>{{ $store.state.auth.user.pseudo }} !</span> </H2>
+        <p>Déja de retour ?? </p>
+        <router-link to="/timeline">
+        <button > Go to the rainbow 🌈  ? </button></router-link>
       </div>
     </b-container>
   </div>

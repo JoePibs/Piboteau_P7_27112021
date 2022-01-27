@@ -21,5 +21,7 @@
     "vue-template-compiler": "^2.6.14",
     "webpack": "^4.46.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@nuxtjs/color-mode": "^2.1.1"
+  }
 }
