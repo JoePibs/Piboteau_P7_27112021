@@ -28,12 +28,12 @@ Voici les exigences du comité de direction :
     - L’utilisateur doit pouvoir voir les posts des autres utilisateurs et retrouver simplement un post :
             1. Option A : Faire apparaitre les posts du plus récent au plus anciens
             2. Option B : thématique de post
-            3.Option C : Intégration d’un blog “ mes posts commentés”
+            3.Option C : Intégration d’un bloc “ mes posts commentés”
     - L’utilisateur doit pouvoir liker un post
     - L’utilisateur doit pouvoir commenter un post
 
 2. Le modérateur doit pouvoir : 
-    - créer un post et l'épingler
+    - créer un post 
     - supprimer un post 
     - supprimer un commentaire 
     - Commenter un post 
