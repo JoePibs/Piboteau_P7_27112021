@@ -79,6 +79,10 @@
           <div id="style_upload">
             <b-button onclick="document.querySelector('#change_avatar').click();" ><img id="profil_avatar" :src="form.avatar"/><span>Modifier votre avatar</span></b-button>        
           </div>
+            <b-alert class="update_profil" v-if="unicornUpdate === true">
+                <span>{{unicornUpdateMessage}}</span>
+                <b-icon icon="x-square-fill" aria-hidden="true" class="close" id="close_unicorn" @click="closeUnicornUpdate"></b-icon>
+            </b-alert>
           <div class="button_modification">
             <b-button type="submit" id="validation_button" >Valider</b-button>
             <b-button @click="cancel" id="cancel_button" >Annuler</b-button>
@@ -103,7 +107,8 @@ export default {
       loading: true,
       storelogg: false,
       alertMessage :false,
-
+      unicornUpdate :true,
+      unicornUpdateMessage:'',
     }
   },
   mounted () {
@@ -168,7 +173,7 @@ methods:{
       const msgError = document.querySelector('#pseudoError')
       let pseudo = this.form.pseudo
        
-      if(/^\S{4,50}$/.test(pseudo)=== false){
+      if(/^[\w ]{4,25}$/.test(pseudo)=== false){
         msgError.innerHTML = " Au moins 4 caractères, petite 🦄 !"
         document.querySelector('#pseudo').style.border = "red 2px solid";
         validation_button.disabled = true;
@@ -216,23 +221,29 @@ methods:{
       const bio = localStorage.getItem('bio') 
         if(bio != "null"){
         this.form.bio = localStorage.getItem('bio')}
+        else{
+          this.form.bio = "null"
+        }
+    },
+    closeUnicornUpdate(){
+      this.unicornUpdate = false
     },
     onSubmit (event) {
       event.preventDefault()
             this.$axios
               .put('auth/update', this.form)
               .then(async response => {
+                this.unicornUpdate = true
+                this.unicornUpdateMessage = "licorne modifiée"
+                console.log(this.unicornUpdateMessage)
                 localStorage.setItem('email', this.form.email ) 
                 localStorage.setItem('firstname',this.form.firstname ) 
                 localStorage.setItem('lastname',this.form.lastname) 
                 localStorage.setItem('pseudo',this.form.pseudo) 
                 localStorage.setItem('avatar',this.form.avatar)
                 localStorage.setItem('bio',this.form.bio)
-                alert("Licorne Modifié ")
-                this.$router.push('/timeline') 
-                location.reload();
-                return false;
-
+                location.reload()
+                return false
                 })
               .catch(error => {
                 alert(error.response.data.message)
@@ -240,9 +251,6 @@ methods:{
     }
   }
 }
-
-  
-
 
 </script>
 

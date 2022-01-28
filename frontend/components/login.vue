@@ -17,7 +17,7 @@
         placeholder="Entrez votre mot de passe"
         required
       ></b-form-input>
-       <b-alert show v-if="error === true"  id="error"> 
+      <b-alert show v-if="error === true"  id="error"> 
           <p>Merci de vérifier votre email et votre votre mot de passe! </p>
           <p>En cas de nouvel échec, veuillez contacter un administrateur </p>
         <b-button variant="danger"><a href="mailto:contact@ohmyfood.com">Contacter l'admin</a></b-button>
@@ -45,6 +45,7 @@ export default {
   },
 
   methods: {
+    /// on submit with action on store
     async onSubmit (event) {
       event.preventDefault()
       await this.$store.dispatch('auth/login', {
