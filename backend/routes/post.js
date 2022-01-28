@@ -4,7 +4,7 @@ const postCtrl = require('../controllers/post'); //Import of controller
 const auth = require('../middleware/auth'); //import Middleware to authentification path
 const multer = require('../middleware/multer-config'); // import multer configuration
 
-router.get ('/', postCtrl.getAllPost);
+router.get ('/',auth, postCtrl.getAllPost);
 router.get ('/:id/onepost',auth, postCtrl.getOnePost);
 router.get ('/userposts/',auth, postCtrl.getAllUserPost);
 router.post ('/createpost',auth,multer, postCtrl.createPost);

@@ -1,6 +1,8 @@
 const dbc = require('../utils/dbconnect')
 const db = dbc.getDB();
 
+
+//check if userIsAdmin
 function userIsAdmin(userId) {
 
     return new Promise(function(resolve, reject) {
@@ -15,6 +17,7 @@ function userIsAdmin(userId) {
     });
 }
 
+//check if user is Owner of post
 async function userAllowedToEditPost(userId, postId) {
     const isAdmin = await userIsAdmin(userId)
     if (isAdmin)
@@ -26,7 +29,6 @@ async function userAllowedToEditPost(userId, postId) {
                 reject(err);
                 return;
             }
- 
             const post = postResult[0];
             if (!post) {
                 resolve(false);
@@ -37,6 +39,7 @@ async function userAllowedToEditPost(userId, postId) {
     });
 }
 
+//check if user is Owner of comment
 async function userAllowedToEditComment(userId, commentId) {
     const isAdmin = await userIsAdmin(userId)
     console.log(isAdmin)

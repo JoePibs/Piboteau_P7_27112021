@@ -1,8 +1,8 @@
 const dbc = require('../utils/dbconnect')
 const db = dbc.getDB();
 const check = require('../utils/helper')
-
-//Créer un commentaire sous un post
+//
+//Create a comment
 exports.createComment =(req,res,next) =>{
     let userId = req.userId
     let sql = "INSERT INTO comment (user_id,post_id,content,isActive) VALUES (?, ?, ?, 1)";
@@ -13,7 +13,7 @@ exports.createComment =(req,res,next) =>{
       res.status(200).json (results)
     })
   };
-// afficher tous les commentaires d'un post
+// Display all comments
 exports.getAllComment =(req,res,next)=>{
     let postId = req.params.post_id;
     let sql = "SELECT c.id,c.content,c.date_creation,c.user_id,u.firstname, u.lastname, u.pseudo, u.avatar FROM comment c, users u, post p WHERE c.post_id = ? AND p.id = c.post_id AND c.user_id = u.id AND u.isActive=1 AND p.isActive=1 AND c.isActive=1 ORDER BY c.date_creation DESC";
@@ -25,7 +25,7 @@ exports.getAllComment =(req,res,next)=>{
       })
 };
 
-// afficher les commentaires d'un utilisateur spécifique (l'utilisateur connecté)
+// display the comments of a specific user (the logged-in user)
 exports.getAllUserComment =(req,res,next)=>{
     let userId = req.params.user_id;
     let sql = "SELECT c.content,c.date_creation ,u.firstname, u.lastname, u.avatar AS avatar, u.pseudo AS pseudo FROM comment c, users u WHERE c.user_id = u.id AND u.isActive=1 AND c.isActive=1  AND c.id = ? ";
@@ -37,7 +37,7 @@ exports.getAllUserComment =(req,res,next)=>{
       })
 };
 
-// afficher un seul commentaire
+/* display one comment 
 
 exports.getOneComment =(req,res,next)=>{
     let commentId = req.params.id;
@@ -48,10 +48,10 @@ exports.getOneComment =(req,res,next)=>{
         }
         res.status(200).json (result)
       })
-};
+}; */
 
 
-//compter le nombre de like sur un like
+//Count like
 
 exports.countLike =(req,res,next)=>{
   let commentId = req.params.comment_id;
@@ -66,13 +66,13 @@ exports.countLike =(req,res,next)=>{
 };
 
 
-// modifier ou desactiver un post si on est l'utilisateur ou l'admin
+// Edit or deactivate a post if you are the user or the admin
 exports.deleteOneComment = (req,res,next) => {
 
   check.userAllowedToEditComment(req.userId, req.params.id)
       .then(function(isAllowed) {
           db.query('UPDATE comment c SET c.isActive=0 where c.id=?', [req.params.id], function(err, result) {
-            //db.query ('DELETE FROM post p where p.id =?) pour le supprimer définitivement
+            //db.query ('DELETE FROM comment c where p.id =?) pour le supprimer définitivement
               if (err) {
                   return res.status(500).json({error: err.message})
               }
@@ -84,5 +84,3 @@ exports.deleteOneComment = (req,res,next) => {
       })
 }
 
-
-  

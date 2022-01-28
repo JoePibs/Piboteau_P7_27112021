@@ -7,6 +7,6 @@ const auth = require('../middleware/auth'); //import Middleware to authentificat
 router.post ('/:post_id/createcomment', auth, commentCtrl.createComment);
 router.get ('/:post_id/allcommentpost', auth, commentCtrl.getAllComment);
 router.get ('/:user_id/allusercomment', auth, commentCtrl.getAllUserComment);
-router.get ('/:id/onecomment',auth, commentCtrl.getOneComment);
+//router.get ('/:id/onecomment',auth, commentCtrl.getOneComment);
 router.put ('/:id/deletecomment',auth, commentCtrl.deleteOneComment);
 module.exports = router;
