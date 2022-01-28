@@ -49,10 +49,9 @@ Voici les exigences du comité de direction :
     a. NodeJs
     b. Nodemon
     c. mySQL
-    d. Sequelize
-    e.Express
-    f.bcrypt
-    g. Rate limit / no cacje/ path /multer /JsonwebToken ...
+    d.Express
+    d.bcrypt
+    g.no cache/ path /multer /JsonwebToken ...
     i. Multer
 
 - Frontend
@@ -119,15 +118,14 @@ Here are the requirements of the management committee:
 - Git, GitHubDesktop & Github
 - HTML, CSS, JS
 
-- Backend:
-    at. NodeJs
-    b. nodemon
-    vs. mySQL
-    d. Sequelize
-    e.Express
-    f.bcrypt
-    g. Rate limit / no cacje/ path /multer /JsonwebToken ...
-    i. multer
+- Backend: 
+    a. NodeJs
+    b. Nodemon
+    c. mySQL
+    d.Express
+    d.bcrypt
+    g.no cache/ path /multer /JsonwebToken ...
+    i. Multer
 
 - Front-end
     a.Vuejs - NuxtJS
