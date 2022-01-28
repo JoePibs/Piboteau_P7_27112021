@@ -29,7 +29,6 @@ export default {
             userPost:[],
             seeOneProfil: false,
             seeOnePost: false,
-            
         }
     },
 

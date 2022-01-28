@@ -155,8 +155,7 @@ exports.countLike =(req,res,next)=>{
 };
 
 
-//Afficher les posts les plus commentés de moins d'un mois
-
+//display posts most commented by post Id 
 exports.mostCommentPost =(req,res,next)=>{
   let sql = `SELECT p.id AS id ,p.user_id AS user_id,p.content AS content, p.date_creation As date_creation, u.firstname As firstname , u.lastname AS lastname , u.avatar AS avatar, u.pseudo AS pseudo, COUNT(c.id) AS total_comment 
     FROM post p, comment c , users u 
