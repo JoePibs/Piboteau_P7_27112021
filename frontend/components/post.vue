@@ -58,14 +58,16 @@
                                 </div>
                         </b-form>
                     </div>            
-                </div>
-                            
+                </div>            
                 <div class="comment_overflow" v-if="visible_comments===true">
                     <Comments  class="comments" v-for="comment in comments" :key="comment.id" :comment="comment"/>
+                    <div class="nocomment" v-if="visible_comments===true && this.comments.length ===0"> 
+                        <img src="@/assets/images/welcome_unicorn.png" alt="licorne dit hello" /> 
+                        <h2>Soyez le premier à à commenter ce post</h2>
+                    </div>
                 </div>
             </div>
         </div>
-        
     </div>
 </template>
 
@@ -99,6 +101,7 @@ export default {
     },
     mounted(){
 
+//admin control to activate "delete fonction"
         let userId = localStorage.getItem('userId')
         let isAdmin = localStorage.getItem('isAdmin')
     
@@ -108,28 +111,24 @@ export default {
             this.owner = true
         }
 
-    
-    this.$axios.$get(`comment/${this.post.id}/allcommentpost`)
-        .then((comments)=>{
-            this.comments = comments
-        })
-
-    this.$axios.$get(`post/${this.post.id}/countLikes`)
-        .then((ret) => {
-            this.likes = ret.likes,
-            this.loadingLikes = false
-        })
-    
-
-
-      this.$axios.$get(`post/${this.post.id}/likedBy`)
-        .then((ret) => {
-            this.postLikes = ret.liked
-        })
-
-    },
+//API call to load commentts & likes
+        this.$axios.$get(`comment/${this.post.id}/allcommentpost`)
+            .then((comments)=>{
+                this.comments = comments
+            })
+        this.$axios.$get(`post/${this.post.id}/countLikes`)
+            .then((ret) => {
+                this.likes = ret.likes,
+                this.loadingLikes = false
+            }) 
+        this.$axios.$get(`post/${this.post.id}/likedBy`)
+            .then((ret) => {
+                this.postLikes = ret.liked
+            })
+        },
 
     methods: {
+//to see modal with user description or onePost only
         seeUser(){
             this.seeOneProfil = true
             this.$axios.$get(`auth/${this.post.user_id}/profil`)
@@ -146,6 +145,7 @@ export default {
                 this.seeOnePost = true
             })
         },
+//action to comment , to do light, comment visibility is hidden at beginning
         seeComments(){
             this.$axios.$get(`comment/${this.post.id}/allcommentpost`)
             .then((comments)=>{
@@ -158,6 +158,9 @@ export default {
                 this.visible_comments = false
                 this.click_comment = true
         },
+
+
+//to add or erase a like & new count
         like(){
             this.$axios.$get(`post/${this.post.id}/like`)
             .then((ret) => {
@@ -173,14 +176,13 @@ export default {
                     })
             })
         },
+//to desactivate a post
         warningDestroy(){
             this.alertDestroy = true
         },
-
         closeDestroy(){
             this.alertDestroy = false
         },
-
         destroyPost(){
             this.$axios.$put(`post/${this.post.id}/deletepost/`)
             .then((ret) =>{
@@ -188,22 +190,21 @@ export default {
                 return false;
             })
         },
-
+//comment add 
         onComment (event) {
-        event.preventDefault()
-        this.$axios
-        .post(`/comment/${this.post.id}/createcomment`, this.form)        
-        .then(response => {
-            this.$axios.$get(`comment/${this.post.id}/allcommentpost`)
-                .then((comments)=>{
-                this.comments = comments
-                this.form.content = "",
-                this.seeComments()
-                this.click_comment = false
-                
-            });
-        })
-    }
+            event.preventDefault()
+            this.$axios
+            .post(`/comment/${this.post.id}/createcomment`, this.form)        
+            .then(response => {
+                this.$axios.$get(`comment/${this.post.id}/allcommentpost`)
+                    .then((comments)=>{
+                    this.comments = comments
+                    this.form.content = ""
+                    this.seeComments()
+                    this.click_comment = false  
+                });
+            })
+        }
     }
 }
 

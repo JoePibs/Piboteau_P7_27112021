@@ -9,7 +9,6 @@
         required
       ></b-form-input>
       <div class="errorMessage" id="firstNameError"></div>
-
     </b-form-group>
     <b-form-group id="lastname-group" label="Nom :" label-for="lastname">
       <b-form-input
@@ -20,7 +19,6 @@
         required
       ></b-form-input>
       <div class="errorMessage" id="lastNameError"></div>
-
     </b-form-group>
     <b-form-group id="pseudo-group" label="Pseudo :" label-for="pseudo">
       <b-form-input
@@ -31,7 +29,6 @@
         required
       ></b-form-input>
       <div class="errorMessage" id="pseudoError"></div>
-
       <div></div>
     </b-form-group>
     <b-form-group id="email-group" label="Email :" label-for="email">
@@ -45,7 +42,6 @@
       ></b-form-input>
       <div class="errorMessage" id="emailRegexError"></div>
     </b-form-group>
-
     <b-form-group
       id="confirm-email-group"
       label="Confirmation email:"
@@ -60,7 +56,6 @@
         required
       ></b-form-input>
       <div class="errorMessage" id="emailError"></div>
-
     </b-form-group>
     <b-form-group id="password-group" label="Password :" label-for="password">
       <b-form-input
@@ -73,7 +68,6 @@
       ></b-form-input>
       <div class="errorMessage" id="passwordRegexError"></div>
     </b-form-group>
-
     <b-form-group id="password-confirm-group" label="Confirmez le password :" label-for="password-confirm">
       <b-form-input
         id="password-confirm"
@@ -91,18 +85,14 @@
       class="inputFile" 
       name="post_avatar" 
       id="post_avatar">
-    </b-form-file >
-                
-    <div class="selectedFile">Selected file: {{ form.avatar ? form.avatar.name : '' }}</div>
-                
+    </b-form-file >            
+    <div class="selectedFile">Selected file: {{ form.avatar ? form.avatar.name : '' }}</div>           
     <div class="create_style" id="style_upload" onclick="document.querySelector('#post_avatar').click();">            
       <b-button id="inscription"  ><img id="new_avatar" :src="form.avatar"><span>Votre avatar</span> </b-button> 
     </div>
-
     <b-alert class="alert_signup" show variant="danger" v-if="alert===true"><span>{{errorAlert}}</span>
       <b-icon icon="x-square-fill" aria-hidden="true" class="close" id="close_signup" @click="closeAlert"></b-icon>
     </b-alert>
-
     <div class="button_inscription">
       <img src="@/assets/images/unicorn_prout.png" alt="licorne lancement" />
       <b-button type="submit" variant="primary" id="signupButton" >Launch</b-button>
@@ -131,6 +121,8 @@ export default {
   },
 
   methods: {
+
+  //methods to control availabibility of informations
     checkingFirstname(){
       const msgError = document.querySelector('#firstNameError')
       let firstname = this.form.firstname
@@ -161,14 +153,11 @@ export default {
         document.querySelector('#lastname').style.border = "#5b9d7f 2px solid";
       }
     },
-
-    
     checkPseudo(){
       const msgError = document.querySelector('#pseudoError')
       let pseudo = this.form.pseudo
-       
-      if(/^\S{4,50}$/.test(pseudo)=== false){
-        msgError.innerHTML = " Au moins 4 caractères, petite 🦄 !"
+      if(/^[\w ]{4,25}$/.test(pseudo)=== false){
+        msgError.innerHTML = " Entre 4 et 25 caractères, petite 🦄 !"
         document.querySelector('#pseudo').style.border = "red 2px solid";
         signupButton.disabled = true;
       }
@@ -178,11 +167,9 @@ export default {
         document.querySelector('#pseudo').style.border = "#5b9d7f 2px solid";
       }
     },
-
     checkEmailRegex(){
       const msgError = document.querySelector('#emailRegexError')
       let email = this.form.email
-       
       if(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,7}$/.test(email)=== false){
         msgError.innerHTML = " Bien tenté mais un peu de serieux, petite 🦄 !"
         document.querySelector('#email').style.border = "red 2px solid";
@@ -194,12 +181,9 @@ export default {
         document.querySelector('#email').style.border = "#5b9d7f 2px solid";
       }
     },
-
-    
     checkPasswordRegex(){
       const msgError = document.querySelector('#passwordRegexError')
       let password = this.form.password
-       
       if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)=== false){
         msgError.innerHTML = " Minimum une minuscule,un majuscule, un chiffre & un symbole, petite 🦄 !"
         document.querySelector('#password').style.border = "red 2px solid";
@@ -211,11 +195,6 @@ export default {
         signupButton.disabled = false;
       }
     },
-
-    
-
-
-
     checkEmail () {
       const msgError = document.querySelector('#emailError')
       if (this.form.email === this.form.emailconfirm) {
@@ -230,14 +209,13 @@ export default {
         signupButton.disabled = true;
       }
     },
-
     checkPassword () {
       const msgError = document.querySelector('#passwordError')
       if (this.form.password === this.form.confirmpassword) {
         msgError.innerHTML = ''
         document.querySelector('#password').style.border = "#5b9d7f 2px solid";
         document.querySelector('#password-confirm').style.border = "#5b9d7f 2px solid";
-         signupButton.disabled = false;
+        signupButton.disabled = false;
       } else {
         msgError.innerHTML = '⚠️Les deux mots de passe sont différents⚠️'
         document.querySelector('#password').style.border = "red 2px solid";
@@ -245,6 +223,7 @@ export default {
         signupButton.disabled = true;
       }
     },
+// send file to multer & stock filename
     avatarChange() {
         var formData = new FormData();
         var imagefile = document.querySelector('#post_avatar');
@@ -254,36 +233,32 @@ export default {
             this.form.avatar= res.data.url
         })
     },
+//add alert if onSubmit Error
     closeAlert() {
       this.alert = false
     },
-
     onSubmit (event) {
       event.preventDefault()
-            if (this.form.email === '' || this.form.email !== this.form.emailconfirm)
-              return
-            if (
-              this.form.password === '' ||
-              this.form.password !== this.form.confirmpassword
-            )
-              return
-            this.$axios
-              .post('auth/signup', this.form)
-              .then(async response => {
-                
-                await this.$store.dispatch('auth/login', {
-                  email: this.form.email,
-                  password: this.form.password
-                })
-                this.$router.push('/timeline') 
-              })
-              .catch(error => {
-                  this.errorAlert = error.response.data.message
-                  this.alert = true
-                  console.log(error.response.status);
-                  console.log(error.response.headers);
-              })
-              
+        if (this.form.email === '' || this.form.email !== this.form.emailconfirm)
+        return
+        if (
+          this.form.password === '' ||
+          this.form.password !== this.form.confirmpassword
+        )
+        return
+        this.$axios
+          .post('auth/signup', this.form)
+          .then(async response => {
+            await this.$store.dispatch('auth/login', {
+              email: this.form.email,
+              password: this.form.password
+            })
+            this.$router.push('/timeline') 
+            })
+          .catch(error => {
+          this.errorAlert = error.response.data.message
+          this.alert = true
+        })
       }
     }
 }

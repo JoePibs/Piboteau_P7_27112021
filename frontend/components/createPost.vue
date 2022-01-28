@@ -5,40 +5,36 @@
             <p class="username_create"> {{$store.state.auth.user.firstname}} {{$store.state.auth.user.lastname}} <span>@{{$store.state.auth.user.pseudo}}</span></p>
         
             <b-form @submit="onSubmit" enctype="multipart/form-data" >
-                    <b-form-textarea
-                        id="postInput"
-                        class="postInput"
-                        v-model="form.content"
-                        label="Taper votre post"
-                        label-for="postInput"
-                        type="textarea"
-                        placeholder="Hennir la bonne parole 👉"
-                        rows="4"
-                        max-rows="6">
-                    </b-form-textarea>
-
-                    <b-form-file 
-                        v-model="form.image" 
-                        class="inputFile" 
-                        name="post_image" 
-                        @change="imageChange"
-                        id="post_image">
-                    </b-form-file >
-                    
-                    <div class="selectedFile">Selected file: {{ form.imageUrl ? form.imageUrl.name : '' }}</div>
-                    
-                    <div class="create_input_style">
-                        <div id="overview" v-if="overviewSee === false" @click="seeOverview">Afficher l'aperçu</div>
-                        <div id="overview" v-if="overviewSee === true" @click="closeOverview">Fermer l'apercu</div>
-                        <div class="button_file">
-                            <b-button onclick="document.querySelector('#post_image').click();" ><img src="@/assets/images/file_image.png" alt="logo image vectoriel" />add image</b-button>
-                        </div>
-
-                        <div class="button_create">
-                            <img src="@/assets/images/unicorn_prout.png" alt="licorne fusée" />
-                            <b-button type="submit" variant="create">Lancement</b-button>
-                        </div>
+                <b-form-textarea
+                    id="postInput"
+                    class="postInput"
+                    v-model="form.content"
+                    label="Taper votre post"
+                    label-for="postInput"
+                    type="textarea"
+                    placeholder="Hennir la bonne parole 👉"
+                    rows="4"
+                    max-rows="6">
+                </b-form-textarea>
+                <b-form-file 
+                    v-model="form.image" 
+                    class="inputFile" 
+                    name="post_image" 
+                    @change="imageChange"
+                    id="post_image">
+                </b-form-file >
+                <div class="selectedFile">Selected file: {{ form.imageUrl ? form.imageUrl.name : '' }}</div>
+                <div class="create_input_style">
+                    <div id="overview" v-if="overviewSee === false" @click="seeOverview">Afficher l'aperçu</div>
+                    <div id="overview" v-if="overviewSee === true" @click="closeOverview">Fermer l'apercu</div>
+                    <div class="button_file">
+                        <b-button onclick="document.querySelector('#post_image').click();" ><img src="@/assets/images/file_image.png" alt="logo image vectoriel" />add image</b-button>
                     </div>
+                    <div class="button_create">
+                        <img src="@/assets/images/unicorn_prout.png" alt="licorne fusée" />
+                        <b-button type="submit" variant="create">Lancement</b-button>
+                    </div>
+                </div>
             </b-form>
         </div>
         <div v-if="overview === true" class="overview_style">
@@ -57,61 +53,55 @@
             </div>
         </div>       
     </div>
-        
-
 </template>
 
 <script>
-  export default {
-      
+export default {
     data() {
-      return {
-        form: {
-            userId:'',
-            content: '',
-            imageUrl: '',
+        return {
+            form: {
+                userId:'',
+                content: '',
+                imageUrl: '',
+            },
+            overview: false,
+            overviewSee : false
+        }
+    },
+
+    methods: {
+        seeOverview(){
+            this.overview = true
+            this.overviewSee = true
+
         },
-        overview: false,
-        overviewSee : false
+        closeOverview(){
+
+            this.overview = false
+            this.overviewSee = false
+
+        },
+        imageChange() {
+            var formData = new FormData();
+            var imagefile = document.querySelector('#post_image');
+            formData.append("image", imagefile.files[0]);
+            this.$axios.post('/upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            .then(res => {
+                this.form.imageUrl= res.data.url
+            })
+        },
         
-      }
-    },
- 
-  methods: {
-    seeOverview(){
-        this.overview = true
-        this.overviewSee = true
-
-    },
-    closeOverview(){
-
-        this.overview = false
-        this.overviewSee = false
-
-    },
-    imageChange() {
-        var formData = new FormData();
-        var imagefile = document.querySelector('#post_image');
-        formData.append("image", imagefile.files[0]);
-        this.$axios.post('/upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
-        .then(res => {
-            this.form.imageUrl= res.data.url
-        })
-    },
- 
-    
-    onSubmit (event) {
-        event.preventDefault()
-        let userId = localStorage.getItem('userId')
-        this.form.userId = userId
-        this.$axios
-        .post('/post/createpost', this.form)        
-        .then(response => {
-            location.reload();
-                return false;
-        })
-     
+        onSubmit (event) {
+            event.preventDefault()
+            let userId = localStorage.getItem('userId')
+            this.form.userId = userId
+            this.$axios
+            .post('/post/createpost', this.form)        
+            .then(response => {
+                location.reload();
+                    return false;
+            })
+        }
     }
-  }
 }
 </script>

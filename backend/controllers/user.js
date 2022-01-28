@@ -3,11 +3,12 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const db = dbc.getDB()
 const check = require('../utils/helper')
+//const fs = require('fs'); //import Nodefs to manage file
 
 exports.signup = async (req, res) => {
-  const { password } = req.body //je crée une variable password à partir de la clé password
-  const salt = await bcrypt.genSalt(10) //je declare un salage
-  const hashPassword = await bcrypt.hash(password, salt) //je génére le hash avec salage sur le passowrd
+  const { password } = req.body 
+  const salt = await bcrypt.genSalt(10) 
+  const hashPassword = await bcrypt.hash(password, salt) 
   const user = { ...req.body, hashPassword }
 
   let sql = 'SELECT u.* FROM users u WHERE u.pseudo = ?'
@@ -38,7 +39,6 @@ exports.login = (req, res, next) => {
   let email = req.body.email
   const sql = 'SELECT * FROM users u WHERE u.email = ? AND u.isActive=1'
   db.query(sql, [email], (err, result) => {
-    // je passe mon email en second argument pour que ma requete recoivent les bonnes valeurs
     if (result.length === 0) {
       return res.status(403).json({ message: 'Utilisateur non trouvé ! Veuillez vérifier votre email ou contacter un administrateur' }) // if not existing user
     }
@@ -50,7 +50,6 @@ exports.login = (req, res, next) => {
           return res.status(403).json({ message: 'mot de passe inconnu' })
         }
         res.status(200).json({
-          //sinon j'envoie le token et l'utserid
           userId: user.id,
           isAdmin : user.isAdmin,
           firstname: user.firstname,
@@ -68,11 +67,18 @@ exports.login = (req, res, next) => {
   })
 }
 
-//descativer le compte
+//Unactive account when you are THE user
 exports.desactivateAccount = (req, res, next) => {
   const userId = req.userId
-
   const sql = 'UPDATE users u SET isActive=0 WHERE u.id = ?'
+  /* db.query ('SELECT u.avatar FROM users u where u.id =?)
+            if (err) {
+                  return res.status(500).json({error: err.message})
+              }
+              res.json(result)
+              const filename = result.split('/images/')[1]
+              fs.unlink(`images/${filename}`, () => {
+              db.query ('DELETE FROM users u where u.id =?) ...*/ //to delete definitly
   db.query(sql, userId, (err, results) => {
     if (err) {
       return res.status(404).json({ err })
@@ -81,8 +87,8 @@ exports.desactivateAccount = (req, res, next) => {
   })
 }
 
+//Unactive account when you are THE admin
 exports.desactivateByAdmin = (req, res, next) => {
-
   const userPost = req.params.id
   const userId = req.userId
   const sql = 'SELECT COUNT(id) AS TOTAL FROM users u WHERE u.id = ? and u.isAdmin=1'
@@ -93,6 +99,14 @@ exports.desactivateByAdmin = (req, res, next) => {
     const admin = results[0].TOTAL
     if(admin === 1){
       const sql2 = 'UPDATE users u SET isActive=0  WHERE u.id = ?'
+  /* db.query ('SELECT u.avatar FROM users u where u.id =?)
+            if (err) {
+                  return res.status(500).json({error: err.message})
+              }
+              res.json(result)
+              const filename = result.split('/images/')[1]
+              fs.unlink(`images/${filename}`, () => {
+              db.query ('DELETE FROM users u where u.id =?) ...*/ //to delete definitly
       db.query(sql2, userPost, (err, results) => {
         if (err) {
           return res.status(404).json({ err })
@@ -106,7 +120,7 @@ exports.desactivateByAdmin = (req, res, next) => {
   })
 }
 
-//modifier le compte
+//Update account
 exports.updateAccount = (req, res, next) => {
   const id =req.userId
   const lastname = req.body.lastname
@@ -128,6 +142,7 @@ exports.updateAccount = (req, res, next) => {
   )
 }
 
+// See a profil 
 exports.seeAprofil = (req, res, next) => {
   let profilId = req.params.id
   let sql =
@@ -174,7 +189,8 @@ exports.updatePassword = (req, res, next) => {
   })
 }
 */
-//afficher les posts commentés par un utilisateur
+
+//Display post commented by the user
 
 exports.allPostUserHaveComment = (req, res, next) => {
   let userId = req.userId
@@ -198,14 +214,13 @@ exports.allPostUserHaveComment = (req, res, next) => {
 }
 
 
-// me
+// control log to store step
 exports.me = (req, res, next) => {
   const userId = req.userId
   if (!userId) {
     return res.status(403).json({ error: 'You must be logged in.' })
   }
   const sql = 'SELECT * FROM users u WHERE u.id = ?'
- 
   db.query(sql, [userId], (err, result) => {
     if (!result) {
       return res.status(403).json({ error: 'Utilisateur non trouvé !' })

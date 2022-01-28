@@ -3,15 +3,12 @@
     <b-tabs style  class="signup" content-class="mt-3">
       <b-tab  title="S'inscrire" active >
         <signup/>
-    </b-tab>
-
-    <b-tab title="Se connecter">
+      </b-tab>
+      <b-tab title="Se connecter">
         <login/>
-    </b-tab>
-      
-  </b-tabs>
-
-</div>
+      </b-tab>
+    </b-tabs>
+  </div>
 </template>
 
 <script>

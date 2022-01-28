@@ -48,11 +48,9 @@ export default {
             this.alertDestroyComment = true
             console.log(this.comment)
         },
-
         closeDestroyComment(){
             this.alertDestroyComment = false
         },
-
         destroyComment(){
             this.$axios.$put(`comment/${this.comment.id}/deletecomment/`)
             .then((ret) =>{
@@ -60,7 +58,6 @@ export default {
                 return false;
             })
         },
-
     },
 }
 </script>

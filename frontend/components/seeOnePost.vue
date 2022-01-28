@@ -2,7 +2,7 @@
     <div>
         <b-modal id="modal-3" title="post">
             <div>
-                  <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
+                <b-icon icon="x-square-fill" aria-hidden="true" class="close" @click="closeModal"></b-icon> 
             </div>
             <div class="thepost">
                 <div class="thepost_card">
@@ -65,7 +65,6 @@
                         <div class="nocomment" v-if="visible_comments===true && this.comments.length ===0"> 
                             <img src="@/assets/images/welcome_unicorn.png" alt="licorne dit hello" /> 
                             <h2>Soyez le premier à à commenter ce post</h2>
-                            
                         </div>
                     </div>
                 </div>
@@ -77,7 +76,6 @@
 <script>
 import Comments from '../components/comment.vue'
 
-    
 export default {
     components:{Comments},
     props :['onePost'],
@@ -99,8 +97,7 @@ export default {
         }
     },
     mounted(){
-
-       
+//control user is admin or not
         let userId = localStorage.getItem('userId')
         let isAdmin = localStorage.getItem('isAdmin')
     
@@ -109,31 +106,22 @@ export default {
         }else{
             this.owner = true
         }
-
-
-      
+// logi to comment & likes
       this.$axios.$get(`comment/${this.onePost.id}/allcommentpost`)
         .then((comments)=>{
             this.comments = comments
         })
-
     this.$axios.$get(`post/${this.onePost.id}/countLikes`)
         .then((ret) => {
             this.likes = ret.likes,
             this.loadingLikes = false
         })
-    
-
-
       this.$axios.$get(`post/${this.onePost.id}/likedBy`)
         .then((ret) => {
             this.postLikes = ret.liked
         })
-
     },
-
     methods: {
-
         closeModal(){
             this.$bvModal.hide('modal-3')
         },
@@ -156,7 +144,6 @@ export default {
                 .then((ret) => {
                     this.postLikes = ret.liked
                 })
-
                 this.$axios.$get(`post/${this.onePost.id}/countLikes`)
                 .then((ret)=>{
                     this.likes = ret.likes,
@@ -164,6 +151,7 @@ export default {
                     })
             })
         },
+//logic to destroy : alert , close alert , destroy
         warningDestroy(){
             this.alertDestroy = true
         },
@@ -179,28 +167,23 @@ export default {
                 return false;
             })
         },
-
+//logic to comment
         onComment (event) {
         event.preventDefault()
-        this.$axios
-        .post(`/comment/${this.onePost.id}/createcomment`, this.form)        
-        .then(response => {
-            this.$axios.$get(`comment/${this.onePost.id}/allcommentpost`)
-                .then((comments)=>{
-                this.comments = comments
-                this.form.content = "",
-                this.seeComments()
-                this.click_comment = false
-                
-            });
-        })
-    }
+            this.$axios
+            .post(`/comment/${this.onePost.id}/createcomment`, this.form)        
+            .then(response => {
+                this.$axios.$get(`comment/${this.onePost.id}/allcommentpost`)
+                    .then((comments)=>{
+                    this.comments = comments
+                    this.form.content = "",
+                    this.seeComments()
+                    this.click_comment = false
+                    
+                });
+            })
+        }
     }
 }
-
 </script>
-<style>
-#modal-3{
-  background: #49756136;
-}
-</style>
+

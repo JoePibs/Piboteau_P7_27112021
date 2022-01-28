@@ -1,12 +1,10 @@
 <template>
-
-          <b-button id="mode"  v-if=" darkMode" @click="toggleSwitch">
-              <span>dark <b-icon icon="circle-half" aria-hidden="true"></b-icon></span>
-              
-          </b-button>
-          <b-button id="mode" v-else @click="toggleSwitch">
-            <span>light <b-icon icon="circle-half" aria-hidden="true"></b-icon></span>
-          </b-button>
+  <b-button id="mode"  v-if=" darkMode" @click="toggleSwitch">
+    <span>dark <b-icon icon="circle-half" aria-hidden="true"></b-icon></span>
+  </b-button>
+  <b-button id="mode" v-else @click="toggleSwitch">
+    <span>light <b-icon icon="circle-half" aria-hidden="true"></b-icon></span>
+  </b-button>
 
 </template>
 <script>
@@ -25,4 +23,3 @@ export default {
   }
 };
 </script>
- 
