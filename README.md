@@ -20,15 +20,14 @@ Voici les exigences du comité de direction :
 ## Reflexions fonctionnelles sur la partie User & Modération
 
 1. Utilisateur “lambda” doit pouvoir :
-    - créer un compte avec : nom - prénom - email - mot de passe ⇒ Le réseau étant interne seul une adresse groupomania.com sera accepté
+    - créer un compte avec : nom - prénom - email - mot de passe 
     - Se logger à partir de son email & mot de passe
     - Ajouter un avatar (et une description à son profil)
     - L’utilisateur doit pouvoir poster un texte et/ou une image ou un lien
     - L’utilisateur doit pouvoir modifier ou supprimer son post 
     - L’utilisateur doit pouvoir voir les posts des autres utilisateurs et retrouver simplement un post :
             1. Option A : Faire apparaitre les posts du plus récent au plus anciens
-            2. Option B : thématique de post
-            3.Option C : Intégration d’un bloc “ mes posts commentés”
+            2.Option B : Intégration d’un bloc “ Les posts que j'ai commentés”/ "Les posts les plus commentés" / "Mes posts"
     - L’utilisateur doit pouvoir liker un post
     - L’utilisateur doit pouvoir commenter un post
 
@@ -71,7 +70,7 @@ cd backend é&& nodemon
 
 ==> http://localhost:8000/
 
-
+La base de données etant en local dans le cadre de ce MVP, des dumps pourront être mise à disposition dans le cadre de test sur demande. Il vous suffira des les importer dans votre ORM SQL
 
 # GROUPOMANIA
 As a new develloper of the company, I have to set up an internal social network in order to allow a better cohesion within the Groupomania group.
@@ -143,3 +142,5 @@ cd frontend && npm run dev
 cd backend && nodemon
 
 ==> http://localhost:8000/
+
+The database being local in the context of this MVP, dumps can be made available for testing upon request. You will just have to import them in your SQL ORM
