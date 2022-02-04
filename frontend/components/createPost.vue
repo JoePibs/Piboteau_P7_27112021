@@ -98,7 +98,7 @@ export default {
             this.$axios
             .post('/post/createpost', this.form)        
             .then(response => {
-                location.reload();
+                this.$nuxt.$emit('posts:reload');
                     return false;
             })
         }

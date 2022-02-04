@@ -46,7 +46,6 @@ export default {
     methods: {
         warningDestroyComment(){
             this.alertDestroyComment = true
-            console.log(this.comment)
         },
         closeDestroyComment(){
             this.alertDestroyComment = false
@@ -54,8 +53,8 @@ export default {
         destroyComment(){
             this.$axios.$put(`comment/${this.comment.id}/deletecomment/`)
             .then((ret) =>{
-                location.reload();
-                return false;
+                this.$nuxt.$emit('comments:reload');    
+                this.alertDestroyComment = false
             })
         },
     },
