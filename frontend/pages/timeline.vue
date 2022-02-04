@@ -81,17 +81,20 @@ export default {
     }
 
     this.refresh()
-
-    this.$axios
-      .$get('post')
-      .then((posts) => {
-        this.posts = posts
-        this.loading = false
-      })
+    this.loadPost()
+    this.$nuxt.$on('posts:reload', this.loadPost)
+    
   },
 
   methods:{
-
+    loadPost(){
+      this.$axios
+            .$get('post')
+            .then((posts) => {
+              this.posts = posts
+              this.loading = false
+            })
+    },
     displayedTimeline(){
       this.displayedtimeline = false
       this.displayedcommented=false

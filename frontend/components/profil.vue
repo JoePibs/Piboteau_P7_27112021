@@ -222,7 +222,7 @@ methods:{
         if(bio != "null"){
         this.form.bio = localStorage.getItem('bio')}
         else{
-          this.form.bio = "null"
+          this.form.bio = ""
         }
     },
     closeUnicornUpdate(){

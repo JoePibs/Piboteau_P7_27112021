@@ -96,30 +96,36 @@ export default {
             seeOneProfil : false,
         }
     },
-    mounted(){
-//control user is admin or not
-        let userId = localStorage.getItem('userId')
-        let isAdmin = localStorage.getItem('isAdmin')
-    
-        if (this.onePost.user_id != userId && isAdmin != 1){
-            this.owner = false
-        }else{
-            this.owner = true
+    watch: {
+        onePost: {
+            handler() {
+                //control user is admin or not
+                        let userId = localStorage.getItem('userId')
+                        let isAdmin = localStorage.getItem('isAdmin')
+                    
+                        if (this.onePost.user_id != userId && isAdmin != 1){
+                            this.owner = false
+                        }else{
+                            this.owner = true
+                        }
+                // logi to comment & likes
+                    this.$axios.$get(`comment/${this.onePost.id}/allcommentpost`)
+                        .then((comments)=>{
+                            this.comments = comments
+                        })
+                    this.$axios.$get(`post/${this.onePost.id}/countLikes`)
+                        .then((ret) => {
+                            this.likes = ret.likes,
+                            this.loadingLikes = false
+                        })
+                    this.$axios.$get(`post/${this.onePost.id}/likedBy`)
+                        .then((ret) => {
+                            this.postLikes = ret.liked
+                        })
+            },
+            deep: true,
+            immediate: true
         }
-// logi to comment & likes
-      this.$axios.$get(`comment/${this.onePost.id}/allcommentpost`)
-        .then((comments)=>{
-            this.comments = comments
-        })
-    this.$axios.$get(`post/${this.onePost.id}/countLikes`)
-        .then((ret) => {
-            this.likes = ret.likes,
-            this.loadingLikes = false
-        })
-      this.$axios.$get(`post/${this.onePost.id}/likedBy`)
-        .then((ret) => {
-            this.postLikes = ret.liked
-        })
     },
     methods: {
         closeModal(){

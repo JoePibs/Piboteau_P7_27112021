@@ -201,6 +201,7 @@ exports.allPostUserHaveComment = (req, res, next) => {
     AND p.id = c.post_id 
     AND u.id = p.user_id 
     AND u.isActive=1 
+    AND p.isActive =1
     AND c.date_creation > (NOW() - INTERVAL 3 MONTH) 
     GROUP BY c.user_id,c.post_id
     ORDER BY p.date_creation DESC`

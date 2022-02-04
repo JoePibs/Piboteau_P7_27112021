@@ -110,12 +110,8 @@ export default {
         }else{
             this.owner = true
         }
-
-//API call to load commentts & likes
-        this.$axios.$get(`comment/${this.post.id}/allcommentpost`)
-            .then((comments)=>{
-                this.comments = comments
-            })
+//call method comment & like
+        this.loadComments()
         this.$axios.$get(`post/${this.post.id}/countLikes`)
             .then((ret) => {
                 this.likes = ret.likes,
@@ -125,9 +121,23 @@ export default {
             .then((ret) => {
                 this.postLikes = ret.liked
             })
-        },
+        this.$nuxt.$on('comments:reload', this.loadComments)
+        
+    
+    },
+
+
 
     methods: {
+//API call to load comments
+    loadComments(){
+        this.$axios.$get(`comment/${this.post.id}/allcommentpost`)
+            .then((comments)=>{
+                this.comments = comments
+                this.click_comment = true
+                this.visible_comments = false
+            })
+        },
 //to see modal with user description or onePost only
         seeUser(){
             this.seeOneProfil = true
@@ -186,7 +196,7 @@ export default {
         destroyPost(){
             this.$axios.$put(`post/${this.post.id}/deletepost/`)
             .then((ret) =>{
-                location.reload();
+                this.$nuxt.$emit('posts:reload');
                 return false;
             })
         },
